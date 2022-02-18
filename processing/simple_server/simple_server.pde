@@ -36,24 +36,33 @@ void setup() {
   //pixelDensity(2);
   background(204);
   stroke(0);
+  cp5 = new ControlP5(this);   
   minim = new Minim(this);
   player = minim.loadFile("click.mp3");
 
   frameRate(5); // Slow it down a little
   s = new Server(this, 12345);  // Start a simple server on a port
-  cp5 = new ControlP5(this);  
+
   // change the trigger event, by default it is PRESSED.
   
   int cX = displayWidth / 2;
   int cY = displayHeight / 2;
   int w = 100;
   int h = 100;
-
+  
+  cp5.addSlider("size")
+     .setPosition(100,140)
+     .setSize(20,100)
+     .setRange(0,255)
+     .setNumberOfTickMarks(5)
+     ;
+     
   cp5.addBang("zero")
      .setPosition(cX-w, cY-h)
      .setSize(w, h)
      //.setTriggerEvent(Bang.RELEASE)
      .setLabel("RETURN")
+     .updateSize()
      ;
   
 }
@@ -91,5 +100,6 @@ public void controlEvent(ControlEvent theEvent) {
   if (name.equals("zero")) {
     player.play();
     player.rewind();
+    s.write(5);
   }
 }
