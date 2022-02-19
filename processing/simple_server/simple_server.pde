@@ -30,36 +30,45 @@ Client c;
 String input;
 int data[];
 
+//globals
+float wSlideMod = 0.5;
+float slideAspect = 0.05;
+
+
 void setup() {
-  //size(450, 255);
   fullScreen();
-  //pixelDensity(2);
   background(204);
-  stroke(0);
+  frameRate(5); // Slow it down a little
+
+  s = new Server(this, 12345);  // Start a simple server on a port
   cp5 = new ControlP5(this);   
   minim = new Minim(this);
   player = minim.loadFile("click.mp3");
 
-  frameRate(5); // Slow it down a little
-  s = new Server(this, 12345);  // Start a simple server on a port
-
-  // change the trigger event, by default it is PRESSED.
-  
+  //calculate center of screen
   int cX = displayWidth / 2;
   int cY = displayHeight / 2;
-  int w = 100;
-  int h = 100;
+  
+  //calculate slider size and position
+  float w = wSlideMod * displayWidth;
+  float h = w * slideAspect;
+  float pX = cX - w/2;
+  float pY = displayHeight - h * 2;
   
   cp5.addSlider("size")
-     .setPosition(100,140)
-     .setSize(20,100)
+     .setPosition(int(pX), int(pY))
+     .setSize(int(w),int(h))
      .setRange(0,255)
      .setNumberOfTickMarks(5)
      ;
-     
+
+  //calculate bang
+  int wBang = 100;
+  int hBang = 100;
+
   cp5.addBang("zero")
-     .setPosition(cX-w, cY-h)
-     .setSize(w, h)
+     .setPosition(cX-wBang, cY-h)
+     .setSize(wBang, hBang)
      //.setTriggerEvent(Bang.RELEASE)
      .setLabel("RETURN")
      .updateSize()
