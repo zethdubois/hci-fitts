@@ -9,6 +9,15 @@
 import processing.net.*;
 import controlP5.*;
 import ddf.minim.*;
+import interfascia.*;
+
+GUIController g;
+IFButton startButton, stopButton;
+IFProgressBar progress;
+IFCheckBox global, nothing;
+
+IFLookAndFeel defaultLook, redLook, greenLook;
+boolean running = false;
 
 ControlP5 cp5;
 Minim minim;
@@ -36,19 +45,40 @@ float slideAspect = 0.05;
 
 
 void setup() {
-  fullScreen();
-  background(204);
-  frameRate(5); // Slow it down a little
+  fullScreen(2);
+  background(20);
+  //frameRate(5); // Slow it down a little
 
+  g = new GUIController (this);
   s = new Server(this, 12345);  // Start a simple server on a port
   cp5 = new ControlP5(this);   
   minim = new Minim(this);
   player = minim.loadFile("click.mp3");
+  
+  stopButton = new IFButton ("Stop", 60, 70, 40, 17);
+  progress = new IFProgressBar (120, 72, 70);
+  global = new IFCheckBox ("Use global look and feel", 10, 15);
 
+  
+
+  global.addActionListener(this); 
+  
+  defaultLook = new IFLookAndFeel(this, IFLookAndFeel.DEFAULT);
+  
+  greenLook = new IFLookAndFeel(this, IFLookAndFeel.DEFAULT);
+  greenLook.baseColor = color(100, 180, 100);
+  greenLook.highlightColor = color(70, 135, 70);
+  
+  redLook = new IFLookAndFeel(this, IFLookAndFeel.DEFAULT);
+  redLook.baseColor = color(175, 100, 100);
+  redLook.highlightColor = color(175, 50, 50);
+  
   //calculate center of screen
   int cX = displayWidth / 2;
   int cY = displayHeight / 2;
-  
+
+  stopButton.setLookAndFeel(redLook);
+
   //calculate slider size and position
   float w = wSlideMod * displayWidth;
   float h = w * slideAspect;
@@ -62,19 +92,39 @@ void setup() {
      .setNumberOfTickMarks(5)
      ;
 
-  //calculate bang
-  int wBang = 100;
-  int hBang = 100;
 
-  cp5.addBang("zero")
-     .setPosition(cX-wBang, cY-h)
-     .setSize(wBang, hBang)
-     //.setTriggerEvent(Bang.RELEASE)
-     .setLabel("RETURN")
-     .updateSize()
-     ;
   
+
+  stopButton.addActionListener(this);
+
+  
+
+  g.add (stopButton);
+  g.add (progress);
+//  cp5.addBang("zero")
+//     .setPosition(cX-wBang, cY-h)
+//     .setSize(w, hBang)
+//     //.setTriggerEvent(Bang.RELEASE)
+//     .setLabel("RETURN")
+//     .updateSize()
+//     ;
+  addStart();
 }
+
+
+void addStart(){
+  //calculate start
+  int w = 100;
+  int h = 100;
+
+  float x = displayWidth / 2 - w / 2;
+  float y = displayHeight / 2 - h / 2;
+
+  startButton = new IFButton ("Start", int(x), int(y), int(w), int(h));  
+  g.add (startButton);
+  startButton.addActionListener(this);
+}
+
 void draw() {
   //the drawing sample code
   //if (mousePressed == true) {
@@ -85,6 +135,10 @@ void draw() {
   //  s.write(pmouseX + " " + pmouseY + " " + mouseX + " " + mouseY + "\n");
   //}
 
+  if (running) {
+    progress.setProgress((progress.getProgress() + 0.01) % 1);
+  }
+  
   // Receive data from client
   c = s.available();
   if (c != null) {
@@ -110,5 +164,34 @@ public void controlEvent(ControlEvent theEvent) {
     player.play();
     player.rewind();
     s.write(5);
+  }
+}
+
+void removeStart(){
+  g.remove(startButton);
+  g.remove(stopButton);
+  g.remove(progress);
+  startButton = null;
+  println("bye");
+  confirmGuiEvent = null;
+}
+
+
+void actionPerformed (GUIEvent e) {
+  if (e.getSource() == startButton) {
+    running = true;
+  } else if (e.getSource() == stopButton) {
+    running = false;
+    removeStart();
+  } else if (e.getSource() == global && e.getMessage().equals("Checked")) {
+      startButton.setLookAndFeel(defaultLook);
+      stopButton.setLookAndFeel(defaultLook);
+      global.setLookAndFeel(defaultLook);
+      nothing.setLookAndFeel(defaultLook);
+  } else if (e.getSource() == global && e.getMessage().equals("Unchecked")) {
+      startButton.setLookAndFeel(greenLook);
+      stopButton.setLookAndFeel(redLook);
+      global.setLookAndFeel(greenLook);
+      nothing.setLookAndFeel(greenLook);
   }
 }

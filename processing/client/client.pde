@@ -12,13 +12,13 @@ Client c;
 String input;
 int data[];
 
-int w = 100;
+int w = 200;
 int h = 100;
 
 void setup() {
-  fullScreen(2);
+  fullScreen(3);
   //size(450, 255);
-  background(204);
+  background(20);
   stroke(0);
   frameRate(5); // Slow it down a little
   minim = new Minim(this);
@@ -63,8 +63,10 @@ void draw() {
 }
 
 public void resize(){
-  w = w+10;
-  cp5.getController("target").setSize(w,h);  
+  w = w-5;
+  println("w: ",w);
+  cp5.getController("target").setSize(w,h);
+  cp5.getController("target").update();
 }
 public void controlEvent(ControlEvent theEvent) {
   String name = theEvent.getController().getName();
