@@ -1,0 +1,71 @@
+
+class Sandbox {
+  int val, xS, yS, xC, yC;
+  
+  Sandbox(int val){
+    if (val == 0){
+      xS = displayWidth;
+      yS = displayHeight;
+    } else {
+      xS = val;
+      yS = val;
+    }
+    xC = xS / 2;
+    yC = yS / 2;
+  }
+}
+
+class Butt {
+  
+}
+
+class Timer {
+}
+  
+  
+  stopButton = new IFButton ("Stop", 60, 70, 40, 17);
+  progress = new IFProgressBar (120, 72, 70);
+  global = new IFCheckBox ("Use global look and feel", 10, 15);
+
+  global.addActionListener(this); 
+  
+  defaultLook = new IFLookAndFeel(this, IFLookAndFeel.DEFAULT);
+  greenLook = new IFLookAndFeel(this, IFLookAndFeel.DEFAULT);
+  greenLook.baseColor = color(100, 180, 100);
+  greenLook.highlightColor = color(70, 135, 70);
+  
+  redLook = new IFLookAndFeel(this, IFLookAndFeel.DEFAULT);
+  redLook.baseColor = color(175, 100, 100);
+  redLook.highlightColor = color(175, 50, 50); 
+ 
+  stopButton.addActionListener(this);
+  g.add (stopButton);
+  g.add (progress);
+  
+//calculate center of screen
+  int cX = displayWidth / 2;
+  int cY = displayHeight / 2;
+
+  stopButton.setLookAndFeel(redLook);
+
+  //calculate slider size and position
+  float w = wSlideMod * displayWidth;
+  float h = w * slideAspect;
+  float pX = cX - w/2;
+  float pY = displayHeight - h * 2;
+  
+  float x = displayWidth / 2 - w / 2;
+  float y = displayHeight / 2 - h / 2;
+
+  startButton = new IFButton ("Start", int(x), int(y), int(w), int(h));  
+  g.add (startButton);
+  startButton.addActionListener(this);
+  
+  cp5.addSlider("size")
+     .setPosition(int(pX), int(pY))
+     .setSize(int(w),int(h))
+     .setRange(0,255)
+     .setNumberOfTickMarks(5)
+     ;
+  return new int[] {xS, yS};
+}
