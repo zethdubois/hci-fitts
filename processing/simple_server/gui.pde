@@ -1,8 +1,17 @@
 
 class Sandbox {
-  int val, xS, yS, xC, yC;
   
-  Sandbox(int val){
+  private String name;
+  
+  int val, xS, yS, xC, yC, ppi, bWset, xlate;
+  int[] t; //target cornenrs 
+  String mode,server;
+  int[] bW; 
+  
+  Sandbox(StringDict dict){
+    val = int(dict.get("screen"));
+    //int newarr[] = new int[n + 1];
+    int bW[] = new int[4];
     if (val == 0){
       xS = displayWidth;
       yS = displayHeight;
@@ -10,9 +19,28 @@ class Sandbox {
       xS = val;
       yS = val;
     }
+    if (dict.get("mode") == "local"){
+      server = "127.0.0.1";
+    }else{
+      server = dict.get("server");
+    }
+    
     xC = xS / 2;
     yC = yS / 2;
+    for(int i=1;i<=4;i++){  
+      String buff = "w"+i;
+      bW[i-1] = int(dict.get(buff));
+    }
+    println("button sizes: ", Arrays.toString(bW));
+    bWset = int(dict.get("bWset"));
+    xlate = int(dict.get("xlate"));    
   }
+  
+  @Override //this is supposed to help change the object to string println, but I coudln't get it to work
+  public String toString() {
+    return name;
+  }
+  
 }
 
 class Butt {
@@ -22,7 +50,7 @@ class Butt {
 class Timer {
 }
   
-  
+/*  
   stopButton = new IFButton ("Stop", 60, 70, 40, 17);
   progress = new IFProgressBar (120, 72, 70);
   global = new IFCheckBox ("Use global look and feel", 10, 15);
@@ -69,3 +97,5 @@ class Timer {
      ;
   return new int[] {xS, yS};
 }
+
+*/

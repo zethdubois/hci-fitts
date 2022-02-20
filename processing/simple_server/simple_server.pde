@@ -5,6 +5,10 @@ How to run this experiment with two specified MS Surface computers
  https://www.alphachooser.com/tablet_computers--microsoft_surface_go--tablet_computer-specs-and-profile
 */
 
+import java.io.*;
+import java.lang.*;
+import java.util.*;
+
 // for window tweaks
 import java.awt.Frame;
 import processing.awt.PSurfaceAWT;
@@ -16,22 +20,39 @@ import controlP5.*;
 import ddf.minim.*;
 import interfascia.*;
 
+// init file
 String[] cnfg;
 String cFile = "cnfg.ini";
+StringDict cnfgs;
 
+// objects
+Sandbox box;
 GUIController g;
 IFButton startButton, stopButton;
 IFProgressBar progress;
 IFCheckBox global, nothing;
 
-IFLookAndFeel defaultLook, redLook, greenLook;
-boolean running = false;
+//boolean running = false;
 
 ControlP5 cp5;
 Minim minim;
-AudioPlayer player;
+AudioPlayer player, player2;
+
+ 
+// network
+Server s;
+Client c;
+String input;
+int data[];
+int xS = 100 , yS = 100;
 
 
+/// style vars
+//IFLookAndFeel defaultLook, redLook, greenLook;
+float wSlideMod = 0.5;
+float slideAspect = 0.05;
+
+int bgc = 20; //: background color
 int myColorBackground = color(0, 0, 0);
 
 color[] col = new color[] {
@@ -40,52 +61,31 @@ color[] col = new color[] {
 
 
 
-  
-
-Server s;
-Client c;
-String input;
-int data[];
-int xS = 100 , yS = 100;
-
-
-//globals
-float wSlideMod = 0.5;
-float slideAspect = 0.05;
-
-Sandbox box;
-
 void setup() {
   size(100,100);
-  background(20);
-  
+  fill(0);//black text color
+  textSize(40);
+  ellipseMode(CENTER);
 
-  
-  
   g = new GUIController (this);
   s = new Server(this, 12345);  // Start a simple server on a port
   cp5 = new ControlP5(this);   
   minim = new Minim(this);
   player = minim.loadFile("click.mp3");
-
-  //[xS, yS] = layout(sSet);
- 
-//  cp5.addBang("zero")
-//     .setPosition(cX-wBang, cY-h)
-//     .setSize(w, hBang)
-//     //.setTriggerEvent(Bang.RELEASE)
-//     .setLabel("RETURN")
-//     .updateSize()
-//     ;
-
+  player2 = minim.loadFile("click2.mp3");  
 }
 
 
 PSurface initSurface() {
+  cnfgs = new StringDict();
   cnfg = loadStrings(cFile);
-  int sSet = int(cnfg[0]);  
-  box = new Sandbox(sSet);
-  println(box.xS);
+  for (String buff : cnfg){
+    String[] args = buff.split("=");
+    cnfgs.set(args[0],args[1]);
+  }
+  println("cnfgs: ",cnfgs);
+  box = new Sandbox(cnfgs);
+  SetArgs(cnfg);
   PSurface pSurface = super.initSurface();
   PSurfaceAWT awtSurface = (PSurfaceAWT) surface;
   SmoothCanvas smoothCanvas = (SmoothCanvas) awtSurface.getNative();
@@ -95,25 +95,19 @@ PSurface initSurface() {
   pSurface.setSize(box.xS, box.yS);
   return pSurface;
 }
-void addStart(){
-
-}
 
 void draw() {
-  //the drawing sample code
-  //if (mousePressed == true) {
-  //  // Draw our line
-  //  stroke(255);
-  //  line(pmouseX, pmouseY, mouseX, mouseY);
-  //  // Send mouse coords to other person
-  //  s.write(pmouseX + " " + pmouseY + " " + mouseX + " " + mouseY + "\n");
-  //}
+  background(bgc);//refresh screen
+  timer();
 
-  if (running) {
-    progress.setProgress((progress.getProgress() + 0.01) % 1);
-  }
+  //  s.write(pmouseX + " " + pmouseY + " " + mouseX + " " + mouseY + "\n");
+
+
+  //if (running) {
+  //  progress.setProgress((progress.getProgress() + 0.01) % 1);
+  //}
   
-  // Receive data from client
+  //. Receive data from client
   c = s.available();
   if (c != null) {
     input = c.readString();
@@ -151,21 +145,21 @@ void removeStart(){
 }
 
 
-void actionPerformed (GUIEvent e) {
-  if (e.getSource() == startButton) {
-    running = true;
-  } else if (e.getSource() == stopButton) {
-    running = false;
-    removeStart();
-  } else if (e.getSource() == global && e.getMessage().equals("Checked")) {
-      startButton.setLookAndFeel(defaultLook);
-      stopButton.setLookAndFeel(defaultLook);
-      global.setLookAndFeel(defaultLook);
-      nothing.setLookAndFeel(defaultLook);
-  } else if (e.getSource() == global && e.getMessage().equals("Unchecked")) {
-      startButton.setLookAndFeel(greenLook);
-      stopButton.setLookAndFeel(redLook);
-      global.setLookAndFeel(greenLook);
-      nothing.setLookAndFeel(greenLook);
-  }
-}
+//void actionPerformed (GUIEvent e) {
+//  if (e.getSource() == startButton) {
+//    running = true;
+//  } else if (e.getSource() == stopButton) {
+//    running = false;
+//    removeStart();
+//  } else if (e.getSource() == global && e.getMessage().equals("Checked")) {
+//      startButton.setLookAndFeel(defaultLook);
+//      stopButton.setLookAndFeel(defaultLook);
+//      global.setLookAndFeel(defaultLook);
+//      nothing.setLookAndFeel(defaultLook);
+//  } else if (e.getSource() == global && e.getMessage().equals("Unchecked")) {
+//      startButton.setLookAndFeel(greenLook);
+//      stopButton.setLookAndFeel(redLook);
+//      global.setLookAndFeel(greenLook);
+//      nothing.setLookAndFeel(greenLook);
+//  }
+//}
