@@ -3,7 +3,9 @@ class Sandbox {
   
   private String name;
   
-  int val, xS, yS, xC, yC, ppi, bWset, xlate;
+  int val, xS, yS, xC, yC, ppi, bWset;
+  int tSize;
+  float offset;
   int[] t; //target cornenrs 
   String mode,server;
   int[] bW; 
@@ -33,7 +35,8 @@ class Sandbox {
     }
     println("button sizes: ", Arrays.toString(bW));
     bWset = int(dict.get("bWset"));
-    xlate = int(dict.get("xlate"));    
+    offset = float(dict.get("offset"));
+    tSize = int(dict.get("text_size"));
   }
   
   @Override //this is supposed to help change the object to string println, but I coudln't get it to work
