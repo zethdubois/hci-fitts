@@ -5,12 +5,13 @@ int millisec = 0;
 int start_time = 0;
 int delay = 0;
 color startC, stopC;
+boolean InitGui = true;
+
 
 void timer(){
   textSize(box.tSize);
   int gutter = 20;
-  int cOn = 255;  //. color on
-  int cOff = 127;  //. color off
+
   startC = color(0,90,0);
   stopC = color(255,0,0);
   
@@ -21,16 +22,27 @@ void timer(){
     }
   }
   float xT = (box.xS/2 - box.bWset/2 - gutter)*box.offset;
+  if (InitGui == true){
+     cp5.addBang("bangOn")
+     .setPosition(box.xC-box.bWset/2,box.yC-box.bWset/2)
+     .setSize(box.bWset,box.bWset)
+     //.setTriggerEvent(Bang.RELEASE)
+     .setLabel("changeBackground")
+     ;
+    InitGui = false;
+  }
   if (started == 0){
     startC=color(0,255,0);
     stopC=color(90,0,0);
   }
+  pushMatrix();
   translate(int(-1*xT), 0);
   fill(startC);
   ellipse(box.xC,box.yC,box.bWset,box.bWset);
   translate(int(xT*2), 0);
   fill(stopC);
-  ellipse(box.xC,box.yC,box.bWset,box.bWset);    
+  ellipse(box.xC,box.yC,box.bWset,box.bWset);
+  popMatrix();
   
   
   if (started == 1) {//keep track of time values after pressed only works for an hour
@@ -47,11 +59,12 @@ void timer(){
   text("min",120,180);
   text("sec",170,180);
   text("ms",220,180);
+  
   if (mousePressed == true) {//check if mouse was pressed on the start button
     loadPixels();
-    println("Red: "+red(pixels[mouseX + mouseY * width]));
-    println("Green: "+green(pixels[mouseX + mouseY * width]));
-    println("Blue: "+blue(pixels[mouseX + mouseY * width]));
+    //println("Red: "+red(pixels[mouseX + mouseY * width]));
+    //println("Green: "+green(pixels[mouseX + mouseY * width]));
+    //println("Blue: "+blue(pixels[mouseX + mouseY * width]));
     if (green(pixels[mouseX + mouseY * width]) == 255){
       started = -1*started + 1;
       start_time = millis();
@@ -60,22 +73,14 @@ void timer(){
       player.rewind();
       s.write(5);
     }
-    if (red(pixels[mouseX + mouseY * width]) >= 200){
+    if (red(pixels[mouseX + mouseY * width]) == 255){
       started = -1*started + 1;
       start_time = millis();
       delay = 1;//make sure after button is pressed it cant be pressed for a certain amount of time
       player2.play();
       player2.rewind();
       s.write(5);      
-    }      
+    }
+  
   }
 }
-
-public void XmouseMoved()
-    {
-        loadPixels();
-        println("Red: "+red(pixels[mouseX + mouseY * width]));
-        println("Green: "+green(pixels[mouseX + mouseY * width]));
-        println("Blue: "+blue(pixels[mouseX + mouseY * width]));
-        println();
-    }

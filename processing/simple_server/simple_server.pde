@@ -48,7 +48,6 @@ int xS = 100 , yS = 100;
 
 
 /// style vars
-//IFLookAndFeel defaultLook, redLook, greenLook;
 float wSlideMod = 0.5;
 float slideAspect = 0.05;
 
@@ -62,7 +61,7 @@ color[] col = new color[] {
 
 
 void setup() {
-  size(100,100);
+  size(1000,1000);
   fill(0);//black text color
   textSize(40);
   ellipseMode(CENTER);
@@ -72,7 +71,14 @@ void setup() {
   cp5 = new ControlP5(this);   
   minim = new Minim(this);
   player = minim.loadFile("click.mp3");
-  player2 = minim.loadFile("click2.mp3");  
+  player2 = minim.loadFile("click2.mp3");
+}
+
+
+public void bangOn() {
+  int theColor = (int)random(255);
+  bgc = color(theColor);
+  println("### bang(). a bang event. setting background to "+theColor);
 }
 
 
@@ -85,7 +91,6 @@ PSurface initSurface() {
   }
   println("cnfgs: ",cnfgs);
   box = new Sandbox(cnfgs);
-  SetArgs(cnfg);
   PSurface pSurface = super.initSurface();
   PSurfaceAWT awtSurface = (PSurfaceAWT) surface;
   SmoothCanvas smoothCanvas = (SmoothCanvas) awtSurface.getNative();
@@ -99,13 +104,7 @@ PSurface initSurface() {
 void draw() {
   background(bgc);//refresh screen
   timer();
-
   //  s.write(pmouseX + " " + pmouseY + " " + mouseX + " " + mouseY + "\n");
-
-
-  //if (running) {
-  //  progress.setProgress((progress.getProgress() + 0.01) % 1);
-  //}
   
   //. Receive data from client
   c = s.available();
@@ -113,53 +112,5 @@ void draw() {
     input = c.readString();
     input = input.substring(0, input.indexOf("\n"));  // Only up to the newline
     data = int(split(input, ' '));  // Split values into an array
-    // Draw line using received coords
-    stroke(0);
-    line(data[0], data[1], data[2], data[3]);
   }
 }
-
-public void bang() {
-  int theColor = (int)random(255);
-  myColorBackground = color(theColor);
-  println("### bang(). a bang event. setting background to "+theColor);
-}
-
-
-public void controlEvent(ControlEvent theEvent) {
-  String name = theEvent.getController().getName();
-  if (name.equals("zero")) {
-    player.play();
-    player.rewind();
-    s.write(5);
-  }
-}
-
-void removeStart(){
-  g.remove(startButton);
-  g.remove(stopButton);
-  g.remove(progress);
-  startButton = null;
-  println("bye");
-
-}
-
-
-//void actionPerformed (GUIEvent e) {
-//  if (e.getSource() == startButton) {
-//    running = true;
-//  } else if (e.getSource() == stopButton) {
-//    running = false;
-//    removeStart();
-//  } else if (e.getSource() == global && e.getMessage().equals("Checked")) {
-//      startButton.setLookAndFeel(defaultLook);
-//      stopButton.setLookAndFeel(defaultLook);
-//      global.setLookAndFeel(defaultLook);
-//      nothing.setLookAndFeel(defaultLook);
-//  } else if (e.getSource() == global && e.getMessage().equals("Unchecked")) {
-//      startButton.setLookAndFeel(greenLook);
-//      stopButton.setLookAndFeel(redLook);
-//      global.setLookAndFeel(greenLook);
-//      nothing.setLookAndFeel(greenLook);
-//  }
-//}
