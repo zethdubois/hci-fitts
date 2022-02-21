@@ -37,6 +37,7 @@ class Sandbox {
     bWset = int(dict.get("bWset"));
     offset = float(dict.get("offset"));
     tSize = int(dict.get("text_size"));
+    ppi = int(dict.get("ppi"));
   }
   
   @Override //this is supposed to help change the object to string println, but I coudln't get it to work
@@ -50,8 +51,6 @@ class Butt {
   
 }
 
-class Timer {
-}
   
 /*  
   stopButton = new IFButton ("Stop", 60, 70, 40, 17);

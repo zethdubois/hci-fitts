@@ -15,8 +15,10 @@ color currentColor;
 boolean startOver = false;
 boolean stopOver = false;
 String sTxt, tTxt;
+int gutter = 20;
 
 void timer(boolean Zero){
+  if (Grid) return;
   if (Started || Zero) {//keep track of time values after pressed only works for an hour
     millisec = (millis() - start_time) % 1000;
     sec = int((millis() - start_time)/1000) % 60;
@@ -31,35 +33,48 @@ void timer(boolean Zero){
   text("ms",100,80); 
 }
 
+int findLong(int i){
+  //int iLong;
+  float buff = 0;
+  if (i == 0){
+  }else{
+    buff = ((box.xS/2 - box.bWset/2 - gutter)*box.offset)*i;
+  }
+  
+  return int(buff);
+}
 void aparatus(){
   textSize(box.tSize);
-  int gutter = 20;
 
   startC = color(0,255,0);
   stopC = color(255,0,0);
+  sTxt = "Sample # "+samples;
+  tTxt = "Trial # "+trials;  
+  int xT;
   
   //! played with setting different colors for the buttons, depending on timer, decided against it fo rnow
   //if (Started == 0){
   //  startC=color(0,255,0);
   //  stopC=color(90,0,0);
   //}
-  sTxt = "Sample # "+samples;
-  tTxt = "Trial # "+trials;
-  if (Trial){
-    text(tTxt,50,30);//display main text
+
+  if (!Grid){
+    if (Trial){
+      text(tTxt,50,30);  // trial #
+    }
+    text(sTxt,50,60);    // sample #
   }
-  text(sTxt,50,60);//display main text
   if (delay == 1) {//delay after a button press before it becomes resposive again
     if (millis() - start_time >= 400) {
       delay = 0;
     }
   }
-  float xT = (box.xS/2 - box.bWset/2 - gutter)*box.offset;
+
+
   if (InitGui == true){
     fill(startC);
 
-    pushMatrix();
-    translate(int(-1*xT), 0);
+    xT = findLong(1);
     
     cp5.addBang("bangOn")
       .setPosition(box.xC-box.bWset/2-xT,box.yC-box.bWset/2)
@@ -78,7 +93,6 @@ void aparatus(){
       .setLabel("stop")
      ;
 
-    popMatrix();
 
     InitGui = false;
   }

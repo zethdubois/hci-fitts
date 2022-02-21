@@ -113,17 +113,22 @@ PSurface initSurface() {
   return pSurface;
 }
 
+void showMode(){
+  strokeWeight(6);
+  if (Trial) stroke(250,250,0);
+  if (Grid) stroke(250,0,0);
+  noFill();
+  rect(3,3,box.xS-4,box.yS-4);
+  strokeWeight(1);
+  stroke(0);
+}
+
 void draw() {
   background(bgc);//refresh screen
   aparatus();
-  if (Trial){
-    strokeWeight(6);
-    stroke(250,250,0);
-    noFill();
-    rect(3,3,box.xS-4,box.yS-4);
-    strokeWeight(1);
-  }
+  showMode();
   timer(false);
+  if (Grid) drawGrid();
   //  s.write(pmouseX + " " + pmouseY + " " + mouseX + " " + mouseY + "\n");
   
   //. Receive data from client
