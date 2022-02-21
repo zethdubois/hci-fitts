@@ -76,11 +76,17 @@ void setup() {
 
 
 public void bangOn() {
-  int theColor = (int)random(255);
-  bgc = color(theColor);
-  println("### bang(). a bang event. setting background to "+theColor);
+  //int theColor = (int)random(255);
+  started = 1;
+  cp5.getController("bangOn").setColorForeground(color(10,10,10));
+  println("### bang(). a bang event. timer started");
 }
 
+public void bangOff() {
+  //int theColor = (int)random(255);
+  started = 0;
+  println("### bang(). a bang event. timer started");
+}
 
 PSurface initSurface() {
   cnfgs = new StringDict();
@@ -104,6 +110,8 @@ PSurface initSurface() {
 void draw() {
   background(bgc);//refresh screen
   timer();
+
+
   //  s.write(pmouseX + " " + pmouseY + " " + mouseX + " " + mouseY + "\n");
   
   //. Receive data from client
@@ -113,4 +121,8 @@ void draw() {
     input = input.substring(0, input.indexOf("\n"));  // Only up to the newline
     data = int(split(input, ' '));  // Split values into an array
   }
+}
+
+void update() {
+
 }
