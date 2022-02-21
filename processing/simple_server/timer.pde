@@ -1,6 +1,5 @@
-int started = 0;
+boolean Started = false;
 int sec = 0;
-int min = 0;
 int millisec = 0;
 int start_time = 0;
 int delay = 0;
@@ -15,20 +14,41 @@ color startHighlight, stopHighlight;
 color currentColor;
 boolean startOver = false;
 boolean stopOver = false;
+String sTxt, tTxt;
 
+void timer(boolean Zero){
+  if (Started || Zero) {//keep track of time values after pressed only works for an hour
+    millisec = (millis() - start_time) % 1000;
+    sec = int((millis() - start_time)/1000) % 60;
+    
+  }
+  fill(255);
+  text(millisec,100,100);//display the times on the interface
+  text(sec,60,100);
+  text(":",50,100);
+  text(":",90,100);
+  text("sec",50,80);
+  text("ms",100,80); 
+}
 
-void timer(){
+void aparatus(){
   textSize(box.tSize);
   int gutter = 20;
 
-  startC = color(0,90,0);
+  startC = color(0,255,0);
   stopC = color(255,0,0);
   
-  if (started == 0){
-    startC=color(0,255,0);
-    stopC=color(90,0,0);
-  }  
-  text("Timer",150,60);//display main text
+  //! played with setting different colors for the buttons, depending on timer, decided against it fo rnow
+  //if (Started == 0){
+  //  startC=color(0,255,0);
+  //  stopC=color(90,0,0);
+  //}
+  sTxt = "Sample # "+samples;
+  tTxt = "Trial # "+trials;
+  if (Trial){
+    text(tTxt,50,30);//display main text
+  }
+  text(sTxt,50,60);//display main text
   if (delay == 1) {//delay after a button press before it becomes resposive again
     if (millis() - start_time >= 400) {
       delay = 0;
@@ -63,22 +83,7 @@ void timer(){
     InitGui = false;
   }
 
-  
-  //  if (startOver) {
-  //  fill(startHighlight);
-  //} else {
-  //  fill(startColor);
-  //}
-  //stroke(255);
-  //ellipse(startX, startY, startSize, startSize);
-  
-  //if (stopOver) {
-  //  fill(stopHighlight);
-  //} else {
-  //  fill(stopColor);
-  //}
-  //stroke(0);
-  //ellipse(stopX, stopY, stopSize, stopSize);
+//ellipse(stopX, stopY, stopSize, stopSize);
 
 
 //  pushMatrix();
@@ -91,20 +96,7 @@ void timer(){
 //  popMatrix();
   
   
-  if (started == 1) {//keep track of time values after pressed only works for an hour
-    millisec = (millis() - start_time) % 1000;
-    sec = int((millis() - start_time)/1000) % 60;
-    min = int((millis() - start_time)/(60*1000)) % 60;
-  }
-  fill(255);
-  text(millisec,220,200);//display the times on the interface
-  text(sec,180,200);
-  text(min,140,200);
-  text(":",170,200);
-  text(":",210,200);
-  text("min",120,180);
-  text("sec",170,180);
-  text("ms",220,180);
+
   
 }
 

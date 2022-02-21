@@ -36,7 +36,7 @@ IFCheckBox global, nothing;
 
 ControlP5 cp5;
 Minim minim;
-AudioPlayer player, player2;
+AudioPlayer startClick, stopClick;
 
  
 // network
@@ -70,21 +70,27 @@ void setup() {
   s = new Server(this, 12345);  // Start a simple server on a port
   cp5 = new ControlP5(this);   
   minim = new Minim(this);
-  player = minim.loadFile("click.mp3");
-  player2 = minim.loadFile("click2.mp3");
+  startClick = minim.loadFile("click.mp3");
+  stopClick = minim.loadFile("click2.mp3");
 }
 
 
 public void bangOn() {
   //int theColor = (int)random(255);
-  started = 1;
-  cp5.getController("bangOn").setColorForeground(color(10,10,10));
+  Started = true;
+  start_time = millis();
+
+
+  //cp5.getController("bangOn").setColorForeground(color(10,10,10));
   println("### bang(). a bang event. timer started");
 }
 
 public void bangOff() {
   //int theColor = (int)random(255);
-  started = 0;
+  if (Started){ // timer is counting...
+    samples++;
+  }
+  Started = false;
   println("### bang(). a bang event. timer started");
 }
 
@@ -109,9 +115,15 @@ PSurface initSurface() {
 
 void draw() {
   background(bgc);//refresh screen
-  timer();
-
-
+  aparatus();
+  if (Trial){
+    strokeWeight(6);
+    stroke(250,250,0);
+    noFill();
+    rect(3,3,box.xS-4,box.yS-4);
+    strokeWeight(1);
+  }
+  timer(false);
   //  s.write(pmouseX + " " + pmouseY + " " + mouseX + " " + mouseY + "\n");
   
   //. Receive data from client
