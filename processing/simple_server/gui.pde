@@ -2,6 +2,7 @@ int ppi;
 int xC, yC; // center of screen
 boolean Msg = false;
 int tSize; // text size;
+boolean OverStart, OverStop;
 
 
 

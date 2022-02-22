@@ -7,6 +7,7 @@ int bW; //: button width pixels
 import java.math.*;
 color startColor = color(0, 255, 0);
 color stopColor = color(255, 0, 0);
+int b1x, b1y, b2x, b2y;
 
 void keyPressed() {
   println("key", key);
@@ -69,16 +70,20 @@ void updateButtons() {
     cp5.getController("bangOn").remove();
     cp5.getController("bangOff").remove();
   } else {
-    println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> no buttons");
     int xT = findLong(1);
+    b1x = xC-bW/2-xT;
+    b1y = yC-bW/2;
+    b2x = xC-bW/2+xT;
+    b2y = yC-bW/2;
+
     cp5.addBang("bangOn")
-      .setPosition(xC-bW/2-xT, yC-bW/2)
+      .setPosition(b1x, b1y)
       .setSize(bW, bW)
       .setColorForeground(startColor)
       .setLabel("start")
       ;
     cp5.addBang("bangOff")
-      .setPosition(xC-bW/2+xT, yC-bW/2)
+      .setPosition(b2x, b2y)
       .setSize(bW, bW)
       .setColorForeground(stopColor)
       .setLabel("stop")

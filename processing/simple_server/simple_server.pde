@@ -3,7 +3,7 @@ How to run this experiment with two specified MS Surface computers
  surface 1, client: 2736 x 1824 (267 ppi), 12.3 in display, 11.5 x 7.9
  surface go, server: 1800 x 1200, 46.18 sq inches
  https://www.alphachooser.com/tablet_computers--microsoft_surface_go--tablet_computer-specs-and-profile
-*/
+ */
 
 import java.io.*;
 import java.lang.*;
@@ -38,13 +38,13 @@ ControlP5 cp5;
 Minim minim;
 AudioPlayer startClick, stopClick;
 
- 
+
 // network
 Server s;
 Client c;
 String input;
 int data[];
-int xS = 100 , yS = 100;
+int xS = 100, yS = 100;
 PFont bFont, nFont;
 
 /// style vars
@@ -56,18 +56,18 @@ int myColorBackground = color(0, 0, 0);
 
 color[] col = new color[] {
   color(100), color(150), color(200), color(250)
-  };
+};
 
 
 
 void setup() {
-  size(1000,1000);
+  size(1000, 1000);
   fill(0);//black text color
   ellipseMode(CENTER);
-  bFont = createFont("Consolas Bold",tSize);
-  nFont = createFont("Consolas",tSize);
-//String[] fontList = PFont.list();
-//println(fontList);
+  bFont = createFont("Consolas Bold", tSize);
+  nFont = createFont("Consolas", tSize);
+  //String[] fontList = PFont.list();
+  //println(fontList);
   g = new GUIController (this);
   s = new Server(this, 12345);  // Start a simple server on a port
   cp5 = new ControlP5(this);   
@@ -87,7 +87,7 @@ public void bangOn() {
   println("### bang(). a bang event. timer started");
 }
 
-void setArgs(){
+void setArgs() {
   ppi = box.ppi;
   bW = box.bW;
   xC = box.xC;
@@ -95,13 +95,12 @@ void setArgs(){
   xS = box.xS;
   yS = box.yS;
   tSize = box.tSize;
-
 }
 
 
 public void bangOff() {
   //int theColor = (int)random(255);
-  if (Started){ // timer is counting...
+  if (Started) { // timer is counting...
     samples++;
   }
   Started = false;
@@ -111,11 +110,11 @@ public void bangOff() {
 PSurface initSurface() {
   cnfgs = new StringDict();
   cnfg = loadStrings(cFile);
-  for (String buff : cnfg){
+  for (String buff : cnfg) {
     String[] args = buff.split("=");
-    cnfgs.set(args[0],args[1]);
+    cnfgs.set(args[0], args[1]);
   }
-  println("cnfgs: ",cnfgs);
+  println("cnfgs: ", cnfgs);
   box = new Sandbox(cnfgs);
   setArgs();
   PSurface pSurface = super.initSurface();
@@ -128,12 +127,12 @@ PSurface initSurface() {
   return pSurface;
 }
 
-void showMode(){
+void showMode() {
   strokeWeight(6);
-  if (Trial) stroke(250,250,0);
-  if (Grid) stroke(250,0,0);
+  if (Trial) stroke(250, 250, 0);
+  if (Grid) stroke(250, 0, 0);
   noFill();
-  rect(3,3,box.xS-4,box.yS-4);
+  rect(3, 3, box.xS-4, box.yS-4);
   strokeWeight(1);
   stroke(0);
 }
@@ -146,7 +145,7 @@ void draw() {
   if (Grid) drawGrid();
   if (Grid) writeMsg();
   //  s.write(pmouseX + " " + pmouseY + " " + mouseX + " " + mouseY + "\n");
-  
+
   //. Receive data from client
   c = s.available();
   if (c != null) {
@@ -154,8 +153,32 @@ void draw() {
     input = input.substring(0, input.indexOf("\n"));  // Only up to the newline
     data = int(split(input, ' '));  // Split values into an array
   }
-}
+  if (mouseX > b2x && mouseX < b2x+bW && 
+    mouseY > b2y && mouseY < b2y+bW) {
+    OverStop = true;
+    println("over stop!:");
+  } else {
+    OverStop = false;
 
-void update() {
+  }
+  if (mouseX > b1x && mouseX < b1x+bW && 
+    mouseY > b1y && mouseY < b1y+bW) {
+    OverStart = true;
+    println("over start!:");
+  } else {
+    OverStart = false;
 
+  }
 }
+  public void controlEvent(ControlEvent theEvent) {
+    for (int i=0; i<col.length; i++) {
+      if (theEvent.getController().getName().equals("bang"+i)) {
+        col[i] = color(random(255));
+      }
+    }
+    println(
+      "hey charlie ## controlEvent / id:"+theEvent.controller().getId()+
+      " / name:"+theEvent.controller().getName()+
+      " / value:"+theEvent.controller().getValue()
+      );
+  }
