@@ -89,7 +89,8 @@ public void bangOn() {
 
 void setArgs() {
   ppi = box.ppi;
-  bW = box.bW;
+  bW = box.bW1;
+  println("..............bW",bW);
   xC = box.xC;
   yC = box.yC;
   xS = box.xS;

@@ -12,6 +12,11 @@ void adjustBW(int val) {
   bW = bW + val;
 }
 
+void setBW(int val) {
+  if (!Grid) return;
+  bW = val;
+}
+
 void adjustOff(float val) {
   if (!Grid) return;
   offset = offset + val;

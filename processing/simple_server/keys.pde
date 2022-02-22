@@ -3,7 +3,7 @@ int trials = 0;
 Boolean Trial = false;
 Boolean Grid = false;
 float fittsA, fittsW; //: amplitude / width
-int bW; //: button width pixels
+
 color startColor = color(0, 255, 0);
 color stopColor = color(255, 0, 0);
 int b1x, b1y, b2x, b2y;
@@ -66,7 +66,27 @@ void keyPressed() {
   case '.': 
     println("increase window");  
     adjustWin(+10);
-    break;     
+    break;
+  case '1': 
+    println("select button width");  
+    setBW(box.bW1);
+    bSelect = 1;
+    break;
+  case '2': 
+    println("select button width");  
+    setBW(box.bW2);
+    bSelect = 2;
+    break;
+  case '3': 
+    println("select button width");  
+    setBW(box.bW3);
+    bSelect = 3;
+    break;
+  case '4': 
+    println("select button width");  
+    setBW(box.bW4);
+    bSelect = 4;
+    break;       
   default:
     break;
   }
