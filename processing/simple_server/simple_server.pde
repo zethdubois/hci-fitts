@@ -95,17 +95,18 @@ void setArgs() {
   xS = box.xS;
   yS = box.yS;
   tSize = box.tSize;
+  offset = box.offset;
 }
 
 
 public void bangOff() {
-  //int theColor = (int)random(255);
   if (Started) { // timer is counting...
     samples++;
   }
   Started = false;
   println("### bang(). a bang event. timer started");
 }
+
 
 PSurface initSurface() {
   cnfgs = new StringDict();
@@ -121,10 +122,26 @@ PSurface initSurface() {
   PSurfaceAWT awtSurface = (PSurfaceAWT) surface;
   SmoothCanvas smoothCanvas = (SmoothCanvas) awtSurface.getNative();
   Frame frame = smoothCanvas.getFrame();
-  frame.setUndecorated(true);
+  //frame.setUndecorated(true);
   pSurface.setResizable(true);
-  pSurface.setSize(box.xS, box.yS);
+  registerMethod("pre", this);
+  pSurface.setSize(xS, yS);
   return pSurface;
+}
+
+String ws = "";
+void pre() {
+  if (xS != width || yS != height) {
+    // Sketch window has resized
+    xS = width;
+    yS = height;
+    xC = xS / 2;
+    yC = yS / 2;
+    ws = "Size = " +xS + " x " + yS + " pixels";
+    // Do what you need to do here
+    println("resized!!!!!", ws);
+    if (!Grid) updateButtons();
+  }
 }
 
 void showMode() {
@@ -132,7 +149,7 @@ void showMode() {
   if (Trial) stroke(250, 250, 0);
   if (Grid) stroke(250, 0, 0);
   noFill();
-  rect(3, 3, box.xS-4, box.yS-4);
+  rect(3, 3, xS-4, yS-4);
   strokeWeight(1);
   stroke(0);
 }
@@ -153,32 +170,26 @@ void draw() {
     input = input.substring(0, input.indexOf("\n"));  // Only up to the newline
     data = int(split(input, ' '));  // Split values into an array
   }
-  if (mouseX > b2x && mouseX < b2x+bW && 
-    mouseY > b2y && mouseY < b2y+bW) {
-    OverStop = true;
-    println("over stop!:");
-  } else {
-    OverStop = false;
-
+  if (!OverStop && !Grid) {
+    if (mouseX > b2x && mouseX < b2x+bW && 
+      mouseY > b2y && mouseY < b2y+bW) {
+      OverStop = true;
+      OverStart = false;
+      println("OverStop");
+      bangOff();
+    } else {
+      OverStop = false;
+    }
   }
-  if (mouseX > b1x && mouseX < b1x+bW && 
-    mouseY > b1y && mouseY < b1y+bW) {
-    OverStart = true;
-    println("over start!:");
-  } else {
-    OverStart = false;
-
+  if (!OverStart && !Grid) {
+    if (mouseX > b1x && mouseX < b1x+bW && 
+      mouseY > b1y && mouseY < b1y+bW) {
+      OverStart = true;
+      OverStop = false;
+      println("OverStart");
+      bangOn();
+    } else {
+      OverStart = false;
+    }
   }
 }
-  public void controlEvent(ControlEvent theEvent) {
-    for (int i=0; i<col.length; i++) {
-      if (theEvent.getController().getName().equals("bang"+i)) {
-        col[i] = color(random(255));
-      }
-    }
-    println(
-      "hey charlie ## controlEvent / id:"+theEvent.controller().getId()+
-      " / name:"+theEvent.controller().getName()+
-      " / value:"+theEvent.controller().getValue()
-      );
-  }
