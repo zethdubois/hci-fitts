@@ -12,13 +12,13 @@ Client c;
 String input;
 int data[];
 
-int w = 200;
+int w = 100;
 int h = 100;
 
 void setup() {
-  fullScreen(3);
-  //size(450, 255);
-  background(20);
+  //fullScreen(2);
+  size(600, 600);
+  background(204);
   stroke(0);
   frameRate(5); // Slow it down a little
   minim = new Minim(this);
@@ -26,8 +26,8 @@ void setup() {
   player = minim.loadFile("click2.mp3");  
   // Connect to the server’s IP address and port­
 
-  int cX = displayWidth / 2;
-  int cY = displayHeight / 2;
+  int cX = width / 2;
+  int cY = height / 2;
   
   cp5.addBang("target")
      .setPosition(cX-w, cY-h)
@@ -63,15 +63,14 @@ void draw() {
 }
 
 public void resize(){
-  w = w-5;
-  println("w: ",w);
-  cp5.getController("target").setSize(w,h);
-  cp5.getController("target").update();
+  w = w+10;
+  cp5.getController("target").setSize(w,h);  
 }
 public void controlEvent(ControlEvent theEvent) {
   String name = theEvent.getController().getName();
   if (name.equals("target")) {
     player.play();
     player.rewind();
+    c.write(5);
   }
 }
