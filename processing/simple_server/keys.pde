@@ -9,10 +9,17 @@ color startColor = color(0, 255, 0);
 color stopColor = color(255, 0, 0);
 int b1x, b1y, b2x, b2y;
 
+void testNet(){
+  println("Test Network");
+}
 void keyPressed() {
   println("key", key);
 
   switch(key) {
+  case 'n': 
+    testNet();
+    
+    break;    
   case 't': 
     startTrial();
     break;

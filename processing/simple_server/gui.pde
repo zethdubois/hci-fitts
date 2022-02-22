@@ -7,10 +7,12 @@ float ID;
 int bW; //: button width pixels
 String bSelect = "1";
 color rose = color(243, 196, 207);
+color lightblue = color(137, 207, 240);
 color darkgreen = color(0, 120, 0);
 color midgreen = color(0, 200, 0);
 color midred = color(200, 0, 0);
 String mode;
+String IP;
 
 //text(("- or _ || = or + "), x, y);
 //text(("[ or { || ] or }"), x, y);
@@ -90,8 +92,19 @@ void writeMsg() {
   }
   translate(0, lf); 
   text(("Index of D = "+ ID), x, y);
+  popMatrix();
 
-
+  // bottom of screen
+  String sysMsg = "Mode:" + mode;
+  pushMatrix();
+  translate(gutter, yS-gutter*4);
+  fill(lightblue);
+  rect(0, 0, xS-gutter*2, 3*gutter); //: BG rectangle
+  fill(0);
+  if (iMode == 0) {
+    sysMsg = sysMsg +"  Server:" + server ;
+  }
+  text(sysMsg, x, y);  
   popMatrix();
 }
 
@@ -120,9 +133,10 @@ class Sandbox {
       yS = val;
     }
     if (dict.get("network") == "local") {
+      IP = "127.0.0.1";
       server = "127.0.0.1";
     } else {
-      server = dict.get("server");
+      IP = dict.get("server");
     }
     mode = dict.get("mode");
     xC = xS / 2;
