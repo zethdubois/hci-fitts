@@ -72,19 +72,34 @@ void setup() {
   s = new Server(this, 12345);  // Start a simple server on a port
   cp5 = new ControlP5(this);   
   minim = new Minim(this);
-  startClick = minim.loadFile("click.mp3");
-  stopClick = minim.loadFile("click2.mp3");
+  startClick = minim.loadFile("beep.wav");
+  stopClick = minim.loadFile("boop.wav");
   updateButtons();
 }
 
 
-public void bangOn() {
+public void bangOffX() {
+  if (Started) { // timer is counting...
+    samples++;
+  }
+
+  Started = false;
+  delay(1);
+  stopClick.play();
+  stopClick.rewind();
+  println("timer stoped");
+}
+
+public void bangOnX() {
   //int theColor = (int)random(255);
+  startClick.rewind();
   Started = true;
   start_time = millis();
+  delay = 1;
+  startClick.play();
 
   //cp5.getController("bangOn").setColorForeground(color(10,10,10));
-  println("### bang(). a bang event. timer started");
+  println("timer started");
 }
 
 void setArgs() {
@@ -98,17 +113,11 @@ void setArgs() {
   tSize = box.tSize;
   offset = box.offset;
   mode = box.mode;
-  if (mode.equals("single")) iMode = 1; else iMode = 0;
+  if (mode.equals("single")) iMode = 1; 
+  else iMode = 0;
 }
 
 
-public void bangOff() {
-  if (Started) { // timer is counting...
-    samples++;
-  }
-  Started = false;
-  println("### bang(). a bang event. timer started");
-}
 
 
 PSurface initSurface() {
@@ -120,7 +129,6 @@ PSurface initSurface() {
       cnfgs.set(args[0], args[1]);
     }  
     catch(Exception e) {
-      
     }
   }
   println("cnfgs: ", cnfgs);
@@ -184,7 +192,7 @@ void draw() {
       OverStop = true;
       OverStart = false;
       println("OverStop");
-      bangOff();
+      bangOffX();
     } else {
       OverStop = false;
     }
@@ -195,7 +203,7 @@ void draw() {
       OverStart = true;
       OverStop = false;
       println("OverStart");
-      bangOn();
+      bangOnX();
     } else {
       OverStart = false;
     }
