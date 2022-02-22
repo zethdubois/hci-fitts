@@ -139,9 +139,17 @@ void updateButtons() {
 }
 
 void setups() {
+  if (Started) {
+    Started = false;
+    OverStart=false;
+    start_time = millis();
+    timer(true);
+    //timer(false);
+    return;
+  }
   if (!Trial) Grid = !Grid;
   println("Grid:", Grid);
-  updateButtons();
+  if (!Trial) updateButtons();
 }
 
 void startTrial() {

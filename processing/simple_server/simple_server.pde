@@ -23,6 +23,7 @@ import interfascia.*;
 // init file
 String[] cnfg;
 String cFile = "cnfg.ini";
+String pFile = "priv.ini";
 StringDict cnfgs;
 
 // objects
@@ -89,6 +90,7 @@ public void bangOffX() {
   stopClick.rewind();
   println("timer stoped");
 }
+
 
 public void bangOnX() {
   //int theColor = (int)random(255);

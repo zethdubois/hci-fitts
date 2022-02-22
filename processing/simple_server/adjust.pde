@@ -52,11 +52,9 @@ void drawGrid() {
   rect(xC, yC, bW, bW); //: draw box where button will be
   strokeWeight(1);
   stroke(255);
-  println("xt is: ,", xT);
   //---------- measure lines
   int i = xT2; // tricky business to run this while loop
   while ((2*xT+i)+adj > xT) {
-    println("Here:", xT2);
     xT2 = xT2 - ppi;
     if (adj > 0) i = xT2*-1; 
     else i = xT2;

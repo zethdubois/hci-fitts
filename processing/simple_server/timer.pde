@@ -15,7 +15,7 @@ boolean stopOver = false;
 String sTxt, tTxt;
 int gutter = 20;
 
-void timer(boolean Zero) {
+void timer(boolean Zero) { // Zero = true to reset
   if (Grid) return;
   if (Started || Zero) {//keep track of time values after pressed only works for an hour
     millisec = (millis() - start_time);// % 1000;
