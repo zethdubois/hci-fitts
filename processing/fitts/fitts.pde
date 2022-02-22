@@ -60,7 +60,9 @@ color[] col = new color[] {
   color(100), color(150), color(200), color(250)
 };
 
-
+//! get list of fonts...
+  //String[] fontList = PFont.list();
+  //println(fontList);
 
 void setup() {
   size(1000, 1000);
@@ -68,8 +70,7 @@ void setup() {
   ellipseMode(CENTER);
   bFont = createFont("Consolas Bold", tSize);
   nFont = createFont("Consolas", tSize);
-  //String[] fontList = PFont.list();
-  //println(fontList);
+
   g = new GUIController (this);
   s = new Server(this, 12345);  // Start a simple server on a port
   cp5 = new ControlP5(this);   
@@ -103,6 +104,7 @@ public void bangOnX() {
 
   //cp5.getController("bangOn").setColorForeground(color(10,10,10));
   println("timer started");
+  if (iMode==0) s.write(5);
 }
 
 void setArgs() {
@@ -205,7 +207,7 @@ void draw() {
     input = input.substring(0, input.indexOf("\n"));  // Only up to the newline
     data = int(split(input, ' '));  // Split values into an array
   }
-  if (!OverStop && !Grid && mode.equals("single")) {
+  if (!OverStop && !Grid && iMode == 1) {
     if (mouseX > b2x && mouseX < b2x+bW && 
       mouseY > b2y && mouseY < b2y+bW) {
       OverStop = true;

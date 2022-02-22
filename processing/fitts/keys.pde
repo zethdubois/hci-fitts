@@ -9,8 +9,9 @@ color startColor = color(0, 255, 0);
 color stopColor = color(255, 0, 0);
 int b1x, b1y, b2x, b2y;
 
-void testNet(){
+void testNet() {
   println("Test Network");
+  s.write(5);
 }
 void keyPressed() {
   println("key", key);
@@ -18,7 +19,7 @@ void keyPressed() {
   switch(key) {
   case 'n': 
     testNet();
-    
+
     break;    
   case 't': 
     startTrial();
@@ -118,8 +119,10 @@ void updateButtons() {
   }
   if (test != 0) {
     cp5.getController("bangOn").remove();
-    if (mode.equals("single")) {
+    try {
       cp5.getController("bangOff").remove();
+    }
+    catch(Exception e) {
     }
   } else {
     int xT = findLong(iMode);
@@ -134,7 +137,7 @@ void updateButtons() {
       .setColorForeground(startColor)
       .setLabel("start")
       ;
-    if (mode.equals("single")) {
+    if (iMode == 1) {//(mode.equals("single")) {
       cp5.addBang("bangOff")
         .setPosition(b2x, b2y)
         .setSize(bW, bW)
