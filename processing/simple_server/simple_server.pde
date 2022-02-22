@@ -90,13 +90,15 @@ public void bangOn() {
 void setArgs() {
   ppi = box.ppi;
   bW = box.bW1;
-  println("..............bW",bW);
+  println("..............bW", bW);
   xC = box.xC;
   yC = box.yC;
   xS = box.xS;
   yS = box.yS;
   tSize = box.tSize;
   offset = box.offset;
+  mode = box.mode;
+  if (mode.equals("single")) iMode = 1; else iMode = 0;
 }
 
 
@@ -114,7 +116,12 @@ PSurface initSurface() {
   cnfg = loadStrings(cFile);
   for (String buff : cnfg) {
     String[] args = buff.split("=");
-    cnfgs.set(args[0], args[1]);
+    try {
+      cnfgs.set(args[0], args[1]);
+    }  
+    catch(Exception e) {
+      
+    }
   }
   println("cnfgs: ", cnfgs);
   box = new Sandbox(cnfgs);
@@ -171,7 +178,7 @@ void draw() {
     input = input.substring(0, input.indexOf("\n"));  // Only up to the newline
     data = int(split(input, ' '));  // Split values into an array
   }
-  if (!OverStop && !Grid) {
+  if (!OverStop && !Grid && mode.equals("single")) {
     if (mouseX > b2x && mouseX < b2x+bW && 
       mouseY > b2y && mouseY < b2y+bW) {
       OverStop = true;

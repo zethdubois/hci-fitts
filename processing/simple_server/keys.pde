@@ -3,6 +3,7 @@ int trials = 0;
 Boolean Trial = false;
 Boolean Grid = false;
 float fittsA, fittsW; //: amplitude / width
+int iMode;
 
 color startColor = color(0, 255, 0);
 color stopColor = color(255, 0, 0);
@@ -70,23 +71,29 @@ void keyPressed() {
   case '1': 
     println("select button width");  
     setBW(box.bW1);
-    bSelect = 1;
+    bSelect = "1";
     break;
   case '2': 
     println("select button width");  
     setBW(box.bW2);
-    bSelect = 2;
+    bSelect = "2";
     break;
   case '3': 
     println("select button width");  
     setBW(box.bW3);
-    bSelect = 3;
+    bSelect = "3";
     break;
   case '4': 
     println("select button width");  
     setBW(box.bW4);
-    bSelect = 4;
-    break;       
+    bSelect = "4";
+    break;
+  case 'm': 
+    println("toggle mode");  
+    iMode = (iMode+1) % 2;
+    if (!Grid) setups();
+    //updateButtons();
+    break;     
   default:
     break;
   }
@@ -94,6 +101,7 @@ void keyPressed() {
 
 
 void updateButtons() {
+  println(" -> updateButtons(), mode=", mode);
   int test ;
   try {
     test = cp5.getController("bangOn").getId();
@@ -103,9 +111,11 @@ void updateButtons() {
   }
   if (test != 0) {
     cp5.getController("bangOn").remove();
-    cp5.getController("bangOff").remove();
+    if (mode.equals("single")) {
+      cp5.getController("bangOff").remove();
+    }
   } else {
-    int xT = findLong(1);
+    int xT = findLong(iMode);
     b1x = xC-bW/2-xT;
     b1y = yC-bW/2;
     b2x = xC-bW/2+xT;
@@ -117,12 +127,14 @@ void updateButtons() {
       .setColorForeground(startColor)
       .setLabel("start")
       ;
-    cp5.addBang("bangOff")
-      .setPosition(b2x, b2y)
-      .setSize(bW, bW)
-      .setColorForeground(stopColor)
-      .setLabel("stop")
-      ;
+    if (mode.equals("single")) {
+      cp5.addBang("bangOff")
+        .setPosition(b2x, b2y)
+        .setSize(bW, bW)
+        .setColorForeground(stopColor)
+        .setLabel("stop")
+        ;
+    }
   }
 }
 

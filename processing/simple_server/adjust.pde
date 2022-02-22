@@ -10,6 +10,7 @@ void adjustWin(int val) {
 void adjustBW(int val) {
   if (!Grid) return;
   bW = bW + val;
+  bSelect = "X";
 }
 
 void setBW(int val) {
@@ -30,7 +31,7 @@ void adjustPPI(int val) {
 }
 
 void drawGrid() {
-  int xT = findLong(1);
+  int xT = findLong(iMode);
   int xT2 = xT;
   int xB; // long of butt B
   int xA = xC - xT; // long butt A
@@ -41,7 +42,7 @@ void drawGrid() {
   pushMatrix();
   translate(-1*xT, 0);
   stroke(color(0, 255, 0)); 
-  line(xC, 0, xC, yS); // dreaw thre butt A
+  line(xC, 0, xC, yS); // draw butt A
   rectMode(CENTER);
   noFill();
   strokeWeight(4);
@@ -60,11 +61,13 @@ void drawGrid() {
 
   xB = xT + xC;
   translate(xT, 0);
-  stroke(color(255, 0, 0)); // draw final line thru butt B
-  line(xC, 0, xC, yS);
-  strokeWeight(4);
+  if (iMode == 1){
+    stroke(color(255, 0, 0)); // draw final line thru butt B
+    line(xC, 0, xC, yS);
+    strokeWeight(4);
 
-  rect(xC, yC, bW, bW);
+    rect(xC, yC, bW, bW);
+  }
 
   //--- reset stuff
   strokeWeight(1);

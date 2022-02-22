@@ -1,4 +1,5 @@
 screen=1024
+network=local
 server=0
 mode=single
 offset=1
@@ -9,5 +10,10 @@ button_width_4=400
 ppi=269
 text_size=20
 
+[screen:0/?]
+[network:local/wifi]
 [server:0/?]
 [mode:single/dual]
+[offset:0-1]
+
+
