@@ -1,10 +1,12 @@
 float offset;
+float a_fittsA;
+float b_fittsA;
 
 void adjustWin(int val) {
   if (!Grid) return;
   xS = xS + val;
   yS = yS + val;
-  println("Window +",val);
+  println("Window +", val);
 }
 
 void adjustBW(int val) {
@@ -35,6 +37,7 @@ void drawGrid() {
   int xT2 = xT;
   int xB; // long of butt B
   int xA = xC - xT; // long butt A
+  int adj = (iMode+1) % 2; // to break into the while loop to draw lines for dual mode
 
   stroke(255);
   fill(255);
@@ -46,13 +49,18 @@ void drawGrid() {
   rectMode(CENTER);
   noFill();
   strokeWeight(4);
-  rect(xC, yC, bW, bW);
+  rect(xC, yC, bW, bW); //: draw box where button will be
   strokeWeight(1);
   stroke(255);
-  
+  println("xt is: ,", xT);
   //---------- measure lines
-  while ((2*xT+xT2) > xT) {
+  int i = xT2; // tricky business to run this while loop
+  while ((2*xT+i)+adj > xT) {
+    println("Here:", xT2);
     xT2 = xT2 - ppi;
+    if (adj > 0) i = xT2*-1; 
+    else i = xT2;
+    if (i > xS / 2) break;
     translate(ppi, 0);
     line(xC, 0, xC, yS);
   }
@@ -61,7 +69,7 @@ void drawGrid() {
 
   xB = xT + xC;
   translate(xT, 0);
-  if (iMode == 1){
+  if (iMode == 1) {
     stroke(color(255, 0, 0)); // draw final line thru butt B
     line(xC, 0, xC, yS);
     strokeWeight(4);
@@ -73,6 +81,10 @@ void drawGrid() {
   strokeWeight(1);
   popMatrix();
   rectMode(CORNERS);
-  fittsA = round((float(xB) - float(xA)) / float(ppi), 2);
+  if (iMode == 0) { //: dual mode...
+    a_fittsA = round(float(xS/2) / float(ppi), 2);
+  } else {
+    fittsA = round((float(xB) - float(xA)) / float(ppi), 2);
+  }
   fittsW = round((float(bW) / float(ppi)), 2);
 }

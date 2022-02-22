@@ -9,7 +9,7 @@ String bSelect = "1";
 color rose = color(243, 196, 207);
 color darkgreen = color(0, 120, 0);
 color midgreen = color(0, 200, 0);
-color midred = color(200,0,0);
+color midred = color(200, 0, 0);
 String mode;
 
 //text(("- or _ || = or + "), x, y);
@@ -18,7 +18,8 @@ void writeMsg() {
 
   int wW = xS/4-gutter-gutter;
   int lf = int(tSize * 1.5f);
-  int wH = lf*12;  
+  int wH = lf * 12;
+  if (iMode == 0) wH = lf * 14;
   int x = gutter;
   int y = tSize+gutter;
 
@@ -36,7 +37,7 @@ void writeMsg() {
   String ro_fW = "Button Width = "+fittsW+" inches"; //: Fitts Width
   float ro_x_w = textWidth(ro_x);
   float boxWidth = textWidth(ro_bWp)+gutter*4 + ro_x_w; //: length of longest string
-  
+
   color selectColor = midgreen;
   if (bSelect.equals("X")) selectColor = midred;
 
@@ -76,8 +77,17 @@ void writeMsg() {
   textAlign(LEFT);
   translate(0, lf);  
   text(ro_fW, x, y);  
-  translate(0, lf); 
-  text(("Amplitude = "+ fittsA + " inches"), x, y);
+  translate(0, lf);
+  if (iMode == 0) {
+    text(("Distance A = "+ a_fittsA + " inches"), x, y);
+    translate(0, lf);
+    text(("Distance B = "+ b_fittsA + " inches"), x, y);
+    translate(0, lf);
+    fittsA = 0;
+    text(("Amplitude = ?"+ fittsA + " inches"), x, y);
+  } else {
+    text(("Amplitude = "+ fittsA + " inches"), x, y);
+  }
   translate(0, lf); 
   text(("Index of D = "+ ID), x, y);
 
@@ -133,7 +143,6 @@ class Sandbox {
     offset = float(dict.get("offset"));
     tSize = int(dict.get("text_size"));
     ppi = int(dict.get("ppi"));
-    
   }
 
   @Override //this is supposed to help change the object to string println, but I coudln't get it to work
