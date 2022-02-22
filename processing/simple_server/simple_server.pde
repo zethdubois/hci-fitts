@@ -45,7 +45,7 @@ Client c;
 String input;
 int data[];
 int xS = 100 , yS = 100;
-
+PFont bFont, nFont;
 
 /// style vars
 float wSlideMod = 0.5;
@@ -63,15 +63,18 @@ color[] col = new color[] {
 void setup() {
   size(1000,1000);
   fill(0);//black text color
-  textSize(40);
   ellipseMode(CENTER);
-
+  bFont = createFont("Consolas Bold",tSize);
+  nFont = createFont("Consolas",tSize);
+//String[] fontList = PFont.list();
+//println(fontList);
   g = new GUIController (this);
   s = new Server(this, 12345);  // Start a simple server on a port
   cp5 = new ControlP5(this);   
   minim = new Minim(this);
   startClick = minim.loadFile("click.mp3");
   stopClick = minim.loadFile("click2.mp3");
+  updateButtons();
 }
 
 
@@ -80,10 +83,21 @@ public void bangOn() {
   Started = true;
   start_time = millis();
 
-
   //cp5.getController("bangOn").setColorForeground(color(10,10,10));
   println("### bang(). a bang event. timer started");
 }
+
+void setArgs(){
+  ppi = box.ppi;
+  bW = box.bW;
+  xC = box.xC;
+  yC = box.yC;
+  xS = box.xS;
+  yS = box.yS;
+  tSize = box.tSize;
+
+}
+
 
 public void bangOff() {
   //int theColor = (int)random(255);
@@ -103,6 +117,7 @@ PSurface initSurface() {
   }
   println("cnfgs: ",cnfgs);
   box = new Sandbox(cnfgs);
+  setArgs();
   PSurface pSurface = super.initSurface();
   PSurfaceAWT awtSurface = (PSurfaceAWT) surface;
   SmoothCanvas smoothCanvas = (SmoothCanvas) awtSurface.getNative();
@@ -129,6 +144,7 @@ void draw() {
   showMode();
   timer(false);
   if (Grid) drawGrid();
+  if (Grid) writeMsg();
   //  s.write(pmouseX + " " + pmouseY + " " + mouseX + " " + mouseY + "\n");
   
   //. Receive data from client

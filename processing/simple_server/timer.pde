@@ -3,13 +3,11 @@ int sec = 0;
 int millisec = 0;
 int start_time = 0;
 int delay = 0;
-color startC, stopC;
 boolean InitGui = true;
 int startX, startY;      // Position of square button
 int stopX, stopY;  // Position of stop button
 int startSize = 90;     // Diameter of start
 int stopSize = 90;   // Diameter of stop
-color startColor, stopColor, baseColor;
 color startHighlight, stopHighlight;
 color currentColor;
 boolean startOver = false;
@@ -38,16 +36,14 @@ int findLong(int i){
   float buff = 0;
   if (i == 0){
   }else{
-    buff = ((box.xS/2 - box.bWset/2 - gutter)*box.offset)*i;
+    buff = ((box.xS/2 - box.bW/2 - gutter)*box.offset)*i;
   }
   
   return int(buff);
 }
 void aparatus(){
-  textSize(box.tSize);
-
-  startC = color(0,255,0);
-  stopC = color(255,0,0);
+  //textSize(box.tSize);
+  textFont(nFont);
   sTxt = "Sample # "+samples;
   tTxt = "Trial # "+trials;  
   int xT;
@@ -72,26 +68,15 @@ void aparatus(){
 
 
   if (InitGui == true){
-    fill(startC);
+    fill(startColor);
 
     xT = findLong(1);
     
-    cp5.addBang("bangOn")
-      .setPosition(box.xC-box.bWset/2-xT,box.yC-box.bWset/2)
-      .setSize(box.bWset,box.bWset)
-      .setColorForeground(startC)
-      
-      .setLabel("start")
-     ;
+
     translate(int(xT*2), 0);
-    fill(stopC);
+    fill(stopColor);
     
-    cp5.addBang("bangOff")
-      .setPosition(box.xC-box.bWset/2+xT,box.yC-box.bWset/2)
-      .setSize(box.bWset,box.bWset)
-      .setColorForeground(stopC)
-      .setLabel("stop")
-     ;
+
 
 
     InitGui = false;
@@ -103,10 +88,10 @@ void aparatus(){
 //  pushMatrix();
 //  translate(int(-1*xT), 0);
 //  fill(startC);
-//  ellipse(box.xC,box.yC,box.bWset,box.bWset);
+//  ellipse(box.xC,box.yC,box.bW,box.bW);
 //  translate(int(xT*2), 0);
 //  fill(stopC);
-//  ellipse(box.xC,box.yC,box.bWset,box.bWset);
+//  ellipse(box.xC,box.yC,box.bW,box.bW);
 //  popMatrix();
   
   
