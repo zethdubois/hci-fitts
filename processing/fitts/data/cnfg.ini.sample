@@ -1,6 +1,8 @@
 screen=1024
-network=local
-server=0
+is_server=1
+my_IP=0
+server_IP=0
+client_IP=0
 mode=single
 offset=1
 button_width_1=100
@@ -12,7 +14,6 @@ text_size=20
 
 [screen:0/?]
 [network:local/wifi]
-[server:0/?]
 [mode:single/dual]
 [offset:0-1]
 

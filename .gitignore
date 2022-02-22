@@ -1,4 +1,4 @@
-**/priv.ini
+**/cnfg.ini
 .DS_Store
 applet
 application.linux-arm64
