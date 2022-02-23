@@ -40,7 +40,6 @@ Minim minim;
 AudioPlayer startClick, stopClick;
 
 
-// network
 Server s;
 Client c;
 String input;
@@ -117,7 +116,7 @@ void setArgs() {
   tSize = box.tSize;
   offset = box.offset;
   mode = box.mode;
-  network = box.network;
+  net = box.net;
   if (mode.equals("single")) iMode = 1; 
   else iMode = 0;
   //if (server.equals("0")) server = "127.0.0.1";
@@ -134,6 +133,7 @@ PSurface initSurface() {
     String[] args = buff.split("=");
     try {
       cnfgs.set(args[0], args[1]);
+      println("look-----",args[0]);
     }  
     catch(Exception e) {
     }
@@ -167,15 +167,26 @@ void pre() {
     if (!Grid) updateButtons();
   }
 }
+color BLUE = color(0,60,255);
+color YELLOW = color(255,255,0);
+color RED = color(255,0,0);
+color OFFWHITE = color(200,200,200);
 
 void showMode() {
+  String mText = "TEST MODE";
+  stroke(0);
   strokeWeight(6);
-  if (Trial) stroke(250, 250, 0);
-  if (Grid) stroke(250, 0, 0);
+  if (Trial) stroke(YELLOW);
+  if (Grid) stroke(RED);
+  if (!Grid && !Trial) //stroke(BLUE);
   noFill();
   rect(3, 3, xS-4, yS-4);
   strokeWeight(1);
-  stroke(0);
+  stroke(OFFWHITE);
+  textAlign(CENTER);
+  text(mText,xC,yS-gutter);
+  textAlign(LEFT);
+ 
 }
 
 void draw() {

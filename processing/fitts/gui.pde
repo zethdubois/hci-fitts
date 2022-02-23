@@ -6,12 +6,15 @@ boolean OverStart, OverStop;
 float ID;
 int bW; //: button width pixels
 String bSelect = "1";
-color rose = color(243, 196, 207);
-color lightblue = color(137, 207, 240);
+color ROSE = color(253, 206, 217);
+color ROSE_a = color(243, 196, 207,127);
+color LBLUE = color(147, 217, 250);
+color LBLUE_a = color(137, 207, 240,127);
+
 color darkgreen = color(0, 120, 0);
 color midgreen = color(0, 200, 0);
 color midred = color(200, 0, 0);
-String mode, IP, network;
+String mode, IP, net;
 
 
 //text(("- or _ || = or + "), x, y);
@@ -28,7 +31,7 @@ void writeMsg() {
   //: readouts (ro_*)
   String ro_ppi = "["+box.ppi+"] PPI = "+ppi; //: PPI
   String ro_x = "[" + bSelect + "]"; 
-  String ro_bWp = " Button Width = "+bW+" pixels"; //: button Width in pixels
+  String ro_bWp = " Button Width (px) = "+bW; //: button Width in pixels
   String ro_1 = "["+box.bW1+"]";
   String ro_2 = "["+box.bW2+"]";
   String ro_3 = "["+box.bW3+"]";
@@ -36,48 +39,53 @@ void writeMsg() {
   String ro_select = ro_1+ro_2+ro_3+ro_4;
 
 
-  String ro_fW = "Button Width = "+fittsW+" inches"; //: Fitts Width
+  String ro_fW = "Button Width (in) = "+fittsW; //: Fitts Width
   float ro_x_w = textWidth(ro_x);
-  float boxWidth = textWidth(ro_bWp)+gutter*4 + ro_x_w; //: length of longest string
+  float boxWidth = textWidth(ro_bWp)+gutter*3; // + ro_x_w; //: length of longest string
 
   color selectColor = midgreen;
   if (bSelect.equals("X")) selectColor = midred;
 
   ID = log2(fittsA/fittsW+1);
 
-  fill(rose);
+  fill(ROSE_a);
+  noStroke();
   rect(gutter, gutter, boxWidth, wH); //: BG rectangle
-  fill(0);
+
+  fill(ROSE);
   pushMatrix();
   translate(gutter, gutter);
   textFont(bFont);
   textAlign(CENTER);
   text("CONFIG APPARATUS", boxWidth/2, y-gutter/2);//display the times on the interface
-  translate(0, lf);
+  
   textFont(nFont);
-  textAlign(LEFT);
-  text(ro_ppi, x, y);
+  textAlign(RIGHT);  
+  popMatrix();
+  pushMatrix();
+  translate(boxWidth-gutter, 1.5*lf);
+
+  text(ro_ppi, 0, y);
   translate(0, lf);
-  fill(selectColor);
-  text(ro_x, x, y);
-  fill(0);
-  text(ro_bWp, x+ro_x_w, y);
+  //fill(selectColor);
+  //text(ro_x, 0, y);
+  text(ro_bWp, 0, y);
   translate(0, lf);
-  text(ro_select, x, y); //: width select options
+   text(ro_select, 0, y); //: width select options
   //stroke(midgreen);
   //strokeWeight(2);
   //line(x, y+3, x+ro_x_w, y+3);
   //strokeWeight(1);
   //fill(0);
   translate(0, lf);
-  text(("Spacing [0-1] = "+offset), x, y); 
+  text(("Spacing = "+offset), 0, y); 
   translate(0, lf*2);
   textAlign(CENTER);
   textFont(bFont);
-  text(("MacKenzie scores"), boxWidth/2, y);
+  text(("MacKenzie scores"), -boxWidth/2+2*gutter, y);
   textFont(nFont);
-  textAlign(LEFT);
-  translate(0, lf);  
+  textAlign(RIGHT);
+  translate(-gutter, lf);  
   text(ro_fW, x, y);  
   translate(0, lf);
   if (iMode == 0) {
@@ -95,16 +103,18 @@ void writeMsg() {
   popMatrix();
 
   // bottom of screen
-  String sysMsg = "Mode:" + mode +"/" + network;
+  textAlign(LEFT);
+  String sysMsg = "Mode:" + mode +"/" + net;
   pushMatrix();
   translate(gutter, yS-gutter*4);
-  fill(lightblue);
+  fill(LBLUE_a);
   rect(0, 0, xS-gutter*2, 3*gutter); //: BG rectangle
-  fill(0);
+  fill(LBLUE);
   if (iMode == 0) {
     sysMsg = sysMsg +"  Local IP: " + LOCAL_IP ;
   }
   text(sysMsg, x, y);  
+  fill(0);
   popMatrix();
 }
 
@@ -117,7 +127,7 @@ class Sandbox {
   int tSize;
   float offset;
   //int[] t; //target cornenrs 
-  String mode, server, network;
+  String mode, server, net;
   int[] i_bW; 
 
 
@@ -132,7 +142,7 @@ class Sandbox {
       xS = val;
       yS = val;
     }
-    if (dict.get("network") == "local") {
+    if (dict.get("net") == "local") {
       IP = "127.0.0.1";
       server = "127.0.0.1";
     } else {
@@ -157,7 +167,7 @@ class Sandbox {
     offset = float(dict.get("offset"));
     tSize = int(dict.get("text_size"));
     ppi = int(dict.get("ppi"));
-    network = dict.get("network");
+    net = dict.get("net");
   }
 
   @Override //this is supposed to help change the object to string println, but I coudln't get it to work

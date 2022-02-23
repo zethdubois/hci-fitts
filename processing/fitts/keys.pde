@@ -19,7 +19,6 @@ void keyPressed() {
   switch(key) {
   case 'n': 
     testNet();
-
     break;    
   case 't': 
     startTrial();

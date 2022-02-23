@@ -1,5 +1,5 @@
 screen=1024
-network=local
+net=local
 is_server=1
 my_IP=0
 server_IP=0
@@ -14,7 +14,7 @@ ppi=269
 text_size=20
 
 [screen:0/?]
-[network:local/wifi]
+[net:local/wifi]
 [mode:single/dual]
 [offset:0-1]
 
