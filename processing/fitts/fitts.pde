@@ -21,10 +21,9 @@ import ddf.minim.*;
 import interfascia.*;
 
 // init file
-String[] cnfg, priv;
+String[] cnfg;
 String cFile = "cnfg.ini";
-String pFile = "priv.ini";
-StringDict cnfgs, privs;
+StringDict cnfgs;
 String server;
 
 // objects
@@ -118,10 +117,10 @@ void setArgs() {
   tSize = box.tSize;
   offset = box.offset;
   mode = box.mode;
+  network = box.network;
   if (mode.equals("single")) iMode = 1; 
   else iMode = 0;
-  server = privs.get("server");
-  if (server.equals("0")) server = "127.0.0.1";
+  //if (server.equals("0")) server = "127.0.0.1";
 }
 
 
@@ -129,9 +128,7 @@ void setArgs() {
 
 PSurface initSurface() {
   cnfgs = new StringDict();
-  privs = new StringDict();
   cnfg = loadStrings(cFile);
-  priv = loadStrings(pFile);
   
   for (String buff : cnfg) {
     String[] args = buff.split("=");
@@ -142,17 +139,7 @@ PSurface initSurface() {
     }
   }
   println("cnfgs: ", cnfgs);
-  
-  for (String buff : priv) {
-    String[] args = buff.split("=");
-    try {
-      privs.set(args[0], args[1]);
-    }  
-    catch(Exception e) {
-    }
-  }
-  println("privs: ", privs);
-  
+
   box = new Sandbox(cnfgs);
   setArgs();
   PSurface pSurface = super.initSurface();

@@ -11,8 +11,8 @@ color lightblue = color(137, 207, 240);
 color darkgreen = color(0, 120, 0);
 color midgreen = color(0, 200, 0);
 color midred = color(200, 0, 0);
-String mode;
-String IP;
+String mode, IP, network;
+
 
 //text(("- or _ || = or + "), x, y);
 //text(("[ or { || ] or }"), x, y);
@@ -95,14 +95,14 @@ void writeMsg() {
   popMatrix();
 
   // bottom of screen
-  String sysMsg = "Mode:" + mode;
+  String sysMsg = "Mode:" + mode +"/" + network;
   pushMatrix();
   translate(gutter, yS-gutter*4);
   fill(lightblue);
   rect(0, 0, xS-gutter*2, 3*gutter); //: BG rectangle
   fill(0);
   if (iMode == 0) {
-    sysMsg = sysMsg +"  Server:" + server ;
+    sysMsg = sysMsg +"  Local IP: " + LOCAL_IP ;
   }
   text(sysMsg, x, y);  
   popMatrix();
@@ -117,7 +117,7 @@ class Sandbox {
   int tSize;
   float offset;
   //int[] t; //target cornenrs 
-  String mode, server;
+  String mode, server, network;
   int[] i_bW; 
 
 
@@ -157,6 +157,7 @@ class Sandbox {
     offset = float(dict.get("offset"));
     tSize = int(dict.get("text_size"));
     ppi = int(dict.get("ppi"));
+    network = dict.get("network");
   }
 
   @Override //this is supposed to help change the object to string println, but I coudln't get it to work

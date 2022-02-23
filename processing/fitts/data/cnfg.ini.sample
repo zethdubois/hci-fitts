@@ -1,4 +1,5 @@
 screen=1024
+network=local
 is_server=1
 my_IP=0
 server_IP=0
