@@ -107,35 +107,42 @@ void writeMsg() {
   int col2X = xC;
   int minCol = 300;
   if (col2X < minCol) col2X = minCol;
-  
+
   String sys1Msg = "";
   String sys2Msg = "";
   String ip_msg = "";
   textAlign(LEFT);
   String mode_msg = "Mode: " + mode;
-  String net_msg = "\n Net: " + network;
-  
+  String net_msg = "Net: " + network;
+
   ip_msg = "Server IP: " + SERVER_IP ;  
-  String ping_msg = "\nPing time: " + netPing;
+  String ping_msg = "Ping time: " + netPing;
 
   sys1Msg = mode_msg + net_msg;
   if (Dual) sys2Msg = ip_msg + ping_msg;
-  
+
   // -- box
   pushMatrix();
   translate(gutter, yS-gutter*4);
   fill(LBLUE_a);
   rect(0, 0, xS-gutter*2, 3*gutter); //: BG rectangle
-  
+
   // ...msgs
   fill(LBLUE);
-  
+
   translate(0, -.75*gutter);
-  text(sys1Msg, x, y);
-  
-  translate(col2X-gutter*2,0);
-  text(sys2Msg, x, y);
-  
+  pushMatrix(); // 2 deep
+  text(mode_msg, x, y);
+  translate(0, lf);
+  text(net_msg, x, y);
+  popMatrix(); // 1 deep
+  if (Dual) {
+    translate(col2X-gutter*2, 0);
+    text(ip_msg, x, y);
+    translate(0, lf);
+    text(ping_msg, x, y);
+  }
+
   // -- reset stuff
   fill(0);
   popMatrix();
@@ -185,7 +192,7 @@ class Sandbox {
     tSize = int(dict.get("text_size"));
     ppi = int(dict.get("ppi"));
     network = dict.get("network");
-    screen = int(dict.get("screen"));    
+    screen = int(dict.get("screen"));
   }
 
   @Override //this is supposed to help change the object to string println, but I coudln't get it to work
