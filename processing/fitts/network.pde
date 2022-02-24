@@ -77,14 +77,16 @@ long avgPings(long[] job) {
 
 void setNet() {
   println("\n-->setNet() /");
-  println("Wifi :",WiFi);
-  println("iMode: ",iMode);
+  println("Wifi :", WiFi);
+  println("iMode: ", iMode);
   if (WiFi) {
     SERVER_IP = ETHERNET_IP;
-    effective_net = "wifi"; 
+    CLIENT_IP = "unkown";
+    effective_net = "wifi";
   } else {
     SERVER_IP = LOCAL_IP;
-        effective_net = "local"; 
+    CLIENT_IP = LOCAL_IP;
+    effective_net = "local";
   }
   if (iMode == 0) effective_net = "<n/a>";
   println(">>SERVER_IP :", SERVER_IP);

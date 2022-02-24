@@ -21,16 +21,8 @@ void switchNet() {
   println("\n-->switchNet() /");
   println("> Wifi :", WiFi);
   WiFi = !WiFi;
-  if (Dual) {
-    if (WiFi) {
-      effective_net = "wifi";
-      SERVER_IP = ETHERNET_IP;
-    } else {
-      effective_net = "local";
-      SERVER_IP = LOCAL_IP;
-    }
-  }
   testNet(SERVER_IP);
+  setNet();
 }
 
 void keyPressed() {

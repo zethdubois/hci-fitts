@@ -12,9 +12,9 @@ color ROSE_a = color(243, 196, 207, 127);
 color LBLUE = color(147, 217, 250);
 color LBLUE_a = color(137, 207, 240, 127);
 
-color darkgreen = color(0, 120, 0);
-color midgreen = color(0, 200, 0);
-color midred = color(200, 0, 0);
+color DGREEN = color(0, 120, 0);
+color MGREEN = color(0, 200, 0);
+color MRED = color(200, 0, 0);
 String mode, IP, net;
 int screen;
 
@@ -45,8 +45,8 @@ void writeMsg() {
   float ro_x_w = textWidth(ro_x);
   float boxWidth = textWidth(ro_bWp)+gutter*3; // + ro_x_w; //: length of longest string
 
-  color selectColor = midgreen;
-  if (bSelect.equals("X")) selectColor = midred;
+  //color selectColor = MGREEN;
+  //if (bSelect.equals("X")) selectColor = midred;
 
   ID = log2(fittsA/fittsW+1);
 
@@ -105,11 +105,12 @@ void writeMsg() {
   popMatrix();
 
   //---------------- system messages
-  int col2X = xS/3*2;
-  int col3X = xS/3;
+  int col = xS/3;
+  int col2X = xS/3;
+  int col3X = xS/3*x;
   int minCol = 300;
-  if (col2X < minCol*2) col2X = minCol*2;
-  if (col2X < minCol) col2X = minCol;
+  //if (col3X < minCol*2) col3X = minCol*2;
+  //if (col2X < minCol) col2X = minCol;
 
   textAlign(LEFT);
   String mode_msg = "Mode: " + mode;
@@ -120,7 +121,7 @@ void writeMsg() {
   String ping_msg = "Ping time: " + netPing;
   String connect_msg = "";
 
- 
+
 
   // -- box
   pushMatrix();
@@ -138,10 +139,28 @@ void writeMsg() {
   text(net_msg, x, y);
   popMatrix(); // 1 deep
   if (Dual) {
-    translate(col2X-gutter*2, 0);
+    translate(col-gutter*2, 0);
+    fill(RED);
     text(Sip_msg, x, y);
+  }
+
+  if (mode.equals("server")) {
+    translate(col-gutter*2, 0);
+    fill(MGREEN);
+    text(Cip_msg, x, y);
+
+    fill(LBLUE);
     translate(0, lf);
     text(ping_msg, x, y);
+  }
+  if (mode.equals("client")) {
+    fill(LBLUE);    
+    translate(0, lf);
+    text(ping_msg, x, y);
+
+    translate(col-gutter*2, -lf);
+    fill(MGREEN);
+    text(Cip_msg, x, y);
   }
 
   // -- reset stuff
@@ -171,7 +190,7 @@ class Sandbox {
       yS = displayHeight;
     } else {
       xS = val;
-      yS = val;
+      yS = val/2;
     }
     if (dict.get("net") == "local") {
       IP = "127.0.0.1";

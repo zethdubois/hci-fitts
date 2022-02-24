@@ -190,7 +190,7 @@ void showMode() {
   stroke(0);
   strokeWeight(6);
   if (Trial) stroke(YELLOW);
-  if (Grid) stroke(RED);
+  if (Grid) stroke(MRED);
   if (!Grid && !Trial) //stroke(BLUE);
     noFill();
   rect(3, 3, xS-4, yS-4);
