@@ -66,8 +66,8 @@ void setup() {
   size(1000, 1000);
   fill(0);//black text color
   ellipseMode(CENTER);
-  bFont = createFont("Consolas Bold", tSize);
-  nFont = createFont("Consolas", tSize);
+  bFont = createFont("Monospaced", tSize+2);
+  nFont = createFont("Monospaced", tSize);
 
   g = new GUIController (this);
   s = new Server(this, 12345);  // Start a simple server on a port
@@ -102,7 +102,7 @@ public void bangOnX() {
 
   //cp5.getController("bangOn").setColorForeground(color(10,10,10));
   println("timer started");
-  if (iMode==0) s.write(5);
+  if (Dual) s.write(5);
 }
 
 void setArgs() {
@@ -116,10 +116,15 @@ void setArgs() {
   tSize = box.tSize;
   offset = box.offset;
   mode = box.mode;
-  net = box.net;
-  if (mode.equals("single")) iMode = 1; 
-  else iMode = 0;
-  //if (server.equals("0")) server = "127.0.0.1";
+  network = box.network;
+  
+  if (mode.equals("dual")) Dual = true; 
+  if (network.equals("wifi")) WiFi = true;
+  
+  if (!Dual) network = "<n/a>";
+  setNet();
+  
+  //pingTime(HOST_IP); 
 }
 
 
@@ -205,7 +210,7 @@ void draw() {
     input = input.substring(0, input.indexOf("\n"));  // Only up to the newline
     data = int(split(input, ' '));  // Split values into an array
   }
-  if (!OverStop && !Grid && iMode == 1) {
+  if (!OverStop && !Grid && !Dual) {
     if (mouseX > b2x && mouseX < b2x+bW && 
       mouseY > b2y && mouseY < b2y+bW) {
       OverStop = true;

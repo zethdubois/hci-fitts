@@ -6,10 +6,10 @@ public static float round(float d, int decimalPlace) {
   return bd.floatValue();
 }
 
-int findLong(int i) {
+int findLong(boolean Switch, int i) {
   //int iLong;
   float buff = 0;
-  if (i == 0) {
+  if (Switch) {
   } else {
     buff = ((xS/2 - bW/2 - gutter)*offset)*i;
   }
@@ -19,4 +19,8 @@ int findLong(int i) {
 
 public static float log2(float x) {
     return round((float) (Math.log(x) / Math.log(2)+ 1e-10),2);
+}
+
+public int boolToInt(boolean b) {
+    return b ? 1 : 0;
 }

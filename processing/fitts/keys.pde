@@ -3,22 +3,40 @@ int trials = 0;
 Boolean Trial = false;
 Boolean Grid = false;
 float fittsA, fittsW; //: amplitude / width
-int iMode;
 
 color startColor = color(0, 255, 0);
 color stopColor = color(255, 0, 0);
 int b1x, b1y, b2x, b2y;
 
-void testNet() {
+
+void testNet(String ip) {
   println("Test Network");
+  pingTime(ip);
   s.write(5);
 }
+
+void switchNet() {
+  println("Switch Network");
+  println("Wifi", WiFi);
+  WiFi = !WiFi;
+  if (Dual) {
+    if (WiFi) {
+      network = "wifi";
+      SERVER_IP = ETHERNET_IP;
+    } else {
+      network = "local";
+      SERVER_IP = LOCAL_IP;
+    }
+  }
+  testNet(SERVER_IP);
+}
+
 void keyPressed() {
   println("key", key);
 
   switch(key) {
   case 'n': 
-    testNet();
+    switchNet();
     break;    
   case 't': 
     startTrial();
@@ -95,9 +113,13 @@ void keyPressed() {
     setBW(box.bW4);
     bSelect = "4";
     break;
-  case 'm': 
-    println("toggle mode");  
-    iMode = (iMode+1) % 2;
+    // mode switch
+  case 'm':
+    println("toggle mode");
+    Dual = !Dual;
+    //iMode = (iMode+1) % 2;
+    if (Dual) mode = "dual"; 
+    else mode = "single";
     if (!Grid) setups();
     //updateButtons();
     break;     
@@ -124,7 +146,7 @@ void updateButtons() {
     catch(Exception e) {
     }
   } else {
-    int xT = findLong(iMode);
+    int xT = findLong(Dual, 1);
     b1x = xC-bW/2-xT;
     b1y = yC-bW/2;
     b2x = xC-bW/2+xT;
@@ -136,7 +158,7 @@ void updateButtons() {
       .setColorForeground(startColor)
       .setLabel("start")
       ;
-    if (iMode == 1) {//(mode.equals("single")) {
+    if (!Dual) {
       cp5.addBang("bangOff")
         .setPosition(b2x, b2y)
         .setSize(bW, bW)

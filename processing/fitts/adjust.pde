@@ -33,11 +33,11 @@ void adjustPPI(int val) {
 }
 
 void drawGrid() {
-  int xT = findLong(iMode);
+  int xT = findLong(Dual, 1);
   int xT2 = xT;
   int xB; // long of butt B
   int xA = xC - xT; // long butt A
-  int adj = (iMode+1) % 2; // to break into the while loop to draw lines for dual mode
+  int adj = boolToInt(Dual); //(iMode+1) % 2; // to break into the while loop to draw lines for dual mode
 
   stroke(255);
   fill(255);
@@ -67,7 +67,7 @@ void drawGrid() {
 
   xB = xT + xC;
   translate(xT, 0);
-  if (iMode == 1) {
+  if (!Dual) {
     stroke(color(255, 0, 0)); // draw final line thru butt B
     line(xC, 0, xC, yS);
     strokeWeight(4);
@@ -79,7 +79,7 @@ void drawGrid() {
   strokeWeight(1);
   popMatrix();
   rectMode(CORNERS);
-  if (iMode == 0) { //: dual mode...
+  if (Dual) { 
     a_fittsA = round(float(xS/2) / float(ppi), 2);
   } else {
     fittsA = round((float(xB) - float(xA)) / float(ppi), 2);

@@ -3,13 +3,14 @@ int xC, yC; // center of screen
 boolean Msg = false;
 int tSize; // text size;
 boolean OverStart, OverStop;
+boolean Dual = false;
 float ID;
 int bW; //: button width pixels
 String bSelect = "1";
 color ROSE = color(253, 206, 217);
-color ROSE_a = color(243, 196, 207,127);
+color ROSE_a = color(243, 196, 207, 127);
 color LBLUE = color(147, 217, 250);
-color LBLUE_a = color(137, 207, 240,127);
+color LBLUE_a = color(137, 207, 240, 127);
 
 color darkgreen = color(0, 120, 0);
 color midgreen = color(0, 200, 0);
@@ -24,7 +25,7 @@ void writeMsg() {
   int wW = xS/4-gutter-gutter;
   int lf = int(tSize * 1.5f);
   int wH = lf * 12;
-  if (iMode == 0) wH = lf * 14;
+  if (Dual) wH = lf * 14;
   int x = gutter;
   int y = tSize+gutter;
 
@@ -58,7 +59,7 @@ void writeMsg() {
   textFont(bFont);
   textAlign(CENTER);
   text("CONFIG APPARATUS", boxWidth/2, y-gutter/2);//display the times on the interface
-  
+
   textFont(nFont);
   textAlign(RIGHT);  
   popMatrix();
@@ -71,7 +72,7 @@ void writeMsg() {
   //text(ro_x, 0, y);
   text(ro_bWp, 0, y);
   translate(0, lf);
-   text(ro_select, 0, y); //: width select options
+  text(ro_select, 0, y); //: width select options
   //stroke(midgreen);
   //strokeWeight(2);
   //line(x, y+3, x+ro_x_w, y+3);
@@ -88,7 +89,7 @@ void writeMsg() {
   translate(-gutter, lf);  
   text(ro_fW, x, y);  
   translate(0, lf);
-  if (iMode == 0) {
+  if (Dual) {
     text(("Distance A = "+ a_fittsA + " inches"), x, y);
     translate(0, lf);
     text(("Distance B = "+ b_fittsA + " inches"), x, y);
@@ -102,18 +103,40 @@ void writeMsg() {
   text(("Index of D = "+ ID), x, y);
   popMatrix();
 
-  // bottom of screen
+  //---------------- system messages
+  int col2X = xC;
+  int minCol = 300;
+  if (col2X < minCol) col2X = minCol;
+  
+  String sys1Msg = "";
+  String sys2Msg = "";
+  String ip_msg = "";
   textAlign(LEFT);
-  String sysMsg = "Mode:" + mode +"/" + net;
+  String mode_msg = "Mode: " + mode;
+  String net_msg = "\n Net: " + network;
+  
+  ip_msg = "Server IP: " + SERVER_IP ;  
+  String ping_msg = "\nPing time: " + netPing;
+
+  sys1Msg = mode_msg + net_msg;
+  if (Dual) sys2Msg = ip_msg + ping_msg;
+  
+  // -- box
   pushMatrix();
   translate(gutter, yS-gutter*4);
   fill(LBLUE_a);
   rect(0, 0, xS-gutter*2, 3*gutter); //: BG rectangle
+  
+  // ...msgs
   fill(LBLUE);
-  if (iMode == 0) {
-    sysMsg = sysMsg +"  Local IP: " + LOCAL_IP ;
-  }
-  text(sysMsg, x, y);  
+  
+  translate(0, -.75*gutter);
+  text(sys1Msg, x, y);
+  
+  translate(col2X-gutter*2,0);
+  text(sys2Msg, x, y);
+  
+  // -- reset stuff
   fill(0);
   popMatrix();
 }
@@ -127,7 +150,7 @@ class Sandbox {
   int tSize;
   float offset;
   //int[] t; //target cornenrs 
-  String mode, server, net;
+  String mode, server, network;
   int[] i_bW; 
 
 
@@ -156,18 +179,12 @@ class Sandbox {
     bW3 = int(dict.get("button_width_3"));
     bW4 = int(dict.get("button_width_4"));
     int[] i_bW = new int[] { bW1, bW2, bW3, bW4 };
-    //for (int i=1; i<=4; i++) { 
-    //  println("hello: "+i);
-    //  String buff = "w"+i;
-    //  println(dict.get(buff));
-    //  i_bW[i-1] = dict.get(buff);
-    //}
+
     println("button sizes: ", Arrays.toString(i_bW));
-    //bW1 = int(i_bW[0]);//int(dict.get("button_width"));
     offset = float(dict.get("offset"));
     tSize = int(dict.get("text_size"));
     ppi = int(dict.get("ppi"));
-    net = dict.get("net");
+    network = dict.get("network");
   }
 
   @Override //this is supposed to help change the object to string println, but I coudln't get it to work
