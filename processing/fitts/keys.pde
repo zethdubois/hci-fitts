@@ -3,6 +3,8 @@ int trials = 0;
 Boolean Trial = false;
 Boolean Grid = false;
 float fittsA, fittsW; //: amplitude / width
+int iMode = 0;
+int iTrace =0;
 
 color startColor = color(0, 255, 0);
 color stopColor = color(255, 0, 0);
@@ -10,21 +12,21 @@ int b1x, b1y, b2x, b2y;
 
 
 void testNet(String ip) {
-  println("Test Network");
+  println("\n-->testNet("+ip+")");
   pingTime(ip);
   s.write(5);
 }
 
 void switchNet() {
-  println("Switch Network");
-  println("Wifi", WiFi);
+  println("\n-->switchNet() /");
+  println("> Wifi :", WiFi);
   WiFi = !WiFi;
   if (Dual) {
     if (WiFi) {
-      network = "wifi";
+      effective_net = "wifi";
       SERVER_IP = ETHERNET_IP;
     } else {
-      network = "local";
+      effective_net = "local";
       SERVER_IP = LOCAL_IP;
     }
   }
@@ -115,20 +117,38 @@ void keyPressed() {
     break;
     // mode switch
   case 'm':
-    println("toggle mode");
-    Dual = !Dual;
-    //iMode = (iMode+1) % 2;
-    if (Dual) mode = "dual"; 
-    else mode = "single";
-    if (!Grid) setups();
+    if (Grid) toggleMode();
+
     //updateButtons();
     break;     
   default:
     break;
   }
+  iTrace++;
+  println("\n["+iTrace+"]---------------------");
 }
 
-
+void toggleMode(){
+    println("\n-->toggle mode() /");
+    println("> iMode : ",iMode);
+    iMode = (iMode+1) % 3;
+    println(">> iMode : ",iMode);
+    
+    if (iMode == 0){
+      Dual = false;
+      mode = "single";
+    }
+    if (iMode == 1){
+      Dual = true;
+      mode = "server";
+    }
+    if (iMode == 2){
+      Dual = true;
+      mode = "client";
+    }
+    setNet();
+    if (!Grid) setups();  
+}
 void updateButtons() {
   println(" -> updateButtons(), mode=", mode);
   int test ;

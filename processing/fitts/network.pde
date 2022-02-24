@@ -18,10 +18,10 @@ long netPing;
 
 long[] pings;
 
-String SERVER_IP;
+String SERVER_IP, CLIENT_IP;
 String LOCAL_IP = "127.0.0.1";
 boolean WiFi = false;
-String network;
+String network, effective_net;
 
 
 long pingTime(String hostIP) {
@@ -54,7 +54,7 @@ long pingHost(String host) {
   try {
     InetAddress address = InetAddress.getByName(host);
     reachable = address.isReachable(10000);
-    System.out.println("Is host reachable? " + reachable);
+    //System.out.println("Is host reachable? " + reachable);
   } 
   catch (Exception e) {
     e.printStackTrace();
@@ -72,14 +72,20 @@ long avgPings(long[] job) {
   }
   //calculate average value
   long average = sum / job.length;
-  System.out.println("Average value of array elements is : " + average);
   return average;
 }
 
 void setNet() {
+  println("\n-->setNet() /");
+  println("Wifi :",WiFi);
+  println("iMode: ",iMode);
   if (WiFi) {
     SERVER_IP = ETHERNET_IP;
+    effective_net = "wifi"; 
   } else {
     SERVER_IP = LOCAL_IP;
+        effective_net = "local"; 
   }
+  if (iMode == 0) effective_net = "<n/a>";
+  println(">>SERVER_IP :", SERVER_IP);
 }

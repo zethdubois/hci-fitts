@@ -18,12 +18,13 @@ color midred = color(200, 0, 0);
 String mode, IP, net;
 int screen;
 
+int lf; 
+
 //text(("- or _ || = or + "), x, y);
 //text(("[ or { || ] or }"), x, y);
 void writeMsg() {
 
   int wW = xS/4-gutter-gutter;
-  int lf = int(tSize * 1.5f);
   int wH = lf * 12;
   if (Dual) wH = lf * 14;
   int x = gutter;
@@ -104,33 +105,33 @@ void writeMsg() {
   popMatrix();
 
   //---------------- system messages
-  int col2X = xC;
+  int col2X = xS/3*2;
+  int col3X = xS/3;
   int minCol = 300;
+  if (col2X < minCol*2) col2X = minCol*2;
   if (col2X < minCol) col2X = minCol;
 
-  String sys1Msg = "";
-  String sys2Msg = "";
-  String ip_msg = "";
   textAlign(LEFT);
   String mode_msg = "Mode: " + mode;
-  String net_msg = "Net: " + network;
+  String net_msg = " Net: " + effective_net;
 
-  ip_msg = "Server IP: " + SERVER_IP ;  
+  String Sip_msg = "Server IP: " + SERVER_IP ;
+  String Cip_msg = "Client IP: " + CLIENT_IP;
   String ping_msg = "Ping time: " + netPing;
+  String connect_msg = "";
 
-  sys1Msg = mode_msg + net_msg;
-  if (Dual) sys2Msg = ip_msg + ping_msg;
+ 
 
   // -- box
   pushMatrix();
-  translate(gutter, yS-gutter*4);
+  translate(gutter, yS-lf*2-gutter);
   fill(LBLUE_a);
-  rect(0, 0, xS-gutter*2, 3*gutter); //: BG rectangle
+  rect(0, 0, xS-gutter*2, 2*lf); //: BG rectangle
 
   // ...msgs
   fill(LBLUE);
 
-  translate(0, -.75*gutter);
+  translate(0, -gutter);
   pushMatrix(); // 2 deep
   text(mode_msg, x, y);
   translate(0, lf);
@@ -138,7 +139,7 @@ void writeMsg() {
   popMatrix(); // 1 deep
   if (Dual) {
     translate(col2X-gutter*2, 0);
-    text(ip_msg, x, y);
+    text(Sip_msg, x, y);
     translate(0, lf);
     text(ping_msg, x, y);
   }

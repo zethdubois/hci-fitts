@@ -59,8 +59,8 @@ color[] col = new color[] {
 };
 
 //! get list of fonts...
-  //String[] fontList = PFont.list();
-  //println(fontList);
+//String[] fontList = PFont.list();
+//println(fontList);
 
 void setup() {
   size(1000, 1000);
@@ -118,14 +118,21 @@ void setArgs() {
   mode = box.mode;
   network = box.network;
   screen = box.screen;
-  
-  if (mode.equals("dual")) Dual = true; 
+
+  if (mode.equals("server")) {
+    iMode = 1;
+    Dual = true;
+  }
+  if (mode.equals("client")) {
+    Dual = true;
+    iMode = 2;
+  }
   if (network.equals("wifi")) WiFi = true;
-  
+
   if (!Dual) network = "<n/a>";
   setNet();
-  
-  //pingTime(HOST_IP); 
+  lf = int(tSize * lfMod);
+  //pingTime(HOST_IP);
 }
 
 
@@ -134,12 +141,12 @@ void setArgs() {
 PSurface initSurface() {
   cnfgs = new StringDict();
   cnfg = loadStrings(cFile);
-  
+
   for (String buff : cnfg) {
     String[] args = buff.split("=");
     try {
       cnfgs.set(args[0], args[1]);
-      println("look-----",args[0]);
+      println("look-----", args[0]);
     }  
     catch(Exception e) {
     }
@@ -152,7 +159,8 @@ PSurface initSurface() {
   PSurfaceAWT awtSurface = (PSurfaceAWT) surface;
   SmoothCanvas smoothCanvas = (SmoothCanvas) awtSurface.getNative();
   Frame frame = smoothCanvas.getFrame();
-  if (screen == 0) frame.setUndecorated(true); else pSurface.setResizable(true);
+  if (screen == 0) frame.setUndecorated(true); 
+  else pSurface.setResizable(true);
   registerMethod("pre", this);
   pSurface.setSize(xS, yS);
   return pSurface;
@@ -172,10 +180,10 @@ void pre() {
     if (!Grid) updateButtons();
   }
 }
-color BLUE = color(0,60,255);
-color YELLOW = color(255,255,0);
-color RED = color(255,0,0);
-color OFFWHITE = color(200,200,200);
+color BLUE = color(0, 60, 255);
+color YELLOW = color(255, 255, 0);
+color RED = color(255, 0, 0);
+color OFFWHITE = color(200, 200, 200);
 
 void showMode() {
   String mText = "TEST MODE";
@@ -184,14 +192,13 @@ void showMode() {
   if (Trial) stroke(YELLOW);
   if (Grid) stroke(RED);
   if (!Grid && !Trial) //stroke(BLUE);
-  noFill();
+    noFill();
   rect(3, 3, xS-4, yS-4);
   strokeWeight(1);
   stroke(OFFWHITE);
   textAlign(CENTER);
-  text(mText,xC,yS-gutter);
+  text(mText, xC, yS-gutter);
   textAlign(LEFT);
- 
 }
 
 void draw() {

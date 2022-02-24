@@ -1,6 +1,7 @@
 float offset;
 float a_fittsA;
 float b_fittsA;
+float lfMod = 1.5f;
 
 void adjustWin(int val) {
   if (!Grid) return;
