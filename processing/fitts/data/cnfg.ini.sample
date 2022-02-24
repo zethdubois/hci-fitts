@@ -1,5 +1,5 @@
 screen=1024
-net=local
+network=local
 is_server=1
 my_IP=0
 server_IP=0
@@ -11,7 +11,7 @@ button_width_2=200
 button_width_3=300
 button_width_4=400
 ppi=269
-text_size=20
+text_size=15
 
 [screen:0/?]
 [net:local/wifi]
