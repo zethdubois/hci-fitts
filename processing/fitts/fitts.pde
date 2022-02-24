@@ -117,6 +117,7 @@ void setArgs() {
   offset = box.offset;
   mode = box.mode;
   network = box.network;
+  screen = box.screen;
   
   if (mode.equals("dual")) Dual = true; 
   if (network.equals("wifi")) WiFi = true;
@@ -151,8 +152,7 @@ PSurface initSurface() {
   PSurfaceAWT awtSurface = (PSurfaceAWT) surface;
   SmoothCanvas smoothCanvas = (SmoothCanvas) awtSurface.getNative();
   Frame frame = smoothCanvas.getFrame();
-  //frame.setUndecorated(true);
-  pSurface.setResizable(true);
+  if (screen == 0) frame.setUndecorated(true); else pSurface.setResizable(true);
   registerMethod("pre", this);
   pSurface.setSize(xS, yS);
   return pSurface;

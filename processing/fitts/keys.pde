@@ -36,7 +36,7 @@ void keyPressed() {
 
   switch(key) {
   case 'n': 
-    switchNet();
+    if (Dual) switchNet();
     break;    
   case 't': 
     startTrial();

@@ -16,7 +16,7 @@ color darkgreen = color(0, 120, 0);
 color midgreen = color(0, 200, 0);
 color midred = color(200, 0, 0);
 String mode, IP, net;
-
+int screen;
 
 //text(("- or _ || = or + "), x, y);
 //text(("[ or { || ] or }"), x, y);
@@ -145,7 +145,7 @@ class Sandbox {
 
   private String name;
 
-  int val, xS, yS, xC, yC, ppi;
+  int val, xS, yS, xC, yC, ppi, screen;
   int bW1, bW2, bW3, bW4;
   int tSize;
   float offset;
@@ -185,6 +185,7 @@ class Sandbox {
     tSize = int(dict.get("text_size"));
     ppi = int(dict.get("ppi"));
     network = dict.get("network");
+    screen = int(dict.get("screen"));    
   }
 
   @Override //this is supposed to help change the object to string println, but I coudln't get it to work
