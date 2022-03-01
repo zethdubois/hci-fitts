@@ -37,7 +37,7 @@ IFCheckBox global, nothing;
 
 ControlP5 cp5;
 Minim minim;
-AudioPlayer startClick, stopClick;
+
 
 
 Server s;
@@ -75,35 +75,13 @@ void setup() {
   minim = new Minim(this);
   startClick = minim.loadFile("beep.wav");
   stopClick = minim.loadFile("boop.wav");
+
+  setupFile("test_data");
   updateButtons();
 }
 
 
-public void bangOffX() {
-  if (Started) { // timer is counting...
-    samples++;
-  }
 
-  Started = false;
-  delay(1);
-  stopClick.play();
-  stopClick.rewind();
-  println("timer stoped");
-}
-
-
-public void bangOnX() {
-  //int theColor = (int)random(255);
-  startClick.rewind();
-  Started = true;
-  start_time = millis();
-  delay = 1;
-  startClick.play();
-
-  //cp5.getController("bangOn").setColorForeground(color(10,10,10));
-  println("timer started");
-  if (Dual) s.write(5);
-}
 
 void setArgs() {
   ppi = box.ppi;
@@ -187,12 +165,16 @@ color OFFWHITE = color(200, 200, 200);
 
 void showMode() {
   String mText = "TEST MODE";
+  if (gotData) {
+    tText = "SPACE TO STOP TRIAL
+  }
+
   stroke(0);
   strokeWeight(6);
   if (Trial) stroke(YELLOW);
   if (Grid) stroke(MRED);
   if (!Grid && !Trial) //stroke(BLUE);
-    noFill();
+  noFill();
   rect(3, 3, xS-4, yS-4);
   strokeWeight(1);
   stroke(OFFWHITE);
@@ -217,26 +199,5 @@ void draw() {
     input = input.substring(0, input.indexOf("\n"));  // Only up to the newline
     data = int(split(input, ' '));  // Split values into an array
   }
-  if (!OverStop && !Grid && !Dual) {
-    if (mouseX > b2x && mouseX < b2x+bW && 
-      mouseY > b2y && mouseY < b2y+bW) {
-      OverStop = true;
-      OverStart = false;
-      println("OverStop");
-      bangOffX();
-    } else {
-      OverStop = false;
-    }
-  }
-  if (!OverStart && !Grid) {
-    if (mouseX > b1x && mouseX < b1x+bW && 
-      mouseY > b1y && mouseY < b1y+bW) {
-      OverStart = true;
-      OverStop = false;
-      println("OverStart");
-      bangOnX();
-    } else {
-      OverStart = false;
-    }
-  }
+  checkClick();
 }
