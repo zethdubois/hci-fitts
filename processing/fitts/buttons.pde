@@ -1,11 +1,12 @@
 AudioPlayer startClick, stopClick;
+String fileName = "";
 
-boolean gotData = false;
+boolean GotData = false;
 
 public void bangOffX() {
   if (Started) { // timer is counting...
     samples++;
-    gotData = true;
+    GotData = true;
   }
   Started = false;
   delay(1);
@@ -18,6 +19,13 @@ public void bangOffX() {
 
 public void bangOnX() {
   //int theColor = (int)random(255);
+  if (NewFile){
+    Date now = new Date();
+    long ut3 = now.getTime() / 1000L;
+    fileName = Long.toString(ut3);
+    System.out.println(ut3);
+  }
+    
   startClick.rewind();
   Started = true;
   start_time = millis();

@@ -17,8 +17,30 @@ color MGREEN = color(0, 200, 0);
 color MRED = color(200, 0, 0);
 String mode, IP, net;
 int screen;
+String tText;
 
 int lf; 
+
+void showMode() {
+  String mText = "TEST MODE";
+  if (GotData) {
+    tText = "SPACE TO STOP TRIAL";
+  }
+
+  stroke(0);
+  strokeWeight(6);
+  if (Trial) stroke(YELLOW);
+  if (Grid) stroke(MRED);
+  if (!Grid && !Trial) //stroke(BLUE);
+  noFill();
+  rect(3, 3, xS-4, yS-4);
+  strokeWeight(1);
+  stroke(OFFWHITE);
+  textAlign(CENTER);
+  text(mText, xC, yS-gutter);
+  textAlign(LEFT);
+}
+
 
 //text(("- or _ || = or + "), x, y);
 //text(("[ or { || ] or }"), x, y);

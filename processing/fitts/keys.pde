@@ -35,7 +35,7 @@ void keyPressed() {
   case 't': 
     startTrial();
     break;
-  case ' ': 
+  case ' ':                       // SPACEBAR
     println("Setups");  
     setups();
     break;
@@ -139,6 +139,11 @@ void toggleMode(){
       mode = "client";
     }
     setNet();
+    if (GotData){
+      GotData = false;
+      writeData(fileName);
+      return;
+    }
     if (!Grid) setups();  
 }
 void updateButtons() {

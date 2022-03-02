@@ -1,4 +1,10 @@
 PrintWriter output;
+boolean NewFile = true;
+
+import java.time.Instant;
+import java.util.Date;
+
+
 
 void setupFile(String exp){
   println("\n--> setupFile("+exp+")");

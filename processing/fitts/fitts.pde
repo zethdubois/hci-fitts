@@ -163,25 +163,6 @@ color YELLOW = color(255, 255, 0);
 color RED = color(255, 0, 0);
 color OFFWHITE = color(200, 200, 200);
 
-void showMode() {
-  String mText = "TEST MODE";
-  if (gotData) {
-    tText = "SPACE TO STOP TRIAL
-  }
-
-  stroke(0);
-  strokeWeight(6);
-  if (Trial) stroke(YELLOW);
-  if (Grid) stroke(MRED);
-  if (!Grid && !Trial) //stroke(BLUE);
-  noFill();
-  rect(3, 3, xS-4, yS-4);
-  strokeWeight(1);
-  stroke(OFFWHITE);
-  textAlign(CENTER);
-  text(mText, xC, yS-gutter);
-  textAlign(LEFT);
-}
 
 void draw() {
   background(bgc);//refresh screen

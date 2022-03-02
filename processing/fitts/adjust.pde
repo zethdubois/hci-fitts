@@ -34,14 +34,13 @@ void adjustPPI(int val) {
 }
 
 void drawGrid() {
-  int xT = findLong(Dual, 1);
+  int xT = findLong(Dual, 1); //<>//
   int xT2 = xT;
   int xB; // long of butt B
   int xA = xC - xT; // long butt A
   int adj = boolToInt(Dual); //(iMode+1) % 2; // to break into the while loop to draw lines for dual mode
 
   stroke(255);
-  fill(255);
   line(0, yC, xS, yC); //: horiz line
   pushMatrix();
   translate(-1*xT, 0);
@@ -86,4 +85,5 @@ void drawGrid() {
     fittsA = round((float(xB) - float(xA)) / float(ppi), 2);
   }
   fittsW = round((float(bW) / float(ppi)), 2);
+  fill(0);
 }
