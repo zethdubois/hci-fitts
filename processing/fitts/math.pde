@@ -2,7 +2,7 @@ import java.math.*;
 
 
 float fittsTP(){
-  float out = fittsID/timeData;
+  float out = fittsID/fittsMT*1000;
   return out;
 }
 

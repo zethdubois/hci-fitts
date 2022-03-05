@@ -1,6 +1,6 @@
 AudioPlayer startClick, stopClick;
 String fileName;
-int timeData = 0;
+int fittsMT = 0;
 
 boolean GotData = false;
 
@@ -12,7 +12,7 @@ public void boop() {                    // STOP
   OverBoop = true;
   OverBeep = false;
   println("OverBoop");
-  println("timedata:", timeData);
+  println("fittsMT:", fittsMT);
   Started = false;
   fittsTP = fittsTP();
   writeData();
@@ -40,7 +40,7 @@ public void beep() {                 // START
   delay = 1;
   startClick.play();
   trial ++;
-  //cp5.getController("bangOn").setColorForeground(color(10,10,10));
+  //cp5.getController("bangBeep").setColorForeground(color(10,10,10));
   println("timer started");
   if (Dual) s.write(5);
 }

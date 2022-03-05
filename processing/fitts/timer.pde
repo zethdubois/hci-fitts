@@ -23,10 +23,11 @@ void timer(boolean Zero) { // Zero = true to reset
 
     //sec = int((millis() - start_time)/1000) % 60;
   }
-  timeData = millisec;
+  fittsMT = millisec;
   sampleTime = getUnix();
   fill(255);
-  text(millisec, gutter, 100);//display the times on the interface
+  String timeOut = "Movement Time: "+fittsMT+" msec";
+  text(timeOut, gutter, 100);//display the times on the interface
   //text(sec, 60, 100);
   //text(".", 80, 100);
 }

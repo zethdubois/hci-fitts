@@ -77,7 +77,7 @@ void setup() {
   stopClick = minim.loadFile("boop.wav");
   fileName = "test"; //+fileName;
   setupFile(fileName);
-  updateButtons();
+  //updateButtons();
 }
 
 

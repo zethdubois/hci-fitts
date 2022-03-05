@@ -1,7 +1,7 @@
 int samples = 0;
 int trials = 0;
 Boolean Trial = false;
-Boolean Grid = false;
+Boolean Grid = true;
 float fittsA, fittsW; //: amplitude / width
 int iMode = 0;
 int iTrace =0;
@@ -150,15 +150,15 @@ void updateButtons() {
   println(" -> updateButtons(), mode=", mode);
   int test ;
   try {
-    test = cp5.getController("bangOn").getId();
+    test = cp5.getController("bangBeep").getId();
   } 
   catch(Exception e) {
     test = 0;
   }
   if (test != 0) {
-    cp5.getController("bangOn").remove();
+    cp5.getController("bangBeep").remove();
     try {
-      cp5.getController("bangOff").remove();
+      cp5.getController("bangBoop").remove();
     }
     catch(Exception e) {
     }
@@ -169,14 +169,14 @@ void updateButtons() {
     b2x = xC-bW/2+xT;
     b2y = yC-bW/2;
 
-    cp5.addBang("bangOn")
+    cp5.addBang("bangBeep")
       .setPosition(b1x, b1y)
       .setSize(bW, bW)
       .setColorForeground(startColor)
       .setLabel("start")
       ;
     if (!Dual) {
-      cp5.addBang("bangOff")
+      cp5.addBang("bangBoop")
         .setPosition(b2x, b2y)
         .setSize(bW, bW)
         .setColorForeground(stopColor)
@@ -192,7 +192,6 @@ void setups() {
     OverBeep=false;
     start_time = millis();
     timer(true);
-    //timer(false);
     return;
   }
   if (!Trial) Grid = !Grid;
@@ -201,9 +200,8 @@ void setups() {
 }
 
 void startTrial() {
-  Trial = !Trial; // toggle the Trial setting
+  if (!Grid) Trial = !Trial; // toggle the Trial setting
   if (Trial) {
-
     trials++;
     println("start trial");
     samples = 0;
@@ -211,7 +209,6 @@ void startTrial() {
     timer(true);
   } else {
     println("end trial");
-
     Started = false;
   }
 }

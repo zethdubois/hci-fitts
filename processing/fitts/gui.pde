@@ -11,6 +11,7 @@ color ROSE = color(253, 206, 217);
 color ROSE_a = color(243, 196, 207, 127);
 color LBLUE = color(147, 217, 250);
 color LBLUE_a = color(137, 207, 240, 127);
+color DBLUE = color(7, 17, 150);
 
 color DGREEN = color(0, 120, 0);
 color MGREEN = color(0, 200, 0);
@@ -28,12 +29,12 @@ void showMode() {
   }
 
   stroke(0);
-  strokeWeight(6);
+  strokeWeight(4);
   if (Trial) stroke(YELLOW);
   if (Grid) stroke(MRED);
-  if (!Grid && !Trial) //stroke(BLUE);
+  if (!Grid && !Trial) stroke(OFFWHITE);
   noFill();
-  rect(3, 3, xS-4, yS-4);
+  rect(2, 2, xS-2, yS-2);
   strokeWeight(1);
   stroke(OFFWHITE);
   textAlign(CENTER);

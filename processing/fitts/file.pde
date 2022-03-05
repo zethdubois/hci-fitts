@@ -18,6 +18,7 @@ void setupFile(String exp) {
   println("\n--> setupFile("+exp+")");
   exp = exp+".csv";
   output = createWriter(exp);
+  output.print("sampleID\t");
   output.print("participant\t");
   output.print("condtion\t");
   output.print("amplitude\t");
@@ -35,15 +36,15 @@ void setupFile(String exp) {
 void writeData() { //String exp) {
   //crash
   println("\n--> writeData()");
-  println("Time Data:", timeData);
+  println("Time Data:", fittsMT);
+  output.print(sampleTime+"\t");  
   output.print(participant+"\t");
   output.print(condition+"\t");
   output.print(fittsA+"\t");  
   output.print(fittsW+"\t");
   output.print(fittsID+"\t"); 
-
   output.print(trial+"\t");  
-  output.print(timeData+"\t");
+  output.print(fittsMT+"\t");
   output.println(fittsTP);  
 
   output.flush();
