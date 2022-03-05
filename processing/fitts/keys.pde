@@ -141,7 +141,7 @@ void toggleMode(){
     setNet();
     if (GotData){
       GotData = false;
-      writeData(fileName);
+      writeData();
       return;
     }
     if (!Grid) setups();  
@@ -189,7 +189,7 @@ void updateButtons() {
 void setups() {
   if (Started) {
     Started = false;
-    OverStart=false;
+    OverBeep=false;
     start_time = millis();
     timer(true);
     //timer(false);

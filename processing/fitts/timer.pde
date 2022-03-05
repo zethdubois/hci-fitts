@@ -14,18 +14,21 @@ boolean startOver = false;
 boolean stopOver = false;
 String sTxt, tTxt;
 int gutter = 20;
+long sampleTime;
 
 void timer(boolean Zero) { // Zero = true to reset
   if (Grid) return;
   if (Started || Zero) {//keep track of time values after pressed only works for an hour
     millisec = (millis() - start_time);// % 1000;
+
     //sec = int((millis() - start_time)/1000) % 60;
   }
+  timeData = millisec;
+  sampleTime = getUnix();
   fill(255);
   text(millisec, gutter, 100);//display the times on the interface
   //text(sec, 60, 100);
   //text(".", 80, 100);
-
 }
 
 

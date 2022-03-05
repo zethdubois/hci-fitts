@@ -1,37 +1,45 @@
 AudioPlayer startClick, stopClick;
-String fileName = "";
+String fileName;
+int timeData = 0;
 
 boolean GotData = false;
 
-public void bangOffX() {
+public void boop() {                    // STOP
   if (Started) { // timer is counting...
     samples++;
     GotData = true;
   }
+  OverBoop = true;
+  OverBeep = false;
+  println("OverBoop");
+  println("timedata:", timeData);
   Started = false;
+  fittsTP = fittsTP();
+  writeData();
   delay(1);
   stopClick.play();
   stopClick.rewind();
   println("timer stoped");
-  output.println(millisec);
 }
 
 
-public void bangOnX() {
+public void beep() {                 // START 
   //int theColor = (int)random(255);
-  if (NewFile){
+  if (NewFile) {
     Date now = new Date();
     long ut3 = now.getTime() / 1000L;
     fileName = Long.toString(ut3);
     System.out.println(ut3);
   }
-    
+  OverBeep = true;
+  OverBoop = false;
+  println("OverBeep");
   startClick.rewind();
   Started = true;
   start_time = millis();
   delay = 1;
   startClick.play();
-
+  trial ++;
   //cp5.getController("bangOn").setColorForeground(color(10,10,10));
   println("timer started");
   if (Dual) s.write(5);
@@ -39,26 +47,20 @@ public void bangOnX() {
 
 void checkClick() {
 
-  if (!OverStop && !Grid && !Dual) {
-    if (mouseX > b2x && mouseX < b2x+bW && 
-      mouseY > b2y && mouseY < b2y+bW) {
-      OverStop = true;
-      OverStart = false;
-      println("OverStop");
-      bangOffX();
+  if (!OverBoop && !Grid && !Dual) {
+    if (mouseX > b2x && mouseX < b2x+bW && mouseY > b2y && mouseY < b2y+bW) {
+      boop();
     } else {
-      OverStop = false;
+      OverBoop = false;
     }
   }
-  if (!OverStart && !Grid) {
+  if (!OverBeep && !Grid) {
     if (mouseX > b1x && mouseX < b1x+bW && 
       mouseY > b1y && mouseY < b1y+bW) {
-      OverStart = true;
-      OverStop = false;
-      println("OverStart");
-      bangOnX();
+
+      beep();
     } else {
-      OverStart = false;
+      OverBeep = false;
     }
   }
 }

@@ -2,9 +2,9 @@ int ppi;
 int xC, yC; // center of screen
 boolean Msg = false;
 int tSize; // text size;
-boolean OverStart, OverStop;
+boolean OverBeep, OverBoop;
 boolean Dual = false;
-float ID;
+float fittsID;
 int bW; //: button width pixels
 String bSelect = "1";
 color ROSE = color(253, 206, 217);
@@ -70,7 +70,7 @@ void writeMsg() {
   //color selectColor = MGREEN;
   //if (bSelect.equals("X")) selectColor = midred;
 
-  ID = log2(fittsA/fittsW+1);
+  fittsID = log2(fittsA/fittsW+1);
 
   fill(ROSE_a);
   noStroke();
@@ -123,7 +123,7 @@ void writeMsg() {
     text(("Amplitude = "+ fittsA + " inches"), x, y);
   }
   translate(0, lf); 
-  text(("Index of D = "+ ID), x, y);
+  text(("Index of D = "+ fittsID), x, y);
   popMatrix();
 
   //---------------- system messages

@@ -75,8 +75,8 @@ void setup() {
   minim = new Minim(this);
   startClick = minim.loadFile("beep.wav");
   stopClick = minim.loadFile("boop.wav");
-
-  setupFile("test_data");
+  fileName = "test"; //+fileName;
+  setupFile(fileName);
   updateButtons();
 }
 

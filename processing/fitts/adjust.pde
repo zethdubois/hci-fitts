@@ -1,7 +1,9 @@
-float offset;
+float offset; //<>//
 float a_fittsA;
 float b_fittsA;
 float lfMod = 1.5f;
+float fittsTP;
+
 
 void adjustWin(int val) {
   if (!Grid) return;
@@ -34,7 +36,7 @@ void adjustPPI(int val) {
 }
 
 void drawGrid() {
-  int xT = findLong(Dual, 1); //<>//
+  int xT = findLong(Dual, 1);
   int xT2 = xT;
   int xB; // long of butt B
   int xA = xC - xT; // long butt A
@@ -83,7 +85,9 @@ void drawGrid() {
     a_fittsA = round(float(xS/2) / float(ppi), 2);
   } else {
     fittsA = round((float(xB) - float(xA)) / float(ppi), 2);
+
   }
   fittsW = round((float(bW) / float(ppi)), 2);
+
   fill(0);
 }
