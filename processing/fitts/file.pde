@@ -1,7 +1,14 @@
 PrintWriter output;
 boolean NewFile = true;
+String ex_condStr;
+String [] conditions;
+String es_condition0 = "Test Mode"; 
+
+//** experiment settings
 String participant = "anon";
-String condition1, condition2, condition3;
+String es_condition1, es_condition2, es_condition3;
+int es_sampleSize, es_numTPC, es_numSPT;
+String es_unit;
 
 
 import java.time.Instant;
@@ -21,10 +28,11 @@ void setupFile(String exp) {
   output.print("sampleID\t");
   output.print("participant\t");
   output.print("condtion\t");
+  output.print("trial\t");
   output.print("amplitude\t");
   output.print("width\t");
   output.print("ID\t");
-  output.print("trial\t");  
+  output.print("sample\t");  
   output.print("MT\t");
   output.println("TP");  
 
@@ -39,11 +47,12 @@ void writeData() { //String exp) {
   println("Time Data:", fittsMT);
   output.print(sampleTime+"\t");  
   output.print(participant+"\t");
-  output.print(condition1+"\t");
+  output.print(ex_condStr+"\t");
+  output.print(ex_trialCnt+"\t");  
   output.print(fittsA+"\t");  
   output.print(fittsW+"\t");
   output.print(fittsID+"\t"); 
-  output.print(trial+"\t");  
+  output.print(ex_sampleCnt+"\t");  
   output.print(fittsMT+"\t");
   output.println(fittsTP);  
 

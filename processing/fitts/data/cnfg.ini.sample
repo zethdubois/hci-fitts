@@ -12,7 +12,7 @@ button_width_3=300
 button_width_4=400
 ppi=269
 text_size=21
-sample_size=20
+number_of_samples_per_trial=5
 number_of_trials_per_condition=4
 condition1=finger
 condition2=mouse-touch
@@ -22,5 +22,6 @@ condition3=mouse-click
 [net:local/wifi]
 [mode:single/server/client]
 [offset:0-1]
+[sample_size=:15]
 
 

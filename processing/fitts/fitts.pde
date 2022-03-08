@@ -45,7 +45,7 @@ Client c;
 String input;
 int data[];
 int xS = 100, yS = 100;
-PFont bFont, nFont;
+PFont bFont, nFont, iFont;
 
 /// style vars
 float wSlideMod = 0.5;
@@ -68,7 +68,7 @@ void setup() {
   ellipseMode(CENTER);
   bFont = createFont("Monospaced", tSize+2);
   nFont = createFont("Monospaced", tSize);
-
+  iFont = createFont("Verdana", tSize+1);
   g = new GUIController (this);
   s = new Server(this, 12345);  // Start a simple server on a port
   cp5 = new ControlP5(this);   
@@ -81,7 +81,7 @@ void setup() {
 }
 
 
-int sampleSize;
+
 
 
 void setArgs() {
@@ -96,11 +96,12 @@ void setArgs() {
   mode = box.mode;
   network = box.network;
   screen = box.screen;
-  sampleSize = int(cnfgs.get("sample_size"));
-  condition1 = cnfgs.get("condition1");
-  condition2 = cnfgs.get("condition2");
-  condition3 = cnfgs.get("condition3");
-  numTrials = int(cnfgs.get("number_of_trials_per_condition"));
+  es_numSPT = int(cnfgs.get("number_of_samples_per_trial"));
+  es_condition1 = cnfgs.get("condition1");
+  es_condition2 = cnfgs.get("condition2");
+  es_condition3 = cnfgs.get("condition3");
+  conditions = new String[]{es_condition0, es_condition1, es_condition2, es_condition3};
+  es_numTPC = int(cnfgs.get("number_of_trials_per_condition"));
   Resize = Boolean.parseBoolean(cnfgs.get("resize"));
   if (mode.equals("server")) {
     iMode = 1;
@@ -115,6 +116,8 @@ void setArgs() {
   if (!Dual) network = "<n/a>";
   setNet();
   lf = int(tSize * lfMod);
+  
+  if (cnfgs.get("mode").equals("single")) es_unit="pixel"; else es_unit="inch";
   //pingTime(HOST_IP);
 }
 
@@ -160,7 +163,7 @@ void pre() {
     ws = "Size = " +xS + " x " + yS + " pixels";
     // Do what you need to do here
     println("resized!!!!!", ws);
-    if (!Grid) updateButtons();
+    if (!Setup) updateButtons();
   }
 }
 color BLUE = color(0, 60, 255);
@@ -174,8 +177,8 @@ void draw() {
   aparatus();
   showMode();
   timer(false);
-  if (Grid) drawGrid();
-  if (Grid) writeMsg();
+  if (Setup) drawGrid();
+  if (Setup) writeMsg();
   //  s.write(pmouseX + " " + pmouseY + " " + mouseX + " " + mouseY + "\n");
 
   //. Receive data from client

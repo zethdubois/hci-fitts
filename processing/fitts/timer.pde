@@ -15,9 +15,14 @@ boolean stopOver = false;
 String sTxt, tTxt;
 int gutter = 20;
 long sampleTime;
+int ex_trial = 0;
+int ex_sampleCnt = 0;
+int ex_condCnt = 0;
+int ex_trialCnt = 0;
+
 
 void timer(boolean Zero) { // Zero = true to reset
-  if (Grid) return;
+  if (Setup) return;
   if (Started || Zero) {//keep track of time values after pressed only works for an hour
     millisec = (millis() - start_time);// % 1000;
 
@@ -36,11 +41,11 @@ void timer(boolean Zero) { // Zero = true to reset
 void aparatus() {
   //textSize(box.tSize);
   textFont(nFont);
-  sTxt = "Sample # "+samples;
-  tTxt = "Trial # "+trials;  
+  sTxt = "Sample # "+ex_sampleCnt;
+  tTxt = "Trial # "+ex_trialCnt;  
   int xT;
 
-  if (!Grid) {
+  if (!Setup) {
     if (Trial) {
       text(tTxt, gutter, 30);  // trial #
     }

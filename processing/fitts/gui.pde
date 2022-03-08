@@ -18,14 +18,17 @@ color LEMON_a = color(245, 234, 69, 90);
 color DGREEN = color(0, 120, 0);
 color MGREEN = color(0, 200, 0);
 color MRED = color(200, 0, 0);
+color MGREEN_a = color(0, 190, 0, 60);
 String mode, IP, net;
 int screen;
 String tText;
+boolean Calibrate = true;
+boolean Calibrated = false;
 
 int lf; 
 
 void showMode() {
-  String mText = "TEST MODE";
+  String mText = conditions[ex_condCnt];
   if (GotData) {
     tText = "SPACE TO STOP TRIAL";
   }
@@ -33,8 +36,8 @@ void showMode() {
   stroke(0);
   strokeWeight(4);
   if (Trial) stroke(YELLOW);
-  if (Grid) stroke(MRED);
-  if (!Grid && !Trial) stroke(OFFWHITE);
+  if (Setup) stroke(MRED);
+  if (!Setup && !Trial) stroke(OFFWHITE);
   noFill();
   rect(2, 2, xS-2, yS-2);
   strokeWeight(1);
@@ -55,25 +58,26 @@ void writeMsg() {
   int x = gutter;
   int y = tSize+gutter;
 
-  //: readouts (ro_*)
+  //: readouts (ro_*) trial settings (ts_*)
   String ro_ppi = "["+box.ppi+"] PPI = "+ppi; //: PPI
-  String ro_x = "[" + bSelect + "]"; 
-  String ro_bWp = " Button Width (px) = "+bW; //: button Width in pixels
-  String ro_1 = "["+box.bW1+"]";
-  String ro_2 = "["+box.bW2+"]";
-  String ro_3 = "["+box.bW3+"]";
-  String ro_4 = "["+box.bW4+"]"; 
-  String ro_select = ro_1+ro_2+ro_3+ro_4;
+  String ts_x = "[" + bSelect + "]"; 
+  String ts_bWp = " Button Width (px) = "+bW; //: button Width in pixels
+  String ts_1 = "["+box.bW1+"]";
+  String ts_2 = "["+box.bW2+"]";
+  String ts_3 = "["+box.bW3+"]";
+  String ts_4 = "["+box.bW4+"]"; 
+  String ts_select = ts_1+ts_2+ts_3+ts_4;
 
 
-  String ro_fW = "Button Width (in) = "+fittsW; //: Fitts Width
-  float ro_x_w = textWidth(ro_x);
-  float boxWidth = textWidth(ro_bWp)+gutter*3; // + ro_x_w; //: length of longest string
+  String ts_fW = "Button Width (in) = "+fittsW; //: Fitts Width
+  float ts_x_w = textWidth(ts_x);
+  float boxWidth = textWidth(ts_bWp)+gutter*3; // length of longest string
 
   //color selectColor = MGREEN;
   //if (bSelect.equals("X")) selectColor = midred;
 
   fittsID = log2(fittsA/fittsW+1);
+  if (Calibrate) wH = lf*4;
 
   fill(ROSE_a);
   noStroke();
@@ -85,34 +89,52 @@ void writeMsg() {
   textFont(bFont);
   textAlign(CENTER);
   text("CONFIG APPARATUS", boxWidth/2, y-gutter/2);//display the times on the interface
+  translate(0, y-gutter/2+lf);
+  text("unit: "+es_unit, boxWidth/2, 0);
 
   textFont(nFont);
   textAlign(RIGHT);  
 
   translate(boxWidth-gutter*2, 1.25*lf);
+  if (Calibrate) {
+    text(ro_ppi, 0, y);
+  } else {
+    if (Dual) text("re[C]alibrate screen", 0, y);
+  }
 
-  text(ro_ppi, 0, y);
-  translate(0, lf);
+  translate(0, lf*2);
   //fill(selectColor);
   //text(ro_x, 0, y);
-  text(ro_bWp, 0, y);
+  text(ts_bWp, 0, y);
   translate(0, lf);
-  text(ro_select, 0, y); //: width select options
+  text(ts_select, 0, y); //: width select options
   //stroke(midgreen);
   //strokeWeight(2);
   //line(x, y+3, x+ro_x_w, y+3);
   //strokeWeight(1);
   //fill(0);
   translate(0, lf);
-  text(("Spacing = "+offset), 0, y); 
-  translate(0, lf*2);
+  //String next = 
+  text(("Spacing = "+String.valueOf(int(round(offset*100, 0))+"%")), 0, y);
+
+  // -- trial scores
+  popMatrix();
+  pushMatrix();
+
+  fill(LBLUE_a);
+  translate(boxWidth+gutter*2, 0);
+  rect(0, gutter, boxWidth, lf*7);
   textAlign(CENTER);
   textFont(bFont);
-  text(("MacKenzie scores"), -boxWidth/2+2*gutter, y);
+  fill(LBLUE);
+  text("TRIAL # "+ ex_trialCnt, boxWidth/2, gutter*2);
+
   textFont(nFont);
-  textAlign(RIGHT);
-  translate(-gutter, lf);  
-  text(ro_fW, x, y);  
+
+
+  textAlign(LEFT);
+  translate(0, lf);  
+  text(ts_fW, x, y);  
   translate(0, lf);
   if (Dual) {
     text(("Distance A = "+ a_fittsA + " inches"), x, y);
@@ -126,16 +148,19 @@ void writeMsg() {
   }
   translate(0, lf); 
   text(("Index of D = "+ fittsID), x, y);
+  textAlign(CENTER);
+  translate(0,lf);
+  text(("< MacKenzie scores >"), boxWidth/2, y);
   popMatrix();
-  
+
   //---------------- trial box
-  boxWidth = textWidth(ro_bWp)+gutter*3; // + ro_x_w; //: length of longest string in trial section  
+  boxWidth = textWidth(ts_bWp)+gutter*3; // length of longest string in trial section  
   fill(LEMON_a);
   noStroke();
   rect(xS-boxWidth-gutter, gutter, xS-gutter, wH); //: BG rectangle 
   //rect(100,400,20,20);
   fill(LEMON);
-  
+
   pushMatrix();
   translate(xS-boxWidth-gutter, gutter);
   textFont(bFont);
@@ -145,20 +170,27 @@ void writeMsg() {
   textFont(nFont);
   textAlign(LEFT);  
 
-  translate(0, lf);  
-  text("Participant: "+participant, 0, 0);//display the times on the interface
-  translate(0, lf);  
-  text("Condition 1: "+condition1, 0, 0);//display the times on the interface
   translate(0, lf);
-  text("Condition 2: "+condition2, 0, 0);//display the times on the interface
+  if (participant.equals("anon")) {
+    fill(RED);
+  } else {
+    fill(LEMON);
+  }
+
+  text("Participant: "+participant, 0, 0);//display the times on the interface
+  fill(LEMON);
   translate(0, lf);  
-  text("Condition 3: "+condition3, 0, 0);//display the times on the interface
+  text("Condition 1: "+es_condition1, 0, 0);//display the times on the interface
+  translate(0, lf);
+  text("Condition 2: "+es_condition2, 0, 0);//display the times on the interface
   translate(0, lf);  
-  text("Trials per condtion: "+numTrials, 0, 0);//display the times on the interface
+  text("Condition 3: "+es_condition3, 0, 0);//display the times on the interface
+  translate(0, lf);  
+  text("Trials per condtion: "+es_numTPC, 0, 0);//display the times on the interface
   translate(0, lf);    
-  text("Samples per trial: "+sampleSize, 0, 0);//display the times on the interface
-  
-  
+  text("Samples per trial: "+es_numSPT, 0, 0);//display the times on the interface
+
+
   popMatrix();
 
   //---------------- system messages

@@ -6,7 +6,7 @@ boolean GotData = false;
 
 public void boop() {                    // STOP
   if (Started) { // timer is counting...
-    samples++;
+    ex_sampleCnt++;
     GotData = true;
   }
   OverBoop = true;
@@ -20,9 +20,24 @@ public void boop() {                    // STOP
   stopClick.play();
   stopClick.rewind();
   println("timer stoped");
+  if (ex_sampleCnt == es_numSPT && ex_condCnt != 0) {  //: next trial
+    nextTrial();
+  }
 }
 
+void nextTrial() {
+  println("\nCongrats, you completed Trial # ", ex_trial);
+  Trial=false;
+  if (ex_trialCnt == es_numTPC) {
+    nextCondtion();
+  } else {
+    startTrial();
+  }
+}
 
+void nextCondtion(){
+  ex_condStr = conditions[ex_condCnt];
+}
 public void beep() {                 // START 
   //int theColor = (int)random(255);
   if (NewFile) {
@@ -47,14 +62,14 @@ public void beep() {                 // START
 
 void checkClick() {
 
-  if (!OverBoop && !Grid && !Dual) {
+  if (!OverBoop && !Setup && !Dual) {
     if (mouseX > b2x && mouseX < b2x+bW && mouseY > b2y && mouseY < b2y+bW) {
       boop();
     } else {
       OverBoop = false;
     }
   }
-  if (!OverBeep && !Grid) {
+  if (!OverBeep && !Setup) {
     if (mouseX > b1x && mouseX < b1x+bW && 
       mouseY > b1y && mouseY < b1y+bW) {
 

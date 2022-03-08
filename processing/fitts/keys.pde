@@ -1,7 +1,6 @@
-int samples = 0;
-int trials = 0;
+
 Boolean Trial = false;
-Boolean Grid = true;
+Boolean Setup = true;
 float fittsA, fittsW; //: amplitude / width
 int iMode = 0;
 int iTrace =0;
@@ -31,6 +30,18 @@ void keyPressed() {
   switch(key) {
   case 'n': 
     if (Dual) switchNet();
+    break;   
+  case 'c': 
+    if (Setup && !Calibrated && Calibrate) {
+      Calibrated = true;
+      Calibrate = false;
+      return;
+    }
+
+    if (Setup && Dual) {
+      Calibrate=!Calibrate;
+    }
+
     break;    
   case 't': 
     startTrial();
@@ -109,7 +120,7 @@ void keyPressed() {
     break;
     // mode switch
   case 'm':
-    if (Grid) toggleMode();
+    if (Setup) toggleMode();
 
     //updateButtons();
     break;     
@@ -120,31 +131,36 @@ void keyPressed() {
   println("\n["+iTrace+"]---------------------");
 }
 
-void toggleMode(){
-    println("\n-->toggle mode() /");
-    println("> iMode : ",iMode);
-    iMode = (iMode+1) % 3;
-    println(">> iMode : ",iMode);
-    
-    if (iMode == 0){
-      Dual = false;
-      mode = "single";
-    }
-    if (iMode == 1){
-      Dual = true;
-      mode = "server";
-    }
-    if (iMode == 2){
-      Dual = true;
-      mode = "client";
-    }
-    setNet();
-    if (GotData){
-      GotData = false;
-      writeData();
-      return;
-    }
-    if (!Grid) setups();  
+void toggleMode() {
+  println("\n-->toggle mode() /");
+  println("> iMode : ", iMode);
+  iMode = (iMode+1) % 3;
+  println(">> iMode : ", iMode);
+
+  if (iMode == 0) {
+    Dual = false;
+    mode = "single";
+    es_unit = "pixels";    
+  }
+  if (iMode == 1) {
+    Dual = true;
+    es_unit = "inches";
+    if (!Calibrated) Calibrate = true;
+    mode = "server";
+  }
+  if (iMode == 2) {
+    Dual = true;
+    if (!Calibrated) Calibrate = true;
+    mode = "client";
+    es_unit = "inches";    
+  }
+  setNet();
+  if (GotData) {
+    GotData = false;
+    writeData();
+    return;
+  }
+  if (!Setup) setups();
 }
 void updateButtons() {
   println(" -> updateButtons(), mode=", mode);
@@ -186,6 +202,8 @@ void updateButtons() {
   }
 }
 
+void getParticipant() {
+}
 void setups() {
   if (Started) {
     Started = false;
@@ -194,17 +212,17 @@ void setups() {
     timer(true);
     return;
   }
-  if (!Trial) Grid = !Grid;
-  println("Grid:", Grid);
+  if (!Trial) Setup = !Setup;
+  println("Setup:", Setup);
   if (!Trial) updateButtons();
 }
 
 void startTrial() {
-  if (!Grid) Trial = !Trial; // toggle the Trial setting
+  if (!Setup) Trial = !Trial; // toggle the Trial setting
   if (Trial) {
-    trials++;
+    ex_trialCnt++;
     println("start trial");
-    samples = 0;
+    ex_sampleCnt = 0;
     start_time=millis();
     timer(true);
   } else {
