@@ -81,12 +81,12 @@ void setup() {
 }
 
 
+int sampleSize;
 
 
 void setArgs() {
   ppi = box.ppi;
   bW = box.bW1;
-  println("..............bW", bW);
   xC = box.xC;
   yC = box.yC;
   xS = box.xS;
@@ -96,7 +96,12 @@ void setArgs() {
   mode = box.mode;
   network = box.network;
   screen = box.screen;
-
+  sampleSize = int(cnfgs.get("sample_size"));
+  condition1 = cnfgs.get("condition1");
+  condition2 = cnfgs.get("condition2");
+  condition3 = cnfgs.get("condition3");
+  numTrials = int(cnfgs.get("number_of_trials_per_condition"));
+  Resize = Boolean.parseBoolean(cnfgs.get("resize"));
   if (mode.equals("server")) {
     iMode = 1;
     Dual = true;
@@ -113,8 +118,8 @@ void setArgs() {
   //pingTime(HOST_IP);
 }
 
-
-
+boolean Resize; // can set this in .ini. Concern that a participant could resize a window during trial, mess it up.
+int numTrials;
 
 PSurface initSurface() {
   cnfgs = new StringDict();
@@ -124,12 +129,12 @@ PSurface initSurface() {
     String[] args = buff.split("=");
     try {
       cnfgs.set(args[0], args[1]);
-      println("look-----", args[0]);
+      println(args[0],"=",args[1]);
     }  
     catch(Exception e) {
     }
   }
-  println("cnfgs: ", cnfgs);
+  println("cnfgs loaded: ", cnfgs);
 
   box = new Sandbox(cnfgs);
   setArgs();
@@ -138,7 +143,7 @@ PSurface initSurface() {
   SmoothCanvas smoothCanvas = (SmoothCanvas) awtSurface.getNative();
   Frame frame = smoothCanvas.getFrame();
   if (screen == 0) frame.setUndecorated(true); 
-  else pSurface.setResizable(true);
+  else if (Resize) pSurface.setResizable(true);
   registerMethod("pre", this);
   pSurface.setSize(xS, yS);
   return pSurface;

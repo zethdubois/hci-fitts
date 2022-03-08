@@ -8,10 +8,12 @@ float fittsID;
 int bW; //: button width pixels
 String bSelect = "1";
 color ROSE = color(253, 206, 217);
-color ROSE_a = color(243, 196, 207, 127);
-color LBLUE = color(147, 217, 250);
-color LBLUE_a = color(137, 207, 240, 127);
+color ROSE_a = color(243, 196, 207, 90);
+color LBLUE = color(127, 207, 250);
+color LBLUE_a = color(137, 207, 240, 60);
 color DBLUE = color(7, 17, 150);
+color LEMON = color(255, 244, 79);
+color LEMON_a = color(245, 234, 69, 90);
 
 color DGREEN = color(0, 120, 0);
 color MGREEN = color(0, 200, 0);
@@ -86,9 +88,8 @@ void writeMsg() {
 
   textFont(nFont);
   textAlign(RIGHT);  
-  popMatrix();
-  pushMatrix();
-  translate(boxWidth-gutter, 1.5*lf);
+
+  translate(boxWidth-gutter*2, 1.25*lf);
 
   text(ro_ppi, 0, y);
   translate(0, lf);
@@ -125,6 +126,39 @@ void writeMsg() {
   }
   translate(0, lf); 
   text(("Index of D = "+ fittsID), x, y);
+  popMatrix();
+  
+  //---------------- trial box
+  boxWidth = textWidth(ro_bWp)+gutter*3; // + ro_x_w; //: length of longest string in trial section  
+  fill(LEMON_a);
+  noStroke();
+  rect(xS-boxWidth-gutter, gutter, xS-gutter, wH); //: BG rectangle 
+  //rect(100,400,20,20);
+  fill(LEMON);
+  
+  pushMatrix();
+  translate(xS-boxWidth-gutter, gutter);
+  textFont(bFont);
+  textAlign(CENTER);
+  text("TRIAL SETTINGS", boxWidth/2, y-gutter/2);//display the times on the interface
+  translate(gutter, lf*1.5);
+  textFont(nFont);
+  textAlign(LEFT);  
+
+  translate(0, lf);  
+  text("Participant: "+participant, 0, 0);//display the times on the interface
+  translate(0, lf);  
+  text("Condition 1: "+condition1, 0, 0);//display the times on the interface
+  translate(0, lf);
+  text("Condition 2: "+condition2, 0, 0);//display the times on the interface
+  translate(0, lf);  
+  text("Condition 3: "+condition3, 0, 0);//display the times on the interface
+  translate(0, lf);  
+  text("Trials per condtion: "+numTrials, 0, 0);//display the times on the interface
+  translate(0, lf);    
+  text("Samples per trial: "+sampleSize, 0, 0);//display the times on the interface
+  
+  
   popMatrix();
 
   //---------------- system messages

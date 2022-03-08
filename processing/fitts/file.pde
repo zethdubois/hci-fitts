@@ -1,7 +1,7 @@
 PrintWriter output;
 boolean NewFile = true;
 String participant = "anon";
-String condition = "mouse";
+String condition1, condition2, condition3;
 
 
 import java.time.Instant;
@@ -39,7 +39,7 @@ void writeData() { //String exp) {
   println("Time Data:", fittsMT);
   output.print(sampleTime+"\t");  
   output.print(participant+"\t");
-  output.print(condition+"\t");
+  output.print(condition1+"\t");
   output.print(fittsA+"\t");  
   output.print(fittsW+"\t");
   output.print(fittsID+"\t"); 

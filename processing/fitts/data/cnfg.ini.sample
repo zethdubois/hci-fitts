@@ -1,6 +1,6 @@
-screen=1024
+screen=1536
+resize=false
 network=local
-is_server=1
 my_IP=0
 server_IP=0
 client_IP=0
@@ -11,11 +11,16 @@ button_width_2=200
 button_width_3=300
 button_width_4=400
 ppi=269
-text_size=15
+text_size=21
+sample_size=20
+number_of_trials_per_condition=4
+condition1=finger
+condition2=mouse-touch
+condition3=mouse-click
 
 [screen:0/?]
 [net:local/wifi]
-[mode:single/dual]
+[mode:single/server/client]
 [offset:0-1]
 
 
