@@ -5,9 +5,9 @@
 
 import java.math.*;
 
-float [] fittsID_I;
-float [] ts_fittsA_I;
-float [] ts_fittsW_I;
+float [] ts_ID_I;
+float [] ts_A_I;
+float [] ts_bWi_I;
 
 float fittsTP() {
   float out = fittsID/fittsMT*1000;
@@ -15,6 +15,7 @@ float fittsTP() {
 }
 
 void calcID(String mode) {
+  println("\n-->calcID("+mode+")");
   int j = ts_adj; 
   int k = ts_adj;
   if (mode.equals("PPI")) { // change all the ts's
@@ -22,12 +23,14 @@ void calcID(String mode) {
     k=3;
   }
   for (int i=j; i<=k; i++) {
-    fittsID_I[i] = log2(ts_fittsA_I[i]/ts_fittsW_I[i]+1);
+    println("i:", i);
+    if (Dual) ts_ID_I[i] = log2(ts_A_I[i]/ts_bWi_I[i]+1); else ts_ID_I[i] = log2(ts_A_I[i]/ts_bWp_I[i]+1);
+    println("W", ts_bWi_I[i]);
+    println("ID=", ts_ID_I[i]);
   }
+
   //fittsID = log2(fittsA/fittsW+1);
   //boo
-
-
 }
 
 public static float round(float d, int decimalPlace) {

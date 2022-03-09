@@ -4,7 +4,7 @@ String ex_condStr;
 String [] conditions;
 String es_condition0 = "Test Mode"; 
 
-int[] bWp_I;
+int[] ts_bWp_I;
 
 //** experiment settings
 String participant = "anon";

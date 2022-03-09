@@ -76,11 +76,11 @@ void setup() {
   stopClick = minim.loadFile("boop.wav");
   fileName = "test"; //+fileName;
   setupFile(fileName);
-  println("\n\n........................", bWp_I[0]);
+  println("\n\n........................", ts_bWp_I[0]);
   //updateButtons();
 }
 
-
+int [] ts_xB_I, ts_xA_I;
 
 
 
@@ -100,9 +100,9 @@ void setArgs() {
   es_condition1 = cnfgs.get("condition1");
   es_condition2 = cnfgs.get("condition2");
   es_condition3 = cnfgs.get("condition3");
-  bWp_I = new int[]{int(cnfgs.get("button_width_1")), int(cnfgs.get("button_width_2")), 
+  ts_bWp_I = new int[]{int(cnfgs.get("button_width_1")), int(cnfgs.get("button_width_2")), 
     int(cnfgs.get("button_width_3")), int(cnfgs.get("button_width_4"))};
-  println("........................", bWp_I[0]);
+  println("........................", ts_bWp_I[0]);
   conditions = new String[]{es_condition0, es_condition1, es_condition2, es_condition3};
   es_numTPC = int(cnfgs.get("number_of_trials_per_condition"));
   Resize = Boolean.parseBoolean(cnfgs.get("resize"));
@@ -123,17 +123,17 @@ void setArgs() {
   if (cnfgs.get("mode").equals("single")) es_unit="pixel"; 
   else es_unit="inch";
   //pingTime(HOST_IP);
-  ts_ID_I = new int[]{0, 0, 0, 0};
-  fittsID_I = new float[]{0, 0, 0, 0};
+  //ts_ID_I = new int[]{0, 0, 0, 0};
+  ts_ID_I = new float[]{0f, 0f, 0f, 0f};
   //fittsW = round((float(bW) / float(ppi)), 2);
 
-  ts_fittsW_I = new float[]{round((bWp_I[0]/float(ppi)), 2), round((bWp_I[1]/float(ppi)), 2), 
-    round((bWp_I[2]/float(ppi)), 2), round((bWp_I[3]/float(ppi)), 2)};
+  ts_bWi_I = new float[]{round((ts_bWp_I[0]/float(ppi)), 2), round((ts_bWp_I[1]/float(ppi)), 2), 
+    round((ts_bWp_I[2]/float(ppi)), 2), round((ts_bWp_I[3]/float(ppi)), 2)};
   int xT = findLong(Dual, 1);
   int xB; // long of butt B
   xB = xT + xC;
   //fittsA = round((float(xB) - float(xA)) / float(ppi), 2);
-  ts_fittsA_I = new float[]{0, 0, 0, 0};
+  ts_A_I = new float[]{0, 0, 0, 0};
   calcID("PPI");
 }
 

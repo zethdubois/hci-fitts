@@ -30,25 +30,32 @@ boolean Calibrate = true;
 boolean Calibrated = false;
 
 int lf; 
+//--CONSTANTS
+
+String FRAME = "FRAME";
+String BOLD = "BOLD";
+String TITLE = "TITLE";
+String NONE = "NONE";
 
 void drawBox(int c, int bX, int bY, int bW, int bH, String title ) {
   pushStyle();
   fill(c, 60);
   noStroke();
   rect(bX, bY, bW, bH); //: BG rectangle
-  if (!title.trim().isEmpty()) boxLF(c, 2, CENTER, title, bX+bW/2, bY+tSize-2, 3);
+  if (!title.trim().isEmpty()) boxLF(c, 2, CENTER, title, bX+bW/2, bY+tSize-2, 0, 0, TITLE);
   popStyle();
 }
 
 //: this proc automates text writting to the UI
-void boxLF(int c, int f, int align, String S, int x, int y, int mode) {
+void boxLF(int c, int f, int align, String S, int x, int y, int tx, int ty, String mode) {
   //: modes: 0 normal, 1 outline, 2 faux bold
   int tS = tSize + f;
+  translate(tx, ty);
   pushStyle();
 
   textSize(tS);
   textAlign(align);
-  if (mode == 3) {
+  if (mode.equals("title")) {
     int o = tS/3;
     float mod = .7f; //: this is a mod to reduce the vertical offset to the top of text
     int bx = int(textWidth(S));
@@ -57,13 +64,13 @@ void boxLF(int c, int f, int align, String S, int x, int y, int mode) {
       rectMode(CENTER);
       rect(x, y-tS*mod/2, bx+o, tS*mod+o);
     }
-    mode = 2; //: do bold now
+    mode = "bold"; //: do bold now
   }  
   fill(c);
   text(S, x, y);
 
-  if (mode == 2) text(S, x+1, y-1); // FAUX BOLD
-  if (mode == 1) {                  // box it in
+  if (mode.equals("bold")) text(S, x+1, y-1); // FAUX BOLD
+  if (mode.equals("box")) {                  // box it in
     int o = tS/2;
     float mod = .7f; //: this is a mod to reduce the vertical offset to the top of text
     int bx = int(textWidth(S));
@@ -98,7 +105,7 @@ void showMode() {
   textAlign(LEFT);
 }
 
-int [] ts_ID_I;
+
 
 //text(("- or _ || = or + "), x, y);
 //text(("[ or { || ] or }"), x, y);
@@ -113,9 +120,19 @@ void writeMsg() {
   String ro_ppi = "["+box.ppi+"] PPI = "+ppi; //: PPI
   String ts_x = "[" + bSelect + "]"; 
   String buff = "Width:";
-  String [] ts_bWpS_I = new String [] {(buff+bWp_I[0]), (buff+bWp_I[1]), (buff+bWp_I[2]), (buff+bWp_I[3])};
+  ArrayList<String> ts_bWS_I = new ArrayList<String>();
+  float val;
+  for (int i = 0; i<4; i++) {
+    if (Dual) val = ts_bWi_I[i]; 
+    else val = ts_bWp_I[i]; 
+    ts_bWS_I.add(buff+val);
+    //ts_bWpS_I = new String [] {(buff+ts_bWp_I[0]), (buff+ts_bWp_I[1]), (buff+ts_bWp_I[2]), (buff+ts_bWp_I[3])};
+  }
+
+
   buff = "ID:";
-  String [] ts_IDS_I = new String [] {(buff+bWp_I[0]), (buff+bWp_I[1]), (buff+bWp_I[2]), (buff+bWp_I[3])};
+  String [] ts_IDS_I = new String [] {(buff+ts_ID_I[0]), (buff+ts_ID_I[1]), 
+    (buff+ts_ID_I[2]), (buff+ts_ID_I[3])};
 
   String ts_bWp = " Button Width = "+bW; //: button Width in pixels
   String ts_1 = "["+box.bW1+"]";
@@ -155,28 +172,29 @@ void writeMsg() {
 
   //--LINE 1
 
-  translate(gutter, lf*2.5);
   if (iMode == 0) S = "Control Mode: SINGLE"; 
   else S = "Control Mode: DUAL";
-  boxLF(ROSE, 0, CENTER, S, xc, 0, 0);
+  boxLF(ROSE, 0, CENTER, S, xc, 0, gutter, int(lf*2.5), NONE);
 
-  translate(0, lf);
   if (iMode == 1) {
     S = "SERVER";
-    boxLF(MGREEN, 0, CENTER, S, xc, 0, 1);
+    boxLF(MGREEN, 0, CENTER, S, xc, 0, 0,lf, FRAME);
   }
   if (iMode == 2) {
     S = "CLIENT";
-    boxLF(RED, 0, CENTER, S, xc, 0, 1);
+    boxLF(RED, 0, CENTER, S, xc, 0, 0,lf, FRAME);
   }
 
   //---LINE 2
-  translate(boxWidth-gutter, lf*2);
+  
   //println("...........................",ts_bWpS_I[0]);
-  boxLF(ROSE, 0, RIGHT, ts_bWpS_I[0], 0, 0, 0);  
+
+  boxLF(ROSE, 0, RIGHT, ts_IDS_I[0], 0, 0, boxWidth-gutter, lf*2, NONE);  
+  
+  boxLF(TERMINAL, 0, LEFT, ts_bWS_I.get(0), 0, 0, gutter*2+kSpace, 0, NONE);  
   //text(ts_bWpS_I[0], 0, 0);
-  translate(0, lf);
-  boxLF(ROSE, 0, RIGHT, ts_select, 0, 0, 0);
+  
+  boxLF(ROSE, 0, RIGHT, ts_select, 0, 0, 0, lf, NONE);
   //text(ts_select, 0, 0); //: width select options
 
 
