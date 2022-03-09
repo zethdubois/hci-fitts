@@ -45,7 +45,7 @@ Client c;
 String input;
 int data[];
 int xS = 100, yS = 100;
-PFont bFont, nFont, iFont;
+PFont nFont, iFont;
 
 /// style vars
 float wSlideMod = 0.5;
@@ -66,7 +66,6 @@ void setup() {
   size(1000, 1000);
   fill(0);//black text color
   ellipseMode(CENTER);
-  bFont = createFont("Monospaced", tSize+2);
   nFont = createFont("Monospaced", tSize);
   iFont = createFont("Verdana", tSize+1);
   g = new GUIController (this);
@@ -77,6 +76,7 @@ void setup() {
   stopClick = minim.loadFile("boop.wav");
   fileName = "test"; //+fileName;
   setupFile(fileName);
+  println("\n\n........................", bWp_I[0]);
   //updateButtons();
 }
 
@@ -100,6 +100,9 @@ void setArgs() {
   es_condition1 = cnfgs.get("condition1");
   es_condition2 = cnfgs.get("condition2");
   es_condition3 = cnfgs.get("condition3");
+  bWp_I = new int[]{int(cnfgs.get("button_width_1")), int(cnfgs.get("button_width_2")), 
+    int(cnfgs.get("button_width_3")), int(cnfgs.get("button_width_4"))};
+  println("........................", bWp_I[0]);
   conditions = new String[]{es_condition0, es_condition1, es_condition2, es_condition3};
   es_numTPC = int(cnfgs.get("number_of_trials_per_condition"));
   Resize = Boolean.parseBoolean(cnfgs.get("resize"));
@@ -116,9 +119,22 @@ void setArgs() {
   if (!Dual) network = "<n/a>";
   setNet();
   lf = int(tSize * lfMod);
-  
-  if (cnfgs.get("mode").equals("single")) es_unit="pixel"; else es_unit="inch";
+
+  if (cnfgs.get("mode").equals("single")) es_unit="pixel"; 
+  else es_unit="inch";
   //pingTime(HOST_IP);
+  ts_ID_I = new int[]{0, 0, 0, 0};
+  fittsID_I = new float[]{0, 0, 0, 0};
+  //fittsW = round((float(bW) / float(ppi)), 2);
+
+  ts_fittsW_I = new float[]{round((bWp_I[0]/float(ppi)), 2), round((bWp_I[1]/float(ppi)), 2), 
+    round((bWp_I[2]/float(ppi)), 2), round((bWp_I[3]/float(ppi)), 2)};
+  int xT = findLong(Dual, 1);
+  int xB; // long of butt B
+  xB = xT + xC;
+  //fittsA = round((float(xB) - float(xA)) / float(ppi), 2);
+  ts_fittsA_I = new float[]{0, 0, 0, 0};
+  calcID("PPI");
 }
 
 boolean Resize; // can set this in .ini. Concern that a participant could resize a window during trial, mess it up.
@@ -132,7 +148,7 @@ PSurface initSurface() {
     String[] args = buff.split("=");
     try {
       cnfgs.set(args[0], args[1]);
-      println(args[0],"=",args[1]);
+      println(args[0], "=", args[1]);
     }  
     catch(Exception e) {
     }

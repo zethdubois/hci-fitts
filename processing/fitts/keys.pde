@@ -51,44 +51,54 @@ void keyPressed() {
     setups();
     break;
   case '-': 
-    println("decrease space");  
+    println("decrease PPI");  
     adjustPPI(-1);
+    calcID("PPI");
     break;
   case '=': 
-    println("increase space");  
+    println("increase PPI");  
     adjustPPI(1);
+        calcID("PPI");
     break;
   case '_': 
-    println("decrease space");  
+    println("decrease PPI");  
     adjustPPI(-10);
+        calcID("PPI");
     break;
   case '+': 
-    println("increase space");  
+    println("increase PPI");  
     adjustPPI(10);
+        calcID("PPI");
     break;
   case '[': 
     println("decrease button size");  
     adjustBW(-1);
+    calcID("width");
     break;
   case ']': 
     println("increase button size");  
     adjustBW(1);
+        calcID("width");
     break;
   case '{': 
     println("decrease button size");  
     adjustBW(-10);
+        calcID("width");
     break;
   case '}': 
     println("increase button size");  
     adjustBW(10);
+        calcID("width");
     break;   
   case ';': 
-    println("decrease spacing");  
-    adjustOff(-.01);
+    println("decrease amplitude");  
+    adjustAmp(-.01);
+        calcID("amp");
     break;
   case '\'': 
     println("increase spacing");  
-    adjustOff(.01);
+    adjustAmp(.01);
+    calcID("amp");
     break;
   case ',': 
     println("decrease window");  

@@ -9,7 +9,8 @@ void adjustWin(int val) {
   if (!Setup) return;
   xS = xS + val;
   yS = yS + val;
-  println("Window +", val);
+  //println("Window +", val);
+  println("broken, what did it do, anyway?");
 }
 
 void adjustBW(int val) {
@@ -23,7 +24,7 @@ void setBW(int val) {
   bW = val;
 }
 
-void adjustOff(float val) {
+void adjustAmp(float val) {
   if (!Setup) return;
   offset = offset + val;
   if (offset > 1) offset = 1;

@@ -1,3 +1,5 @@
+/* COLOR PALLETE https://www.color-hex.com/user/add-palette.php?id=1009737 */
+int ts_adj = 1;
 int ppi;
 int xC, yC; // center of screen
 boolean Msg = false;
@@ -8,12 +10,14 @@ float fittsID;
 int bW; //: button width pixels
 String bSelect = "1";
 color ROSE = color(253, 206, 217);
-color ROSE_a = color(243, 196, 207, 90);
-color LBLUE = color(127, 207, 250);
-color LBLUE_a = color(137, 207, 240, 60);
+color ROSE_a = color(243, 196, 207, 45);
+color TERMINAL = color(127, 207, 250);
+color TERMINAL_a = color(137, 207, 240, 60);
 color DBLUE = color(7, 17, 150);
 color LEMON = color(255, 244, 79);
 color LEMON_a = color(245, 234, 69, 90);
+
+//int ROSE = #ffced9;
 
 color DGREEN = color(0, 120, 0);
 color MGREEN = color(0, 200, 0);
@@ -26,6 +30,53 @@ boolean Calibrate = true;
 boolean Calibrated = false;
 
 int lf; 
+
+void drawBox(int c, int bX, int bY, int bW, int bH, String title ) {
+  pushStyle();
+  fill(c, 60);
+  noStroke();
+  rect(bX, bY, bW, bH); //: BG rectangle
+  if (!title.trim().isEmpty()) boxLF(c, 2, CENTER, title, bX+bW/2, bY+tSize-2, 3);
+  popStyle();
+}
+
+//: this proc automates text writting to the UI
+void boxLF(int c, int f, int align, String S, int x, int y, int mode) {
+  //: modes: 0 normal, 1 outline, 2 faux bold
+  int tS = tSize + f;
+  pushStyle();
+
+  textSize(tS);
+  textAlign(align);
+  if (mode == 3) {
+    int o = tS/3;
+    float mod = .7f; //: this is a mod to reduce the vertical offset to the top of text
+    int bx = int(textWidth(S));
+    fill(0);
+    if (align == CENTER) {
+      rectMode(CENTER);
+      rect(x, y-tS*mod/2, bx+o, tS*mod+o);
+    }
+    mode = 2; //: do bold now
+  }  
+  fill(c);
+  text(S, x, y);
+
+  if (mode == 2) text(S, x+1, y-1); // FAUX BOLD
+  if (mode == 1) {                  // box it in
+    int o = tS/2;
+    float mod = .7f; //: this is a mod to reduce the vertical offset to the top of text
+    int bx = int(textWidth(S));
+    noFill();
+    stroke(c, 127);
+    if (align == CENTER) {
+      rectMode(CENTER);
+      rect(x, y-tS*mod/2+(.1*tS), bx+o, tS*mod+o);
+    }
+    //rectMode(CORNERS);
+  }
+  popStyle();
+}
 
 void showMode() {
   String mText = conditions[ex_condCnt];
@@ -47,67 +98,108 @@ void showMode() {
   textAlign(LEFT);
 }
 
+int [] ts_ID_I;
 
 //text(("- or _ || = or + "), x, y);
 //text(("[ or { || ] or }"), x, y);
 void writeMsg() {
 
-  int wW = xS/4-gutter-gutter;
+  //int wW = xS/4-gutter-gutter;
   int wH = lf * 12;
   if (Dual) wH = lf * 14;
   int x = gutter;
-  int y = tSize+gutter;
 
   //: readouts (ro_*) trial settings (ts_*)
   String ro_ppi = "["+box.ppi+"] PPI = "+ppi; //: PPI
   String ts_x = "[" + bSelect + "]"; 
-  String ts_bWp = " Button Width (px) = "+bW; //: button Width in pixels
+  String buff = "Width:";
+  String [] ts_bWpS_I = new String [] {(buff+bWp_I[0]), (buff+bWp_I[1]), (buff+bWp_I[2]), (buff+bWp_I[3])};
+  buff = "ID:";
+  String [] ts_IDS_I = new String [] {(buff+bWp_I[0]), (buff+bWp_I[1]), (buff+bWp_I[2]), (buff+bWp_I[3])};
+
+  String ts_bWp = " Button Width = "+bW; //: button Width in pixels
   String ts_1 = "["+box.bW1+"]";
   String ts_2 = "["+box.bW2+"]";
   String ts_3 = "["+box.bW3+"]";
   String ts_4 = "["+box.bW4+"]"; 
   String ts_select = ts_1+ts_2+ts_3+ts_4;
-
+  String S = "";
 
   String ts_fW = "Button Width (in) = "+fittsW; //: Fitts Width
   float ts_x_w = textWidth(ts_x);
-  float boxWidth = textWidth(ts_bWp)+gutter*3; // length of longest string
+  int boxWidth = int(textWidth(ts_bWp)+gutter*3); // length of longest string
 
-  //color selectColor = MGREEN;
-  //if (bSelect.equals("X")) selectColor = midred;
 
-  fittsID = log2(fittsA/fittsW+1);
   if (Calibrate) wH = lf*4;
 
-  fill(ROSE_a);
-  noStroke();
-  rect(gutter, gutter, boxWidth, wH); //: BG rectangle
-
-  fill(ROSE);
+  //---BOXES-----------------------------------------------------------------
   pushMatrix();
+  int xc = boxWidth/2; 
+  int kSpace = gutter*3;
   translate(gutter, gutter);
-  textFont(bFont);
-  textAlign(CENTER);
-  text("CONFIG APPARATUS", boxWidth/2, y-gutter/2);//display the times on the interface
-  translate(0, y-gutter/2+lf);
-  text("unit: "+es_unit, boxWidth/2, 0);
+  drawBox(ROSE, 0, 0, boxWidth, wH, "CONFIG APPARATUS"); //: cnfig app box
+  translate(gutter*2+boxWidth+kSpace, 0);
+  drawBox(TERMINAL, 0, 0, boxWidth, wH, ("TRIAL # "+ ex_trialCnt));
+  popMatrix();
+  pushMatrix();
+  translate(xS-gutter-boxWidth, gutter);
+  drawBox(LEMON, 0, 0, boxWidth, wH, "METHODS");
+  popMatrix();
+  pushMatrix();
+  translate(gutter, yS-lf*2-gutter);
+  fill(TERMINAL_a);
+  drawBox(TERMINAL, 0, 0, xS-gutter*2, 2*lf, "");
+  //rect(0, 0, xS-gutter*2, 2*lf); //: BG rectangle
+  popMatrix();
+  pushMatrix();
 
+  //--LINE 1
+
+  translate(gutter, lf*2.5);
+  if (iMode == 0) S = "Control Mode: SINGLE"; 
+  else S = "Control Mode: DUAL";
+  boxLF(ROSE, 0, CENTER, S, xc, 0, 0);
+
+  translate(0, lf);
+  if (iMode == 1) {
+    S = "SERVER";
+    boxLF(MGREEN, 0, CENTER, S, xc, 0, 1);
+  }
+  if (iMode == 2) {
+    S = "CLIENT";
+    boxLF(RED, 0, CENTER, S, xc, 0, 1);
+  }
+
+  //---LINE 2
+  translate(boxWidth-gutter, lf*2);
+  //println("...........................",ts_bWpS_I[0]);
+  boxLF(ROSE, 0, RIGHT, ts_bWpS_I[0], 0, 0, 0);  
+  //text(ts_bWpS_I[0], 0, 0);
+  translate(0, lf);
+  boxLF(ROSE, 0, RIGHT, ts_select, 0, 0, 0);
+  //text(ts_select, 0, 0); //: width select options
+
+
+  /*
+  fill(ROSE);
+   translate(0, y-gutter/2+lf);
+   text("unit: "+es_unit, boxWidth/2, 0);
+   */
+
+  //---- credit card
   textFont(nFont);
   textAlign(RIGHT);  
 
   translate(boxWidth-gutter*2, 1.25*lf);
   if (Calibrate) {
-    text(ro_ppi, 0, y);
+    text(ro_ppi, 0, 0);
   } else {
-    if (Dual) text("re[C]alibrate screen", 0, y);
+    if (Dual) text("re[C]alibrate screen", 0, lf);
   }
 
-  translate(0, lf*2);
-  //fill(selectColor);
+
   //text(ro_x, 0, y);
-  text(ts_bWp, 0, y);
-  translate(0, lf);
-  text(ts_select, 0, y); //: width select options
+
   //stroke(midgreen);
   //strokeWeight(2);
   //line(x, y+3, x+ro_x_w, y+3);
@@ -115,82 +207,80 @@ void writeMsg() {
   //fill(0);
   translate(0, lf);
   //String next = 
-  text(("Spacing = "+String.valueOf(int(round(offset*100, 0))+"%")), 0, y);
+  text(("Spacing = "+String.valueOf(int(round(offset*100, 0))+"%")), 0, 0);
 
+  /*
   // -- trial scores
-  popMatrix();
-  pushMatrix();
-
-  fill(LBLUE_a);
-  translate(boxWidth+gutter*2, 0);
-  rect(0, gutter, boxWidth, lf*7);
-  textAlign(CENTER);
-  textFont(bFont);
-  fill(LBLUE);
-  text("TRIAL # "+ ex_trialCnt, boxWidth/2, gutter*2);
-
-  textFont(nFont);
-
-
-  textAlign(LEFT);
-  translate(0, lf);  
-  text(ts_fW, x, y);  
-  translate(0, lf);
-  if (Dual) {
-    text(("Distance A = "+ a_fittsA + " inches"), x, y);
-    translate(0, lf);
-    text(("Distance B = "+ b_fittsA + " inches"), x, y);
-    translate(0, lf);
-    fittsA = 0;
-    text(("Amplitude = ?"+ fittsA + " inches"), x, y);
-  } else {
-    text(("Amplitude = "+ fittsA + " inches"), x, y);
-  }
-  translate(0, lf); 
-  text(("Index of D = "+ fittsID), x, y);
-  textAlign(CENTER);
-  translate(0,lf);
-  text(("< MacKenzie scores >"), boxWidth/2, y);
-  popMatrix();
-
-  //---------------- trial box
-  boxWidth = textWidth(ts_bWp)+gutter*3; // length of longest string in trial section  
-  fill(LEMON_a);
-  noStroke();
-  rect(xS-boxWidth-gutter, gutter, xS-gutter, wH); //: BG rectangle 
-  //rect(100,400,20,20);
-  fill(LEMON);
-
-  pushMatrix();
-  translate(xS-boxWidth-gutter, gutter);
-  textFont(bFont);
-  textAlign(CENTER);
-  text("TRIAL SETTINGS", boxWidth/2, y-gutter/2);//display the times on the interface
-  translate(gutter, lf*1.5);
-  textFont(nFont);
-  textAlign(LEFT);  
-
-  translate(0, lf);
-  if (participant.equals("anon")) {
-    fill(RED);
-  } else {
-    fill(LEMON);
-  }
-
-  text("Participant: "+participant, 0, 0);//display the times on the interface
-  fill(LEMON);
-  translate(0, lf);  
-  text("Condition 1: "+es_condition1, 0, 0);//display the times on the interface
-  translate(0, lf);
-  text("Condition 2: "+es_condition2, 0, 0);//display the times on the interface
-  translate(0, lf);  
-  text("Condition 3: "+es_condition3, 0, 0);//display the times on the interface
-  translate(0, lf);  
-  text("Trials per condtion: "+es_numTPC, 0, 0);//display the times on the interface
-  translate(0, lf);    
-  text("Samples per trial: "+es_numSPT, 0, 0);//display the times on the interface
-
-
+   popMatrix();
+   pushMatrix();
+   
+   
+   //-----bump text size +2
+   fill(TERMINAL);
+   text("TRIAL # "+ ex_trialCnt, boxWidth/2, gutter*2);
+   
+   textFont(nFont);
+   
+   
+   textAlign(LEFT);
+   translate(0, lf);  
+   text(ts_fW, x, 0);  
+   translate(0, lf);
+   if (Dual) {
+   text(("Distance A = "+ a_fittsA + " inches"), x, 0);
+   translate(0, lf);
+   text(("Distance B = "+ b_fittsA + " inches"), x, 0);
+   translate(0, lf);
+   fittsA = 0;
+   text(("Amplitude = ?"+ fittsA + " inches"), x, 0);
+   } else {
+   text(("Amplitude = "+ fittsA + " inches"), x, 0);
+   }
+   translate(0, lf); 
+   text(("Index of D = "+ fittsID), x, 0);
+   textAlign(CENTER);
+   translate(0, lf);
+   text(("< MacKenzie scores >"), boxWidth/2, 0);
+   popMatrix();
+   
+   //---------------- trial box
+   boxWidth = textWidth(ts_bWp)+gutter*3; // length of longest string in trial section  
+   fill(LEMON_a);
+   noStroke();
+   rect(xS-boxWidth-gutter, gutter, xS-gutter, wH); //: BG rectangle 
+   //rect(100,400,20,20);
+   fill(LEMON);
+   
+   pushMatrix();
+   translate(xS-boxWidth-gutter, gutter);
+   //!! bumptextsize +2
+   textAlign(CENTER);
+   text("METHODS", boxWidth/2, 0-gutter/2);//display the times on the interface
+   translate(gutter, lf*1.5);
+   textFont(nFont);
+   textAlign(LEFT);  
+   
+   translate(0, lf);
+   if (participant.equals("anon")) {
+   fill(RED);
+   } else {
+   fill(LEMON);
+   }
+   
+   text("Participant: "+participant, 0, 0);//display the times on the interface
+   fill(LEMON);
+   translate(0, lf);  
+   text("Condition 1: "+es_condition1, 0, 0);//display the times on the interface
+   translate(0, lf);
+   text("Condition 2: "+es_condition2, 0, 0);//display the times on the interface
+   translate(0, lf);  
+   text("Condition 3: "+es_condition3, 0, 0);//display the times on the interface
+   translate(0, lf);  
+   text("Trials per condtion: "+es_numTPC, 0, 0);//display the times on the interface
+   translate(0, lf);    
+   text("Samples per trial: "+es_numSPT, 0, 0);//display the times on the interface
+   
+   */
   popMatrix();
 
   //---------------- system messages
@@ -214,42 +304,40 @@ void writeMsg() {
 
   // -- box
   pushMatrix();
-  translate(gutter, yS-lf*2-gutter);
-  fill(LBLUE_a);
-  rect(0, 0, xS-gutter*2, 2*lf); //: BG rectangle
+
 
   // ...msgs
-  fill(LBLUE);
+  fill(TERMINAL);
 
   translate(0, -gutter);
   pushMatrix(); // 2 deep
-  text(mode_msg, x, y);
+  text(mode_msg, x, 0);
   translate(0, lf);
-  text(net_msg, x, y);
+  text(net_msg, x, 0);
   popMatrix(); // 1 deep
   if (Dual) {
     translate(col-gutter*2, 0);
     fill(RED);
-    text(Sip_msg, x, y);
+    text(Sip_msg, x, 0);
   }
 
   if (mode.equals("server")) {
     translate(col-gutter*2, 0);
     fill(MGREEN);
-    text(Cip_msg, x, y);
+    text(Cip_msg, x, 0);
 
-    fill(LBLUE);
+    fill(TERMINAL);
     translate(0, lf);
-    text(ping_msg, x, y);
+    text(ping_msg, x, 0);
   }
   if (mode.equals("client")) {
-    fill(LBLUE);    
+    fill(TERMINAL);    
     translate(0, lf);
-    text(ping_msg, x, y);
+    text(ping_msg, x, 0);
 
     translate(col-gutter*2, -lf);
     fill(MGREEN);
-    text(Cip_msg, x, y);
+    text(Cip_msg, x, 0);
   }
 
   // -- reset stuff
@@ -267,7 +355,7 @@ class Sandbox {
   float offset;
   //int[] t; //target cornenrs 
   String mode, server, network;
-  int[] i_bW; 
+  int[] bW_I; 
 
 
   Sandbox(StringDict dict) {
@@ -294,9 +382,9 @@ class Sandbox {
     bW2 = int(dict.get("button_width_2"));
     bW3 = int(dict.get("button_width_3"));
     bW4 = int(dict.get("button_width_4"));
-    int[] i_bW = new int[] { bW1, bW2, bW3, bW4 };
+    int[] bW_I = new int[] { bW1, bW2, bW3, bW4 };
 
-    println("button sizes: ", Arrays.toString(i_bW));
+    println("button sizes: ", Arrays.toString(bW_I));
     offset = float(dict.get("offset"));
     tSize = int(dict.get("text_size"));
     ppi = int(dict.get("ppi"));
