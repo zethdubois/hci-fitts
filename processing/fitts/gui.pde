@@ -110,29 +110,33 @@ void showMode() {
 //text(("- or _ || = or + "), x, y);
 //text(("[ or { || ] or }"), x, y);
 void writeMsg() {
-
-  //int wW = xS/4-gutter-gutter;
-  int wH = lf * 12;
-  if (Dual) wH = lf * 14;
+  int wH = lf * 12;  //: window height
+  if (Dual) wH = lf * 14; 
   int x = gutter;
 
   //: readouts (ro_*) trial settings (ts_*)
   String ro_ppi = "["+box.ppi+"] PPI = "+ppi; //: PPI
   String ts_x = "[" + bSelect + "]"; 
   String buff = "Width:";
-  ArrayList<String> ts_bWS_I = new ArrayList<String>();
-  float val;
+  String buff2 = "Amplitude:";
+  //: make arraylist string for button width in inch or pixel
+  ArrayList<String> ts_bWS_arr = new ArrayList<String>();
+  ArrayList<String> ts_bAS_arr = new ArrayList<String>();
   for (int i = 0; i<4; i++) {
-    if (Dual) val = ts_bWi_I[i]; 
-    else val = ts_bWp_I[i]; 
-    ts_bWS_I.add(buff+val);
-    //ts_bWpS_I = new String [] {(buff+ts_bWp_I[0]), (buff+ts_bWp_I[1]), (buff+ts_bWp_I[2]), (buff+ts_bWp_I[3])};
+    //: if dual mode, make string with the inch measurement (flaot), else with the pixel size
+    if (Dual) ts_bWS_arr.add(buff+ts_bWi_arr[i]); 
+    else ts_bWS_arr.add(buff+ts_bWp_arr[i]);
+    if (Dual) ts_bWS_arr.add(buff+ts_bAi_arr[i]); 
+    else ts_bAS_arr.add(buff2+ts_bAp_arr[i]);
+
+
+    //ts_bWpS_arr = new String [] {(buff+ts_bWp_arr[0]), (buff+ts_bWp_arr[1]), (buff+ts_bWp_arr[2]), (buff+ts_bWp_arr[3])};
   }
 
 
   buff = "ID:";
-  String [] ts_IDS_I = new String [] {(buff+ts_ID_I[0]), (buff+ts_ID_I[1]), 
-    (buff+ts_ID_I[2]), (buff+ts_ID_I[3])};
+  String [] ts_arrDS_arr = new String [] {(buff+ts_arrD_arr[0]), (buff+ts_arrD_arr[1]), 
+    (buff+ts_arrD_arr[2]), (buff+ts_arrD_arr[3])};
 
   String ts_bWp = " Button Width = "+bW; //: button Width in pixels
   String ts_1 = "["+box.bW1+"]";
@@ -178,22 +182,23 @@ void writeMsg() {
 
   if (iMode == 1) {
     S = "SERVER";
-    boxLF(MGREEN, 0, CENTER, S, xc, 0, 0,lf, FRAME);
+    boxLF(MGREEN, 0, CENTER, S, xc, 0, 0, lf, FRAME);
   }
   if (iMode == 2) {
     S = "CLIENT";
-    boxLF(RED, 0, CENTER, S, xc, 0, 0,lf, FRAME);
+    boxLF(RED, 0, CENTER, S, xc, 0, 0, lf, FRAME);
   }
 
   //---LINE 2
-  
-  //println("...........................",ts_bWpS_I[0]);
 
-  boxLF(ROSE, 0, RIGHT, ts_IDS_I[0], 0, 0, boxWidth-gutter, lf*2, NONE);  
-  
-  boxLF(TERMINAL, 0, LEFT, ts_bWS_I.get(0), 0, 0, gutter*2+kSpace, 0, NONE);  
-  //text(ts_bWpS_I[0], 0, 0);
-  
+  //println("...........................",ts_bWpS_arr[0]);
+
+  boxLF(ROSE, 0, RIGHT, ts_arrDS_arr[0], 0, 0, boxWidth-gutter, lf*2, NONE);  
+
+  boxLF(TERMINAL, 0, LEFT, ts_bWS_arr.get(0), 0, 0, gutter*4+kSpace, 0, NONE);  
+  //text(ts_bWpS_arr[0], 0, 0);
+  boxLF(TERMINAL, 0, LEFT, ts_bAS_arr.get(0), 0, 0, 0, lf, NONE); 
+
   boxLF(ROSE, 0, RIGHT, ts_select, 0, 0, 0, lf, NONE);
   //text(ts_select, 0, 0); //: width select options
 
@@ -313,8 +318,8 @@ void writeMsg() {
   String mode_msg = "Mode: " + mode;
   String net_msg = " Net: " + effective_net;
 
-  String Sip_msg = "Server IP: " + SERVER_IP ;
-  String Cip_msg = "Client IP: " + CLIENT_IP;
+  String Sip_msg = "Server IP: " + SERVER_arrP ;
+  String Cip_msg = "Client IP: " + CLIENT_arrP;
   String ping_msg = "Ping time: " + netPing;
   String connect_msg = "";
 
@@ -373,7 +378,7 @@ class Sandbox {
   float offset;
   //int[] t; //target cornenrs 
   String mode, server, network;
-  int[] bW_I; 
+  int[] bW_arr; 
 
 
   Sandbox(StringDict dict) {
@@ -400,9 +405,9 @@ class Sandbox {
     bW2 = int(dict.get("button_width_2"));
     bW3 = int(dict.get("button_width_3"));
     bW4 = int(dict.get("button_width_4"));
-    int[] bW_I = new int[] { bW1, bW2, bW3, bW4 };
+    int[] bW_arr = new int[] { bW1, bW2, bW3, bW4 };
 
-    println("button sizes: ", Arrays.toString(bW_I));
+    println("button sizes: ", Arrays.toString(bW_arr));
     offset = float(dict.get("offset"));
     tSize = int(dict.get("text_size"));
     ppi = int(dict.get("ppi"));

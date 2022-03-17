@@ -20,7 +20,7 @@ void switchNet() {
   println("\n-->switchNet() /");
   println("> Wifi :", WiFi);
   WiFi = !WiFi;
-  testNet(SERVER_IP);
+  testNet(SERVER_arrP);
   setNet();
 }
 
@@ -58,17 +58,17 @@ void keyPressed() {
   case '=': 
     println("increase PPI");  
     adjustPPI(1);
-        calcID("PPI");
+    calcID("PPI");
     break;
   case '_': 
     println("decrease PPI");  
     adjustPPI(-10);
-        calcID("PPI");
+    calcID("PPI");
     break;
   case '+': 
     println("increase PPI");  
     adjustPPI(10);
-        calcID("PPI");
+    calcID("PPI");
     break;
   case '[': 
     println("decrease button size");  
@@ -78,22 +78,22 @@ void keyPressed() {
   case ']': 
     println("increase button size");  
     adjustBW(1);
-        calcID("width");
+    calcID("width");
     break;
   case '{': 
     println("decrease button size");  
     adjustBW(-10);
-        calcID("width");
+    calcID("width");
     break;
   case '}': 
     println("increase button size");  
     adjustBW(10);
-        calcID("width");
+    calcID("width");
     break;   
   case ';': 
     println("decrease amplitude");  
     adjustAmp(-.01);
-        calcID("amp");
+    calcID("amp");
     break;
   case '\'': 
     println("increase spacing");  
@@ -150,7 +150,7 @@ void toggleMode() {
   if (iMode == 0) {
     Dual = false;
     mode = "single";
-    es_unit = "pixels";    
+    es_unit = "pixels";
   }
   if (iMode == 1) {
     Dual = true;
@@ -162,7 +162,7 @@ void toggleMode() {
     Dual = true;
     if (!Calibrated) Calibrate = true;
     mode = "client";
-    es_unit = "inches";    
+    es_unit = "inches";
   }
   setNet();
   if (GotData) {
@@ -189,7 +189,7 @@ void updateButtons() {
     catch(Exception e) {
     }
   } else {
-    int xT = findLong(Dual, 1);
+    int xT = findLong(Dual, 1, whichTrial);
     b1x = xC-bW/2-xT;
     b1y = yC-bW/2;
     b2x = xC-bW/2+xT;

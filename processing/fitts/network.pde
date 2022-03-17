@@ -18,8 +18,8 @@ long netPing;
 
 long[] pings;
 
-String SERVER_IP, CLIENT_IP;
-String LOCAL_IP = "127.0.0.1";
+String SERVER_arrP, CLIENT_arrP;
+String LOCAL_arrP = "127.0.0.1";
 boolean WiFi = false;
 String network, effective_net;
 
@@ -36,7 +36,7 @@ long pingTime(String hostIP) {
 }
 
 
-static final String ETHERNET_IP = findLanIp();
+static final String ETHERNET_arrP = findLanIp();
 
 static final String findLanIp() {
   try {
@@ -80,14 +80,14 @@ void setNet() {
   println("Wifi :", WiFi);
   println("iMode: ", iMode);
   if (WiFi) {
-    SERVER_IP = ETHERNET_IP;
-    CLIENT_IP = "unkown";
+    SERVER_arrP = ETHERNET_arrP;
+    CLIENT_arrP = "unkown";
     effective_net = "wifi";
   } else {
-    SERVER_IP = LOCAL_IP;
-    CLIENT_IP = LOCAL_IP;
+    SERVER_arrP = LOCAL_arrP;
+    CLIENT_arrP = LOCAL_arrP;
     effective_net = "local";
   }
   if (iMode == 0) effective_net = "<n/a>";
-  println(">>SERVER_IP :", SERVER_IP);
+  println(">>SERVER_arrP :", SERVER_arrP);
 }

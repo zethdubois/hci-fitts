@@ -66,6 +66,7 @@ void setup() {
   size(1000, 1000);
   fill(0);//black text color
   ellipseMode(CENTER);
+  //setArgs();
   nFont = createFont("Monospaced", tSize);
   iFont = createFont("Verdana", tSize+1);
   g = new GUIController (this);
@@ -76,13 +77,13 @@ void setup() {
   stopClick = minim.loadFile("boop.wav");
   fileName = "test"; //+fileName;
   setupFile(fileName);
-  println("\n\n........................", ts_bWp_I[0]);
+  println("\n\n........................", ts_bWp_arr[0]);
   //updateButtons();
 }
 
-int [] ts_xB_I, ts_xA_I;
-
-
+int [] ts_xB_arr, ts_xA_arr;
+float [] ts_off_arr, ts_bAmp_arr;
+int es_trialSize;
 
 void setArgs() {
   ppi = box.ppi;
@@ -100,9 +101,34 @@ void setArgs() {
   es_condition1 = cnfgs.get("condition1");
   es_condition2 = cnfgs.get("condition2");
   es_condition3 = cnfgs.get("condition3");
-  ts_bWp_I = new int[]{int(cnfgs.get("button_width_1")), int(cnfgs.get("button_width_2")), 
-    int(cnfgs.get("button_width_3")), int(cnfgs.get("button_width_4"))};
-  println("........................", ts_bWp_I[0]);
+  es_trialSize =  int(cnfgs.get("number_of_trials_per_condition"));
+
+  /*--->>iterate through the ini to get buttonwidth and offset values */
+  ts_bWp_arr = new int[es_trialSize];
+  ts_off_arr = new float[es_trialSize];
+  ts_bAmp_arr = new float[es_trialSize];
+  for (int i = 0; i < es_trialSize; i++) {
+    println("trial #", i);
+    ts_bWp_arr[i] = int(cnfgs.get("button_width_"+(i+1)));
+    ts_off_arr[i] = float(cnfgs.get("offset_"+(i+1)));
+  }
+  //println(Arrays.toString(ts_off_arr));
+  //println("ts_bWp_arr:", Arrays.toString(ts_bWp_arr));
+  for (int i = 0; i < es_trialSize; i++) {
+    ts_bAmp_arr[i]=(fittsA(i));
+  }  
+  println("--->bamp:",Arrays.toString(ts_bAmp_arr));
+  println("\n\n---->>", ts_bWp_arr[0]);
+
+
+  //ts_bWp_arr = new int[]{int(cnfgs.get("button_width_1")), int(cnfgs.get("button_width_2")), 
+  //  int(cnfgs.get("button_width_3")), int(cnfgs.get("button_width_4"))};
+  ////: make the button amplitude pixel array
+  //ts_off_arr = new float[]{int(cnfgs.get("offset_1")), int(cnfgs.get("offset_2")), 
+  //  int(cnfgs.get("offset_3")), int(cnfgs.get("offset_4"))};
+  //ts_bAp_arr = new int[] {fittsA(ts_off_arr[1])), int(cnfgs.get("button_width_2")), 
+  //  int(cnfgs.get("button_width_3")), int(cnfgs.get("button_width_4"))};
+  //println("........................", ts_bWp_arr[0]);
   conditions = new String[]{es_condition0, es_condition1, es_condition2, es_condition3};
   es_numTPC = int(cnfgs.get("number_of_trials_per_condition"));
   Resize = Boolean.parseBoolean(cnfgs.get("resize"));
@@ -122,18 +148,15 @@ void setArgs() {
 
   if (cnfgs.get("mode").equals("single")) es_unit="pixel"; 
   else es_unit="inch";
-  //pingTime(HOST_IP);
-  //ts_ID_I = new int[]{0, 0, 0, 0};
-  ts_ID_I = new float[]{0f, 0f, 0f, 0f};
+  //pingTime(HOST_arrP);
+  //ts_arrD_arr = new int[]{0, 0, 0, 0};
+  ts_arrD_arr = new float[]{0f, 0f, 0f, 0f};
   //fittsW = round((float(bW) / float(ppi)), 2);
 
-  ts_bWi_I = new float[]{round((ts_bWp_I[0]/float(ppi)), 2), round((ts_bWp_I[1]/float(ppi)), 2), 
-    round((ts_bWp_I[2]/float(ppi)), 2), round((ts_bWp_I[3]/float(ppi)), 2)};
-  int xT = findLong(Dual, 1);
-  int xB; // long of butt B
-  xB = xT + xC;
-  //fittsA = round((float(xB) - float(xA)) / float(ppi), 2);
-  ts_A_I = new float[]{0, 0, 0, 0};
+  //ts_bWi_arr = new float[]{round((ts_bWp_arr[0]/float(ppi)), 2), round((ts_bWp_arr[1]/float(ppi)), 2), 
+  //  round((ts_bWp_arr[2]/float(ppi)), 2), round((ts_bWp_arr[3]/float(ppi)), 2)};
+
+
   calcID("PPI");
 }
 

@@ -5,32 +5,46 @@
 
 import java.math.*;
 
-float [] ts_ID_I;
-float [] ts_A_I;
-float [] ts_bWi_I;
+float [] ts_arrD_arr;
+float [] ts_A_arr;
+float [] ts_bWi_arr;
+float [] ts_bAi_arr;
 
 float fittsTP() {
   float out = fittsID/fittsMT*1000;
   return out;
 }
 
+float fittsA(int trial) {
+  int xT = findLong(Dual, 1, trial); //: get the first longitude 
+  int xB = xT + xC;
+  int xA = xC - xT; // long butt A
+  float out = round((float(xB) - float(xA)) / float(ppi), 2);
+  return out;
+}
+
 void calcID(String mode) {
   println("\n-->calcID("+mode+")");
+  println("****EXIT HERE WHILE DEBUGGING****");
+  boolean debug = true;
+  if (debug) return;
   int j = ts_adj; 
   int k = ts_adj;
+
   if (mode.equals("PPI")) { // change all the ts's
     j=0;
     k=3;
   }
   for (int i=j; i<=k; i++) {
     println("i:", i);
-    if (Dual) ts_ID_I[i] = log2(ts_A_I[i]/ts_bWi_I[i]+1); else ts_ID_I[i] = log2(ts_A_I[i]/ts_bWp_I[i]+1);
-    println("W", ts_bWi_I[i]);
-    println("ID=", ts_ID_I[i]);
+    print("ts__arr:", ts_A_arr[i]);
+    if (Dual) ts_arrD_arr[i] = log2(ts_A_arr[i]/ts_bWi_arr[i]+1); 
+    else ts_arrD_arr[i] = log2(ts_A_arr[i]/ts_bWp_arr[i]+1);
+    println("W", ts_bWi_arr[i]);
+    println("ID=", ts_arrD_arr[i]);
   }
 
   //fittsID = log2(fittsA/fittsW+1);
-  //boo
 }
 
 public static float round(float d, int decimalPlace) {
@@ -39,12 +53,15 @@ public static float round(float d, int decimalPlace) {
   return bd.floatValue();
 }
 
-int findLong(boolean Switch, int i) {
+int findLong(boolean Switch, int i, int trial) {
+  println("\n-->findLong("+Switch, i, trial);
   //int iLong;
   float buff = 0;
   if (Switch) {
   } else {
-    buff = ((xS/2 - bW/2 - gutter)*offset)*i;
+    println(xS);
+    println(ts_bWp_arr[trial]);
+    buff = ((xS/2 - ts_bWp_arr[trial]/2 - gutter)*offset)*i;
   }
 
   return int(buff);

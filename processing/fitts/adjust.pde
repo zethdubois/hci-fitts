@@ -1,4 +1,4 @@
-float offset; //<>//
+float offset; //<>// //<>//
 float a_fittsA;
 float b_fittsA;
 float lfMod = 1.5f;
@@ -35,9 +35,9 @@ void adjustPPI(int val) {
   if (!Setup) return;
   ppi = ppi + val;
 }
-
+int whichTrial = 0;
 void drawGrid() {
-  int xT = findLong(Dual, 1);
+  int xT = findLong(Dual, 1, whichTrial);
   int xT2 = xT;
   int xB; // long of butt B
   int xA = xC - xT; // long butt A
