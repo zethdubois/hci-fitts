@@ -5,13 +5,14 @@
 
 import java.math.*;
 
-float [] ts_arrD_arr;
+float [] ts_ID_arr;
 float [] ts_A_arr;
 float [] ts_bWi_arr;
 float [] ts_bAi_arr;
 
 float fittsTP() {
-  float out = fittsID/fittsMT*1000;
+  float out = 0;
+  //float out = fittsID/fittsMT*1000;  //convert to array
   return out;
 }
 
@@ -23,6 +24,13 @@ float fittsA(int trial) {
   return out;
 }
 
+float fittsID(int trial) {
+  println("\n-->fittsID(", trial);
+  println(ts_bAp_arr[trial]);  
+  float out = log2(ts_bAp_arr[trial]/ts_bWp_arr[trial]+1);
+  println("ID = ",out);
+  return out;
+}
 void calcID(String mode) {
   println("\n-->calcID("+mode+")");
   println("****EXIT HERE WHILE DEBUGGING****");
@@ -38,10 +46,10 @@ void calcID(String mode) {
   for (int i=j; i<=k; i++) {
     println("i:", i);
     print("ts__arr:", ts_A_arr[i]);
-    if (Dual) ts_arrD_arr[i] = log2(ts_A_arr[i]/ts_bWi_arr[i]+1); 
-    else ts_arrD_arr[i] = log2(ts_A_arr[i]/ts_bWp_arr[i]+1);
+    if (Dual) ts_ID_arr[i] = log2(ts_A_arr[i]/ts_bWi_arr[i]+1); 
+    else ts_ID_arr[i] = log2(ts_A_arr[i]/ts_bWp_arr[i]+1);
     println("W", ts_bWi_arr[i]);
-    println("ID=", ts_arrD_arr[i]);
+    println("ID=", ts_ID_arr[i]);
   }
 
   //fittsID = log2(fittsA/fittsW+1);

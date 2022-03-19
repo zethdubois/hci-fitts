@@ -1,7 +1,7 @@
 
 Boolean Trial = false;
 Boolean Setup = true;
-float fittsA, fittsW; //: amplitude / width
+float d_fittsA, d_fittsW; //: amplitude / width
 int iMode = 0;
 int iTrace =0;
 

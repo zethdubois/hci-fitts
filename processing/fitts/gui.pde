@@ -6,7 +6,7 @@ boolean Msg = false;
 int tSize; // text size;
 boolean OverBeep, OverBoop;
 boolean Dual = false;
-float fittsID;
+float d_fittsID;
 int bW; //: button width pixels
 String bSelect = "1";
 color ROSE = color(253, 206, 217);
@@ -135,8 +135,8 @@ void writeMsg() {
 
 
   buff = "ID:";
-  String [] ts_arrDS_arr = new String [] {(buff+ts_arrD_arr[0]), (buff+ts_arrD_arr[1]), 
-    (buff+ts_arrD_arr[2]), (buff+ts_arrD_arr[3])};
+  String [] ts_IDS_arr = new String [] {(buff+ts_ID_arr[0]), (buff+ts_ID_arr[1]), 
+    (buff+ts_ID_arr[2]), (buff+ts_ID_arr[3])};
 
   String ts_bWp = " Button Width = "+bW; //: button Width in pixels
   String ts_1 = "["+box.bW1+"]";
@@ -146,7 +146,7 @@ void writeMsg() {
   String ts_select = ts_1+ts_2+ts_3+ts_4;
   String S = "";
 
-  String ts_fW = "Button Width (in) = "+fittsW; //: Fitts Width
+  //String ts_fW = "Button Width (in) = "+fittsW; //: Fitts Width
   float ts_x_w = textWidth(ts_x);
   int boxWidth = int(textWidth(ts_bWp)+gutter*3); // length of longest string
 
@@ -193,7 +193,7 @@ void writeMsg() {
 
   //println("...........................",ts_bWpS_arr[0]);
 
-  boxLF(ROSE, 0, RIGHT, ts_arrDS_arr[0], 0, 0, boxWidth-gutter, lf*2, NONE);  
+  boxLF(ROSE, 0, RIGHT, ts_IDS_arr[0], 0, 0, boxWidth-gutter, lf*2, NONE);  
 
   boxLF(TERMINAL, 0, LEFT, ts_bWS_arr.get(0), 0, 0, gutter*4+kSpace, 0, NONE);  
   //text(ts_bWpS_arr[0], 0, 0);
@@ -254,10 +254,10 @@ void writeMsg() {
    translate(0, lf);
    text(("Distance B = "+ b_fittsA + " inches"), x, 0);
    translate(0, lf);
-   fittsA = 0;
-   text(("Amplitude = ?"+ fittsA + " inches"), x, 0);
+   d_fittsA = 0;
+   text(("Amplitude = ?"+ d_fittsA + " inches"), x, 0);
    } else {
-   text(("Amplitude = "+ fittsA + " inches"), x, 0);
+   text(("Amplitude = "+ d_fittsA + " inches"), x, 0);
    }
    translate(0, lf); 
    text(("Index of D = "+ fittsID), x, 0);

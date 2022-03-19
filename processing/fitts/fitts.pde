@@ -82,7 +82,7 @@ void setup() {
 }
 
 int [] ts_xB_arr, ts_xA_arr;
-float [] ts_off_arr, ts_bAmp_arr;
+float [] ts_off_arr;
 int es_trialSize;
 
 void setArgs() {
@@ -104,20 +104,21 @@ void setArgs() {
   es_trialSize =  int(cnfgs.get("number_of_trials_per_condition"));
 
   /*--->>iterate through the ini to get buttonwidth and offset values */
+
   ts_bWp_arr = new int[es_trialSize];
   ts_off_arr = new float[es_trialSize];
-  ts_bAmp_arr = new float[es_trialSize];
+  ts_bAp_arr = new float[es_trialSize];
+
   for (int i = 0; i < es_trialSize; i++) {
-    println("trial #", i);
-    ts_bWp_arr[i] = int(cnfgs.get("button_width_"+(i+1)));
-    ts_off_arr[i] = float(cnfgs.get("offset_"+(i+1)));
+    esAdjust(true, i);
   }
   //println(Arrays.toString(ts_off_arr));
   //println("ts_bWp_arr:", Arrays.toString(ts_bWp_arr));
   for (int i = 0; i < es_trialSize; i++) {
-    ts_bAmp_arr[i]=(fittsA(i));
+
   }  
-  println("--->bamp:",Arrays.toString(ts_bAmp_arr));
+  println("--->bamp:", Arrays.toString(ts_bAp_arr));
+  println("--->ID:", Arrays.toString(ts_ID_arr));  
   println("\n\n---->>", ts_bWp_arr[0]);
 
 
@@ -149,8 +150,8 @@ void setArgs() {
   if (cnfgs.get("mode").equals("single")) es_unit="pixel"; 
   else es_unit="inch";
   //pingTime(HOST_arrP);
-  //ts_arrD_arr = new int[]{0, 0, 0, 0};
-  ts_arrD_arr = new float[]{0f, 0f, 0f, 0f};
+  //ts_ID_arr = new int[]{0, 0, 0, 0};
+  ts_ID_arr = new float[]{0f, 0f, 0f, 0f};
   //fittsW = round((float(bW) / float(ppi)), 2);
 
   //ts_bWi_arr = new float[]{round((ts_bWp_arr[0]/float(ppi)), 2), round((ts_bWp_arr[1]/float(ppi)), 2), 

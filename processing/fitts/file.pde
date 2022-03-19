@@ -5,7 +5,7 @@ String [] conditions;
 String es_condition0 = "Test Mode"; 
 
 int[] ts_bWp_arr;
-int[] ts_bAp_arr;
+float[] ts_bAp_arr;
 
 
 //** experiment settings
@@ -53,9 +53,9 @@ void writeData() { //String exp) {
   output.print(participant+"\t");
   output.print(ex_condStr+"\t");
   output.print(ex_trialCnt+"\t");  
-  output.print(fittsA+"\t");  
-  output.print(fittsW+"\t");
-  output.print(fittsID+"\t"); 
+  output.print(d_fittsA+"\t");  
+  output.print(d_fittsW+"\t");
+  output.print(d_fittsID+"\t"); 
   output.print(ex_sampleCnt+"\t");  
   output.print(fittsMT+"\t");
   output.println(fittsTP);  

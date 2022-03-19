@@ -31,6 +31,18 @@ void adjustAmp(float val) {
   if (offset < .1) offset = .1;
 }
 
+void esAdjust(boolean Init, int i) {
+  // init loads values from file
+
+  if (Init) {
+    println("trial #", i);
+    ts_bWp_arr[i] = int(cnfgs.get("button_width_"+(i+1)));
+    ts_off_arr[i] = float(cnfgs.get("offset_"+(i+1)));
+  }
+  ts_bAp_arr[i]=fittsA(i);
+  ts_ID_arr[i]=fittsID(i);
+}
+
 void adjustPPI(int val) {
   if (!Setup) return;
   ppi = ppi + val;
@@ -56,22 +68,21 @@ void drawGrid() {
     S = "Configuration for two screens\nrequires INCH unit measure calibration.";
     //wS = int(textWidth(S));
     text(S, xC, gutter*2);
-    
+
     S = "Use number row [-] and [+] to change PPI\n[C] to close";
     text(S, xC, yS - gutter-lf*2);
-    
+
     S = "or use\n\n< -- CREDIT CARD -- >";
     text(S, xC, yC - lf*2);
-    
-    
+
+
     rectMode(CENTER);
     strokeWeight(2);
-    
+
     noFill();
     rect(xC, yC, int(ppi*3.37), int(ppi*2.125));
     textFont(nFont);
     strokeWeight(1);
-   
   }
 
   stroke(255);
@@ -118,12 +129,13 @@ void drawGrid() {
   strokeWeight(1);
   popMatrix();
   rectMode(CORNERS);
-  if (Dual) { 
-    a_fittsA = round(float(xS/2) / float(ppi), 2);
-  } else {
-    fittsA = round((float(xB) - float(xA)) / float(ppi), 2);
-  }
-  fittsW = round((float(bW) / float(ppi)), 2);
+  //replace with whichTrial arrays
+  //if (Dual) { 
+  //  a_fittsA = round(float(xS/2) / float(ppi), 2);
+  //} else {
+  //  fittsA = round((float(xB) - float(xA)) / float(ppi), 2);
+  //}
+  //fittsW = round((float(bW) / float(ppi)), 2);
 
   fill(0);
 }
