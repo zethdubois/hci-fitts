@@ -108,9 +108,11 @@ void setArgs() {
   ts_bWp_arr = new int[es_trialSize];
   ts_off_arr = new float[es_trialSize];
   ts_bAp_arr = new float[es_trialSize];
+  ts_ID_arr = new float[es_trialSize];
 
   for (int i = 0; i < es_trialSize; i++) {
     esAdjust(true, i);
+
   }
   //println(Arrays.toString(ts_off_arr));
   //println("ts_bWp_arr:", Arrays.toString(ts_bWp_arr));
@@ -150,8 +152,7 @@ void setArgs() {
   if (cnfgs.get("mode").equals("single")) es_unit="pixel"; 
   else es_unit="inch";
   //pingTime(HOST_arrP);
-  //ts_ID_arr = new int[]{0, 0, 0, 0};
-  ts_ID_arr = new float[]{0f, 0f, 0f, 0f};
+
   //fittsW = round((float(bW) / float(ppi)), 2);
 
   //ts_bWi_arr = new float[]{round((ts_bWp_arr[0]/float(ppi)), 2), round((ts_bWp_arr[1]/float(ppi)), 2), 

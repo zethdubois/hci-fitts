@@ -4,6 +4,38 @@ int fittsMT = 0;
 
 boolean GotData = false;
 
+void esButton(int i){
+  //println("\n-->esButton(",i);
+  int B = tSize+4; // size of the rectangle "button" to draw
+  fill(TERMINAL,120);
+  rectMode(CENTER);
+  stroke(ROSE);
+  rect(gutter*2,-lf*.3,B,B); //<>//
+  fill(MGREEN);
+  textFont(iFont);
+  textAlign(CENTER);
+  text((i+1),gutter*2,0);
+  textAlign(RIGHT);
+  textFont(nFont);
+}
+//!can't figure out how to get the stupid matrix coordinates caputred in a variable
+//void esButtonX(int i) {
+//  int b = 50;
+//  String bangStr = "bang"+i;
+//  resetMatrix();
+//  PMatrix get()
+//  PMatrix m = pg.getMatrix();
+//  // isolate coordinate space
+//  pushMatrix();
+//  //apply last PGraphics matrix
+//  applyMatrix(m);
+//  cp5.addBang(bangStr)
+//    .setPosition(0, 0)
+//    .setSize(b, b)
+//    //.setColorForeground(startColor)
+//    .setLabel(Integer.toString(i))
+//    ;
+//}
 public void boop() {                    // STOP
   if (Started) { // timer is counting...
     ex_sampleCnt++;
@@ -35,7 +67,7 @@ void nextTrial() {
   }
 }
 
-void nextCondtion(){
+void nextCondtion() {
   ex_condStr = conditions[ex_condCnt];
 }
 public void beep() {                 // START 
@@ -44,7 +76,7 @@ public void beep() {                 // START
     Date now = new Date();
     long ut3 = now.getTime() / 1000L;
     fileName = Long.toString(ut3);
-    System.out.println(ut3);
+    println(ut3);
   }
   OverBeep = true;
   OverBoop = false;

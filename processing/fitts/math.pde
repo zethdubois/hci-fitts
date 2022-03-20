@@ -16,19 +16,26 @@ float fittsTP() {
   return out;
 }
 
-float fittsA(int trial) {
+float fittsA(int trial, String mode) {
+  float out;
   int xT = findLong(Dual, 1, trial); //: get the first longitude 
   int xB = xT + xC;
   int xA = xC - xT; // long butt A
-  float out = round((float(xB) - float(xA)) / float(ppi), 2);
+
+  if (mode.equals("pixels")) {
+    out = round((float(xB) - float(xA)), 2);
+  } else {
+    out = round((float(xB) - float(xA)) / float(ppi), 2);
+  }
   return out;
 }
 
 float fittsID(int trial) {
   println("\n-->fittsID(", trial);
   println(ts_bAp_arr[trial]);  
+  println(ts_bWp_arr[trial]);
   float out = log2(ts_bAp_arr[trial]/ts_bWp_arr[trial]+1);
-  println("ID = ",out);
+  println("ID = ", out);
   return out;
 }
 void calcID(String mode) {
@@ -62,13 +69,12 @@ public static float round(float d, int decimalPlace) {
 }
 
 int findLong(boolean Switch, int i, int trial) {
-  println("\n-->findLong("+Switch, i, trial);
+  //println("\n-->findLong("+Switch, i, trial);
   //int iLong;
   float buff = 0;
   if (Switch) {
   } else {
-    println(xS);
-    println(ts_bWp_arr[trial]);
+    //println(ts_bWp_arr[trial]);
     buff = ((xS/2 - ts_bWp_arr[trial]/2 - gutter)*offset)*i;
   }
 

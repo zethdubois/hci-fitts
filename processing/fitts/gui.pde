@@ -28,6 +28,7 @@ int screen;
 String tText;
 boolean Calibrate = true;
 boolean Calibrated = false;
+int setTrial = 0;
 
 int lf; 
 //--CONSTANTS
@@ -42,12 +43,12 @@ void drawBox(int c, int bX, int bY, int bW, int bH, String title ) {
   fill(c, 60);
   noStroke();
   rect(bX, bY, bW, bH); //: BG rectangle
-  if (!title.trim().isEmpty()) boxLF(c, 2, CENTER, title, bX+bW/2, bY+tSize-2, 0, 0, TITLE);
+  if (!title.trim().isEmpty()) textLF(c, 2, CENTER, title, bX+bW/2, bY+tSize-2, 0, 0, TITLE);
   popStyle();
 }
 
 //: this proc automates text writting to the UI
-void boxLF(int c, int f, int align, String S, int x, int y, int tx, int ty, String mode) {
+void textLF(int c, int f, int align, String S, int x, int y, int tx, int ty, String mode) {
   //: modes: 0 normal, 1 outline, 2 faux bold
   int tS = tSize + f;
   translate(tx, ty);
@@ -160,7 +161,7 @@ void writeMsg() {
   translate(gutter, gutter);
   drawBox(ROSE, 0, 0, boxWidth, wH, "CONFIG APPARATUS"); //: cnfig app box
   translate(gutter*2+boxWidth+kSpace, 0);
-  drawBox(TERMINAL, 0, 0, boxWidth, wH, ("TRIAL # "+ ex_trialCnt));
+  if (setTrial > 0) drawBox(TERMINAL, 0, 0, boxWidth, wH, ("TRIAL # "+ setTrial));
   popMatrix();
   pushMatrix();
   translate(xS-gutter-boxWidth, gutter);
@@ -178,28 +179,29 @@ void writeMsg() {
 
   if (iMode == 0) S = "Control Mode: SINGLE"; 
   else S = "Control Mode: DUAL";
-  boxLF(ROSE, 0, CENTER, S, xc, 0, gutter, int(lf*2.5), NONE);
+  textLF(ROSE, 0, CENTER, S, xc, 0, gutter, int(lf*2.5), NONE);
 
   if (iMode == 1) {
     S = "SERVER";
-    boxLF(MGREEN, 0, CENTER, S, xc, 0, 0, lf, FRAME);
+    textLF(MGREEN, 0, CENTER, S, xc, 0, 0, lf, FRAME);
   }
   if (iMode == 2) {
     S = "CLIENT";
-    boxLF(RED, 0, CENTER, S, xc, 0, 0, lf, FRAME);
+    textLF(RED, 0, CENTER, S, xc, 0, 0, lf, FRAME);
   }
 
   //---LINE 2
 
-  //println("...........................",ts_bWpS_arr[0]);
-
-  boxLF(ROSE, 0, RIGHT, ts_IDS_arr[0], 0, 0, boxWidth-gutter, lf*2, NONE);  
-
-  boxLF(TERMINAL, 0, LEFT, ts_bWS_arr.get(0), 0, 0, gutter*4+kSpace, 0, NONE);  
+  //: column list the trial Fitts ID's
+  translate(boxWidth-gutter, lf);
+  for (int i = 0; i < es_trialSize; i++) {
+    textLF(ROSE, 0, RIGHT, ts_IDS_arr[i], 0, 0, 0, lf, NONE);
+    esButton(i);
+  }
+  if (setTrial > 0) textLF(TERMINAL, 0, LEFT, ts_bWS_arr.get(0), 0, 0, gutter*4+kSpace, 0, NONE);  
   //text(ts_bWpS_arr[0], 0, 0);
-  boxLF(TERMINAL, 0, LEFT, ts_bAS_arr.get(0), 0, 0, 0, lf, NONE); 
-
-  boxLF(ROSE, 0, RIGHT, ts_select, 0, 0, 0, lf, NONE);
+  if (setTrial > 0) textLF(TERMINAL, 0, LEFT, ts_bAS_arr.get(0), 0, 0, 0, lf, NONE); 
+  textLF(ROSE, 0, RIGHT, ts_select, 0, 0, 0, lf, NONE);
   //text(ts_select, 0, 0); //: width select options
 
 
@@ -366,8 +368,10 @@ void writeMsg() {
   // -- reset stuff
   fill(0);
   popMatrix();
+  FirstDraw = false;
 }
 
+boolean FirstDraw = true;
 class Sandbox {
 
   private String name;

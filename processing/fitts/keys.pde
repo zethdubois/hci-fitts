@@ -137,6 +137,7 @@ void keyPressed() {
   default:
     break;
   }
+  //: this places a line number on the console printout for easier tracking
   iTrace++;
   println("\n["+iTrace+"]---------------------");
 }

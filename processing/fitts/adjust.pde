@@ -39,8 +39,8 @@ void esAdjust(boolean Init, int i) {
     ts_bWp_arr[i] = int(cnfgs.get("button_width_"+(i+1)));
     ts_off_arr[i] = float(cnfgs.get("offset_"+(i+1)));
   }
-  ts_bAp_arr[i]=fittsA(i);
-  ts_ID_arr[i]=fittsID(i);
+  ts_bAp_arr[i] = fittsA(i,"pixels");
+  ts_ID_arr[i] = fittsID(i);
 }
 
 void adjustPPI(int val) {
