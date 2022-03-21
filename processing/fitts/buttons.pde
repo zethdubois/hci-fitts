@@ -10,11 +10,10 @@ void esButton(int i) {
   int B = tSize+4; // size of the rectangle "button" to draw
   fill(TERMINAL, 120);
   rectMode(CENTER);
-  stroke(ROSE);
+  strokeWeight(0);
   rect(gutter*2, -lf*.3, B, B);
-  if (i == setTrial) fill(MGREEN);
+  if (i+1 == setTrial) fill(TERMINAL);
   else fill(ROSE);
-  fill(MGREEN);
   textFont(iFont);
   textAlign(CENTER);
   text((i+1), gutter*2, 0);

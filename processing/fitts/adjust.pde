@@ -47,9 +47,10 @@ void adjustPPI(int val) {
   if (!Setup) return;
   ppi = ppi + val;
 }
-int whichTrial = 0;
+
 void drawGrid() {
-  int xT = findLong(DUAL, 1, whichTrial);
+  if (setTrial == 0) return;
+  int xT = findLong(DUAL, 1, setTrial);
   int xT2 = xT;
   int xB; // long of butt B
   int xA = xC - xT; // long butt A
@@ -90,7 +91,7 @@ void drawGrid() {
   pushMatrix();
   translate(-1*xT, 0);
   stroke(color(0, 255, 0)); 
-  line(xC, 0, xC, yS); // draw butt A
+  line(xC, 0, xC, yS); // draw butt A meridian
   rectMode(CENTER);
   noFill();
   strokeWeight(4);

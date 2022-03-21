@@ -31,6 +31,7 @@ void keyPressed() {
   if (es > 0 && es <= es_trialSize) {
     println("change trial settings");
     setTrial = es;
+    
   }
   switch(key) {
   case 'n': 
@@ -109,9 +110,10 @@ void keyPressed() {
     println("decrease window");  
     adjustWin(-10);
     break;
-  case 's': 
-    println("change settings");  
+  case 's':
     ChangeSettings=!ChangeSettings;
+    println("change settings:", ChangeSettings);  
+
     break;    
   case '.': 
     println("increase window");  
@@ -199,7 +201,7 @@ void updateButtons() {
     catch(Exception e) {
     }
   } else {
-    int xT = findLong(DUAL, 1, whichTrial);
+    int xT = findLong(DUAL, 1, (setTrial-1));
     b1x = xC-bW/2-xT;
     b1y = yC-bW/2;
     b2x = xC-bW/2+xT;
@@ -234,12 +236,11 @@ void setups() {
   }
   if (!Trial) {
     setTrial ++;
-    reviewStr="[SPACEBAR] to Review Trial #"+(setTrial+1);
+    reviewStr="Review Trial "+(setTrial+1)+" [SPACEBAR]";
     println("\n\n", setTrial, es_trialSize);
     if (setTrial == es_trialSize) {
-      println("\n\nbingg............................");
-      
-      reviewStr="[SPACEBAR] to continue to trials";
+
+      reviewStr="Continue to Trials [SPACEBAR]";
     }
   }
   println("Setup:", Setup);

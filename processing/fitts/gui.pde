@@ -15,6 +15,7 @@ color TERMINAL = color(127, 207, 250);
 color TERMINAL_a = color(137, 207, 240, 60);
 color DBLUE = color(7, 17, 150);
 color LEMON = color(255, 244, 79);
+color GHOST = color(250);
 color LEMON_a = color(245, 234, 69, 90);
 
 //int ROSE = #ffced9;
@@ -39,11 +40,11 @@ String TITLE = "TITLE";
 String NONE = "NONE";
 Boolean ChangeSettings = false;
 boolean Reviewed = false;
-String reviewStr = "[SPACEBAR] Review Trial Settings";
+String reviewStr = "Review Trial Settings [SPACEBAR]";
 
 void drawBox(int c, int bX, int bY, int bW, int bH, String title ) {
   pushStyle();
-  fill(c, 60);
+  fill(c, 40);
   noStroke();
   rect(bX, bY, bW, bH); //: BG rectangle
   if (!title.trim().isEmpty()) textLF(c, 2, CENTER, title, bX+bW/2, bY+tSize-2, 0, 0, TITLE);
@@ -68,13 +69,13 @@ void textLF(int c, int f, int align, String S, int x, int y, int tx, int ty, Str
       rectMode(CENTER);
       rect(x, y-tS*mod/2, bx+o, tS*mod+o);
     }
-    mode = "bold"; //: do bold now
+    mode = "BOLD"; //: do bold now
   }  
   fill(c);
   text(S, x, y);
 
-  if (mode.equals("bold")) text(S, x+1, y-1); // FAUX BOLD
-  if (mode.equals("box")) {                  // box it in
+  if (mode.equals("BOLD")) text(S, x+1, y-1); // FAUX BOLD
+  if (mode.equals("BOX")) {                  // box it in
     int o = tS/2;
     float mod = .7f; //: this is a mod to reduce the vertical offset to the top of text
     int bx = int(textWidth(S));
@@ -114,33 +115,41 @@ void showMode() {
 //text(("- or _ || = or + "), x, y);
 //text(("[ or { || ] or }"), x, y);
 void writeMsg() {
-  int wH = lf * 12;  //: window height
+  int wH = lf * 5 + lf * es_trialSize + gutter;  //: window height
   if (DUAL) wH = lf * 14; 
   int x = gutter;
 
   //: readouts (ro_*) trial settings (ts_*)
   String ro_ppi = "["+box.ppi+"] PPI = "+ppi; //: PPI
   String ts_x = "[" + bSelect + "]"; 
-  String buff = "Width:";
-  String buff2 = "Amplitude:";
+  String buff = "Width: ";
+  String buff2 = "Amplitude: ";
+  String buff3 = "Screen Offset: ";
   //: make arraylist string for button width in inch or pixel
   ArrayList<String> ts_bWS_arr = new ArrayList<String>();
   ArrayList<String> ts_bAS_arr = new ArrayList<String>();
+  ArrayList<String> ts_offS_arr = new ArrayList<String>();
   for (int i = 0; i<4; i++) {
     //: if DUAL mode, make string with the inch measurement (flaot), else with the pixel size
     if (DUAL) ts_bWS_arr.add(buff+ts_bWi_arr[i]); 
     else ts_bWS_arr.add(buff+ts_bWp_arr[i]);
     if (DUAL) ts_bWS_arr.add(buff+ts_bAi_arr[i]); 
     else ts_bAS_arr.add(buff2+ts_bAp_arr[i]);
+    String buff4 = buff3+String.valueOf(int(round(ts_off_arr[i]*100, 0))+"%");
+    ts_offS_arr.add(buff4);
 
 
     //ts_bWpS_arr = new String [] {(buff+ts_bWp_arr[0]), (buff+ts_bWp_arr[1]), (buff+ts_bWp_arr[2]), (buff+ts_bWp_arr[3])};
   }
 
 
-  buff = "ID:";
-  String [] ts_IDS_arr = new String [] {(buff+ts_ID_arr[0]), (buff+ts_ID_arr[1]), 
-    (buff+ts_ID_arr[2]), (buff+ts_ID_arr[3])};
+  buff = "ID: ";
+  String [] ts_IDS_arr = new String [es_trialSize];
+  for (int i = 0; i < es_trialSize; i++) {
+    ts_IDS_arr[i] = buff+df.format(ts_ID_arr[i]);
+  }
+  //String [] ts_IDS_arr = new String [] {(buff+df.format(ts_ID_arr[0])), (buff++df.format(ts_ID_arr[1]), 
+  //  (buff+ts_ID_arr[2]), (buff+ts_ID_arr[3])};
 
   String ts_bWp = " Button Width = "+bW; //: button Width in pixels
   String ts_1 = "["+box.bW1+"]";
@@ -164,7 +173,7 @@ void writeMsg() {
   translate(gutter, gutter);
   drawBox(ROSE, 0, 0, boxWidth, wH, "CONFIG APPARATUS"); //: cnfig app box
   translate(gutter*2+boxWidth+kSpace, 0);
-  if (ChangeSettings) drawBox(TERMINAL, 0, 0, boxWidth, wH, ("TRIAL # "+ setTrial));
+  if (setTrial > 0) drawBox(TERMINAL, 0, 0, boxWidth, wH, ("TRIAL # "+ setTrial));
   popMatrix();
   pushMatrix();
   translate(xS-gutter-boxWidth, gutter);
@@ -173,12 +182,12 @@ void writeMsg() {
   pushMatrix();
   translate(gutter, yS-lf*5-gutter);
   fill(TERMINAL_a);
-  drawBox(TERMINAL, 0, 0, boxWidth*2, 5*lf, "COMMANDS");
+  drawBox(GHOST, 0, 0, boxWidth*2, 5*lf, "AVAILABLE COMMANDS");
   //rect(0, 0, xS-gutter*2, 2*lf); //: BG rectangle
   popMatrix();
   pushMatrix();
 
-  //--LINE 1
+  //-----LINE 1
 
   if (iMode == 0) S = "Control Mode: SINGLE"; 
   else S = "Control Mode: DUAL";
@@ -197,14 +206,19 @@ void writeMsg() {
 
   //: column list the trial Fitts ID's
   translate(boxWidth-gutter, lf);
+  pushMatrix();
   for (int i = 0; i < es_trialSize; i++) {
-    textLF(ROSE, 0, RIGHT, ts_IDS_arr[i], 0, 0, 0, lf, NONE);
-    if (ChangeSettings) esButton(i);
+    String buffmode = NONE;
+    if ((i+1) == setTrial) buffmode = BOLD;
+    textLF(ROSE, 0, RIGHT, ts_IDS_arr[i], 0, 0, 0, lf, buffmode);
+    if (setTrial > 0) esButton(i);
   }
-  if (setTrial > 0) textLF(TERMINAL, 0, LEFT, ts_bWS_arr.get(0), 0, 0, gutter*4+kSpace, 0, NONE);  
-  //text(ts_bWpS_arr[0], 0, 0);
-  if (setTrial > 0) textLF(TERMINAL, 0, LEFT, ts_bAS_arr.get(0), 0, 0, 0, lf, NONE); 
-  textLF(ROSE, 0, RIGHT, ts_select, 0, 0, 0, lf, NONE);
+  textLF(ROSE, 0, CENTER, "< MacKenzie Scores >", -boxWidth/2+gutter, 0, 0, lf*2, BOLD);
+  popMatrix();
+  if (setTrial > 0) textLF(TERMINAL, 0, LEFT, ts_bWS_arr.get(setTrial-1), 0, 0, gutter*4+kSpace, 0, NONE);  
+  if (setTrial > 0) textLF(TERMINAL, 0, LEFT, ts_offS_arr.get(setTrial-1), 0, 0, 0, lf, NONE);
+  if (setTrial > 0) textLF(TERMINAL, 0, LEFT, ts_bAS_arr.get(setTrial-1), 0, 0, 0, lf, NONE); 
+
   //text(ts_select, 0, 0); //: width select options
 
 
@@ -223,25 +237,26 @@ void writeMsg() {
     text(ro_ppi, 0, 0);
   } 
 
-  //: commands
-
+  //: available commands
   popMatrix();
   pushMatrix();
-  textLF(TERMINAL, 0, LEFT, "[S] edit trial settings", 0, 0, gutter, int(yS-lf*3.5-gutter), NONE);
-  if(DUAL) 
-  textLF(TERMINAL, 0, LEFT, "[C]alibrate screen", 0, 0, 0, lf, NONE);
-  textLF(TERMINAL, 0, LEFT, reviewStr, 0, 0, 0, lf, NONE);
+  textLF(GHOST, 0, RIGHT, "edit trial settings [S]", 0, 0, boxWidth*2, int(yS-lf*3-gutter), NONE);
+  if (DUAL) 
+    textLF(GHOST, 0, RIGHT, "Calibrate screen [C]", 0, 0, 0, lf, NONE);
+  if (setTrial > 0) {
+    buff = "load trial [1 thru "+es_trialSize+"] ";
+    textLF(GHOST, 0, RIGHT, buff, 0, 0, 0, lf, NONE);
+  }
+  textLF(GHOST, 0, RIGHT, reviewStr, 0, 0, 0, lf, NONE);
   //text(ro_x, 0, y);
-  
+
 
   //stroke(midgreen);
   //strokeWeight(2);
   //line(x, y+3, x+ro_x_w, y+3);
   //strokeWeight(1);
   //fill(0);
-  translate(0, lf);
-  //String next = 
-  //text(("Spacing = "+String.valueOf(int(round(offset*100, 0))+"%")), 0, 0);
+
 
   /*
   // -- trial scores
@@ -274,7 +289,7 @@ void writeMsg() {
    text(("Index of D = "+ fittsID), x, 0);
    textAlign(CENTER);
    translate(0, lf);
-   text(("< MacKenzie scores >"), boxWidth/2, 0);
+   
    popMatrix();
    
    //---------------- trial box
@@ -341,39 +356,40 @@ void writeMsg() {
 
 
   // ...msgs
+  /*
   fill(TERMINAL);
-
-  translate(0, -gutter);
-  pushMatrix(); // 2 deep
-  text(mode_msg, x, 0);
-  translate(0, lf);
-  text(net_msg, x, 0);
-  popMatrix(); // 1 deep
-  if (DUAL) {
-    translate(col-gutter*2, 0);
-    fill(RED);
-    text(Sip_msg, x, 0);
-  }
-
-  if (mode.equals("server")) {
-    translate(col-gutter*2, 0);
-    fill(MGREEN);
-    text(Cip_msg, x, 0);
-
-    fill(TERMINAL);
-    translate(0, lf);
-    text(ping_msg, x, 0);
-  }
-  if (mode.equals("client")) {
-    fill(TERMINAL);    
-    translate(0, lf);
-    text(ping_msg, x, 0);
-
-    translate(col-gutter*2, -lf);
-    fill(MGREEN);
-    text(Cip_msg, x, 0);
-  }
-
+   
+   translate(0, -gutter);
+   pushMatrix(); // 2 deep
+   text(mode_msg, x, 0);
+   translate(0, lf);
+   text(net_msg, x, 0);
+   popMatrix(); // 1 deep
+   if (DUAL) {
+   translate(col-gutter*2, 0);
+   fill(RED);
+   text(Sip_msg, x, 0);
+   }
+   
+   if (mode.equals("server")) {
+   translate(col-gutter*2, 0);
+   fill(MGREEN);
+   text(Cip_msg, x, 0);
+   
+   fill(TERMINAL);
+   translate(0, lf);
+   text(ping_msg, x, 0);
+   }
+   if (mode.equals("client")) {
+   fill(TERMINAL);    
+   translate(0, lf);
+   text(ping_msg, x, 0);
+   
+   translate(col-gutter*2, -lf);
+   fill(MGREEN);
+   text(Cip_msg, x, 0);
+   }
+   */
   // -- reset stuff
   fill(0);
   popMatrix();

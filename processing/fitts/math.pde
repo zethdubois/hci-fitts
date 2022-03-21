@@ -4,6 +4,7 @@
  */
 
 import java.math.*;
+DecimalFormat df = new DecimalFormat("0.00");
 
 float [] ts_ID_arr;
 float [] ts_A_arr;
@@ -68,6 +69,7 @@ public static float round(float d, int decimalPlace) {
   return bd.floatValue();
 }
 
+//: find longitude (meridians)
 int findLong(boolean Switch, int i, int trial) {
   //println("\n-->findLong("+Switch, i, trial);
   //int iLong;
