@@ -1,22 +1,26 @@
-AudioPlayer startClick, stopClick;
+AudioPlayer startClick, stopClick; //<>//
 String fileName;
 int fittsMT = 0;
 
 boolean GotData = false;
 
-void esButton(int i){
+void esButton(int i) {
   //println("\n-->esButton(",i);
+  pushStyle();
   int B = tSize+4; // size of the rectangle "button" to draw
-  fill(TERMINAL,120);
+  fill(TERMINAL, 120);
   rectMode(CENTER);
   stroke(ROSE);
-  rect(gutter*2,-lf*.3,B,B); //<>//
+  rect(gutter*2, -lf*.3, B, B);
+  if (i == setTrial) fill(MGREEN);
+  else fill(ROSE);
   fill(MGREEN);
   textFont(iFont);
   textAlign(CENTER);
-  text((i+1),gutter*2,0);
+  text((i+1), gutter*2, 0);
   textAlign(RIGHT);
   textFont(nFont);
+  popStyle();
 }
 //!can't figure out how to get the stupid matrix coordinates caputred in a variable
 //void esButtonX(int i) {
@@ -89,12 +93,12 @@ public void beep() {                 // START
   trial ++;
   //cp5.getController("bangBeep").setColorForeground(color(10,10,10));
   println("timer started");
-  if (Dual) s.write(5);
+  if (DUAL) s.write(5);
 }
 
 void checkClick() {
 
-  if (!OverBoop && !Setup && !Dual) {
+  if (!OverBoop && !Setup && !DUAL) {
     if (mouseX > b2x && mouseX < b2x+bW && mouseY > b2y && mouseY < b2y+bW) {
       boop();
     } else {

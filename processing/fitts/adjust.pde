@@ -49,15 +49,15 @@ void adjustPPI(int val) {
 }
 int whichTrial = 0;
 void drawGrid() {
-  int xT = findLong(Dual, 1, whichTrial);
+  int xT = findLong(DUAL, 1, whichTrial);
   int xT2 = xT;
   int xB; // long of butt B
   int xA = xC - xT; // long butt A
-  int adj = boolToInt(Dual); //(iMode+1) % 2; // to break into the while loop to draw lines for dual mode
+  int adj = boolToInt(DUAL); //(iMode+1) % 2; // to break into the while loop to draw lines for DUAL mode
   String S;
   int wS;
   //** draw credit card
-  if (!Dual) Calibrate = false;
+  if (!DUAL) Calibrate = false;
   if (Calibrate) {
     //credit cards are 3.37 inches and 2.125 inches
     fill(255);
@@ -117,7 +117,7 @@ void drawGrid() {
   xB = xT + xC;
   translate(xT, 0);
 
-  if (!Dual) {
+  if (!DUAL) {
     stroke(color(255, 0, 0)); // draw final line thru butt B
     line(xC, 0, xC, yS);
     strokeWeight(4);
@@ -130,7 +130,7 @@ void drawGrid() {
   popMatrix();
   rectMode(CORNERS);
   //replace with whichTrial arrays
-  //if (Dual) { 
+  //if (DUAL) { 
   //  a_fittsA = round(float(xS/2) / float(ppi), 2);
   //} else {
   //  fittsA = round((float(xB) - float(xA)) / float(ppi), 2);

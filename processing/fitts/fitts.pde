@@ -77,7 +77,7 @@ void setup() {
   stopClick = minim.loadFile("boop.wav");
   fileName = "test"; //+fileName;
   setupFile(fileName);
-  println("\n\n........................", ts_bWp_arr[0]);
+
   //updateButtons();
 }
 
@@ -137,15 +137,15 @@ void setArgs() {
   Resize = Boolean.parseBoolean(cnfgs.get("resize"));
   if (mode.equals("server")) {
     iMode = 1;
-    Dual = true;
+    DUAL = true;
   }
   if (mode.equals("client")) {
-    Dual = true;
+    DUAL = true;
     iMode = 2;
   }
   if (network.equals("wifi")) WiFi = true;
 
-  if (!Dual) network = "<n/a>";
+  if (!DUAL) network = "<n/a>";
   setNet();
   lf = int(tSize * lfMod);
 

@@ -27,9 +27,14 @@ void switchNet() {
 void keyPressed() {
   println("key", key);
 
+  int es = int(key)-48;
+  if (es > 0 && es <= es_trialSize) {
+    println("change trial settings");
+    setTrial = es;
+  }
   switch(key) {
   case 'n': 
-    if (Dual) switchNet();
+    if (DUAL) switchNet();
     break;   
   case 'c': 
     if (Setup && !Calibrated && Calibrate) {
@@ -38,7 +43,7 @@ void keyPressed() {
       return;
     }
 
-    if (Setup && Dual) {
+    if (Setup && DUAL) {
       Calibrate=!Calibrate;
     }
 
@@ -104,30 +109,34 @@ void keyPressed() {
     println("decrease window");  
     adjustWin(-10);
     break;
+  case 's': 
+    println("change settings");  
+    ChangeSettings=!ChangeSettings;
+    break;    
   case '.': 
     println("increase window");  
     adjustWin(+10);
     break;
-  case '1': 
-    println("select button width");  
-    setBW(box.bW1);
-    bSelect = "1";
-    break;
-  case '2': 
-    println("select button width");  
-    setBW(box.bW2);
-    bSelect = "2";
-    break;
-  case '3': 
-    println("select button width");  
-    setBW(box.bW3);
-    bSelect = "3";
-    break;
-  case '4': 
-    println("select button width");  
-    setBW(box.bW4);
-    bSelect = "4";
-    break;
+    //case '1': 
+    //  println("select button width");  
+    //  setBW(box.bW1);
+    //  bSelect = "1";
+    //  break;
+    //case '2': 
+    //  println("select button width");  
+    //  setBW(box.bW2);
+    //  bSelect = "2";
+    //  break;
+    //case '3': 
+    //  println("select button width");  
+    //  setBW(box.bW3);
+    //  bSelect = "3";
+    //  break;
+    //case '4': 
+    //  println("select button width");  
+    //  setBW(box.bW4);
+    //  bSelect = "4";
+    //  break;
     // mode switch
   case 'm':
     if (Setup) toggleMode();
@@ -149,18 +158,18 @@ void toggleMode() {
   println(">> iMode : ", iMode);
 
   if (iMode == 0) {
-    Dual = false;
+    DUAL = false;
     mode = "single";
     es_unit = "pixels";
   }
   if (iMode == 1) {
-    Dual = true;
+    DUAL = true;
     es_unit = "inches";
     if (!Calibrated) Calibrate = true;
     mode = "server";
   }
   if (iMode == 2) {
-    Dual = true;
+    DUAL = true;
     if (!Calibrated) Calibrate = true;
     mode = "client";
     es_unit = "inches";
@@ -190,7 +199,7 @@ void updateButtons() {
     catch(Exception e) {
     }
   } else {
-    int xT = findLong(Dual, 1, whichTrial);
+    int xT = findLong(DUAL, 1, whichTrial);
     b1x = xC-bW/2-xT;
     b1y = yC-bW/2;
     b2x = xC-bW/2+xT;
@@ -202,7 +211,7 @@ void updateButtons() {
       .setColorForeground(startColor)
       .setLabel("start")
       ;
-    if (!Dual) {
+    if (!DUAL) {
       cp5.addBang("bangBoop")
         .setPosition(b2x, b2y)
         .setSize(bW, bW)
@@ -223,9 +232,22 @@ void setups() {
     timer(true);
     return;
   }
-  if (!Trial) Setup = !Setup;
+  if (!Trial) {
+    setTrial ++;
+    reviewStr="[SPACEBAR] to Review Trial #"+(setTrial+1);
+    println("\n\n", setTrial, es_trialSize);
+    if (setTrial == es_trialSize) {
+      println("\n\nbingg............................");
+      
+      reviewStr="[SPACEBAR] to continue to trials";
+    }
+  }
   println("Setup:", Setup);
-  if (!Trial) updateButtons();
+  if (!Trial && setTrial == (es_trialSize+1) ) {
+    updateButtons();
+    setTrial = 0;
+    Setup = !Setup;
+  }
 }
 
 void startTrial() {

@@ -18,7 +18,7 @@ float fittsTP() {
 
 float fittsA(int trial, String mode) {
   float out;
-  int xT = findLong(Dual, 1, trial); //: get the first longitude 
+  int xT = findLong(DUAL, 1, trial); //: get the first longitude 
   int xB = xT + xC;
   int xA = xC - xT; // long butt A
 
@@ -53,7 +53,7 @@ void calcID(String mode) {
   for (int i=j; i<=k; i++) {
     println("i:", i);
     print("ts__arr:", ts_A_arr[i]);
-    if (Dual) ts_ID_arr[i] = log2(ts_A_arr[i]/ts_bWi_arr[i]+1); 
+    if (DUAL) ts_ID_arr[i] = log2(ts_A_arr[i]/ts_bWi_arr[i]+1); 
     else ts_ID_arr[i] = log2(ts_A_arr[i]/ts_bWp_arr[i]+1);
     println("W", ts_bWi_arr[i]);
     println("ID=", ts_ID_arr[i]);

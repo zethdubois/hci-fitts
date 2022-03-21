@@ -5,7 +5,7 @@ int xC, yC; // center of screen
 boolean Msg = false;
 int tSize; // text size;
 boolean OverBeep, OverBoop;
-boolean Dual = false;
+boolean DUAL = false;
 float d_fittsID;
 int bW; //: button width pixels
 String bSelect = "1";
@@ -37,6 +37,9 @@ String FRAME = "FRAME";
 String BOLD = "BOLD";
 String TITLE = "TITLE";
 String NONE = "NONE";
+Boolean ChangeSettings = false;
+boolean Reviewed = false;
+String reviewStr = "[SPACEBAR] Review Trial Settings";
 
 void drawBox(int c, int bX, int bY, int bW, int bH, String title ) {
   pushStyle();
@@ -56,7 +59,7 @@ void textLF(int c, int f, int align, String S, int x, int y, int tx, int ty, Str
 
   textSize(tS);
   textAlign(align);
-  if (mode.equals("title")) {
+  if (mode.equals("TITLE")) {
     int o = tS/3;
     float mod = .7f; //: this is a mod to reduce the vertical offset to the top of text
     int bx = int(textWidth(S));
@@ -112,7 +115,7 @@ void showMode() {
 //text(("[ or { || ] or }"), x, y);
 void writeMsg() {
   int wH = lf * 12;  //: window height
-  if (Dual) wH = lf * 14; 
+  if (DUAL) wH = lf * 14; 
   int x = gutter;
 
   //: readouts (ro_*) trial settings (ts_*)
@@ -124,10 +127,10 @@ void writeMsg() {
   ArrayList<String> ts_bWS_arr = new ArrayList<String>();
   ArrayList<String> ts_bAS_arr = new ArrayList<String>();
   for (int i = 0; i<4; i++) {
-    //: if dual mode, make string with the inch measurement (flaot), else with the pixel size
-    if (Dual) ts_bWS_arr.add(buff+ts_bWi_arr[i]); 
+    //: if DUAL mode, make string with the inch measurement (flaot), else with the pixel size
+    if (DUAL) ts_bWS_arr.add(buff+ts_bWi_arr[i]); 
     else ts_bWS_arr.add(buff+ts_bWp_arr[i]);
-    if (Dual) ts_bWS_arr.add(buff+ts_bAi_arr[i]); 
+    if (DUAL) ts_bWS_arr.add(buff+ts_bAi_arr[i]); 
     else ts_bAS_arr.add(buff2+ts_bAp_arr[i]);
 
 
@@ -157,20 +160,20 @@ void writeMsg() {
   //---BOXES-----------------------------------------------------------------
   pushMatrix();
   int xc = boxWidth/2; 
-  int kSpace = gutter*3;
+  int kSpace = 0;
   translate(gutter, gutter);
   drawBox(ROSE, 0, 0, boxWidth, wH, "CONFIG APPARATUS"); //: cnfig app box
   translate(gutter*2+boxWidth+kSpace, 0);
-  if (setTrial > 0) drawBox(TERMINAL, 0, 0, boxWidth, wH, ("TRIAL # "+ setTrial));
+  if (ChangeSettings) drawBox(TERMINAL, 0, 0, boxWidth, wH, ("TRIAL # "+ setTrial));
   popMatrix();
   pushMatrix();
   translate(xS-gutter-boxWidth, gutter);
   drawBox(LEMON, 0, 0, boxWidth, wH, "METHODS");
   popMatrix();
   pushMatrix();
-  translate(gutter, yS-lf*2-gutter);
+  translate(gutter, yS-lf*5-gutter);
   fill(TERMINAL_a);
-  drawBox(TERMINAL, 0, 0, xS-gutter*2, 2*lf, "");
+  drawBox(TERMINAL, 0, 0, boxWidth*2, 5*lf, "COMMANDS");
   //rect(0, 0, xS-gutter*2, 2*lf); //: BG rectangle
   popMatrix();
   pushMatrix();
@@ -196,7 +199,7 @@ void writeMsg() {
   translate(boxWidth-gutter, lf);
   for (int i = 0; i < es_trialSize; i++) {
     textLF(ROSE, 0, RIGHT, ts_IDS_arr[i], 0, 0, 0, lf, NONE);
-    esButton(i);
+    if (ChangeSettings) esButton(i);
   }
   if (setTrial > 0) textLF(TERMINAL, 0, LEFT, ts_bWS_arr.get(0), 0, 0, gutter*4+kSpace, 0, NONE);  
   //text(ts_bWpS_arr[0], 0, 0);
@@ -213,17 +216,23 @@ void writeMsg() {
 
   //---- credit card
   textFont(nFont);
-  textAlign(RIGHT);  
+  textAlign(RIGHT);
+  fill(ROSE);
 
-  translate(boxWidth-gutter*2, 1.25*lf);
   if (Calibrate) {
     text(ro_ppi, 0, 0);
-  } else {
-    if (Dual) text("re[C]alibrate screen", 0, lf);
-  }
+  } 
 
+  //: commands
 
+  popMatrix();
+  pushMatrix();
+  textLF(TERMINAL, 0, LEFT, "[S] edit trial settings", 0, 0, gutter, int(yS-lf*3.5-gutter), NONE);
+  if(DUAL) 
+  textLF(TERMINAL, 0, LEFT, "[C]alibrate screen", 0, 0, 0, lf, NONE);
+  textLF(TERMINAL, 0, LEFT, reviewStr, 0, 0, 0, lf, NONE);
   //text(ro_x, 0, y);
+  
 
   //stroke(midgreen);
   //strokeWeight(2);
@@ -232,7 +241,7 @@ void writeMsg() {
   //fill(0);
   translate(0, lf);
   //String next = 
-  text(("Spacing = "+String.valueOf(int(round(offset*100, 0))+"%")), 0, 0);
+  //text(("Spacing = "+String.valueOf(int(round(offset*100, 0))+"%")), 0, 0);
 
   /*
   // -- trial scores
@@ -251,7 +260,7 @@ void writeMsg() {
    translate(0, lf);  
    text(ts_fW, x, 0);  
    translate(0, lf);
-   if (Dual) {
+   if (DUAL) {
    text(("Distance A = "+ a_fittsA + " inches"), x, 0);
    translate(0, lf);
    text(("Distance B = "+ b_fittsA + " inches"), x, 0);
@@ -340,7 +349,7 @@ void writeMsg() {
   translate(0, lf);
   text(net_msg, x, 0);
   popMatrix(); // 1 deep
-  if (Dual) {
+  if (DUAL) {
     translate(col-gutter*2, 0);
     fill(RED);
     text(Sip_msg, x, 0);
