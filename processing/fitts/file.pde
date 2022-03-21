@@ -1,3 +1,6 @@
+//: data for file output
+float d_fittsID;
+
 PrintWriter output;
 boolean NewFile = true;
 String ex_condStr;

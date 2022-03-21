@@ -32,10 +32,13 @@ void adjustAmp(float val) {
 }
 
 void esAdjust(boolean Init, int i) {
-  // init loads values from file
+  //: at this time, is only called from -->loadArgs()
+  //: INIT <-- is not needed unless called from another proc later
+  
+  // >> i is 0-index for arrays (0 to es_trialSize
+  // >> init loads values from file
 
   if (Init) {
-    println("trial #", i);
     ts_bWp_arr[i] = int(cnfgs.get("button_width_"+(i+1)));
     ts_off_arr[i] = float(cnfgs.get("offset_"+(i+1)));
   }
@@ -50,7 +53,7 @@ void adjustPPI(int val) {
 
 void drawGrid() {
   if (setTrial == 0) return;
-  int xT = findLong(DUAL, 1, setTrial);
+  int xT = findLong(DUAL, 1, setTrial-1);
   int xT2 = xT;
   int xB; // long of butt B
   int xA = xC - xT; // long butt A

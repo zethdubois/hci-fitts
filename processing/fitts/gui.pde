@@ -6,7 +6,7 @@ boolean Msg = false;
 int tSize; // text size;
 boolean OverBeep, OverBoop;
 boolean DUAL = false;
-float d_fittsID;
+
 int bW; //: button width pixels
 String bSelect = "1";
 color ROSE = color(253, 206, 217);
@@ -27,7 +27,7 @@ color MGREEN_a = color(0, 190, 0, 60);
 String mode, IP, net;
 int screen;
 String tText;
-boolean Calibrate = true;
+boolean Calibrate = false;
 boolean Calibrated = false;
 int setTrial = 0;
 
@@ -115,8 +115,8 @@ void showMode() {
 //text(("- or _ || = or + "), x, y);
 //text(("[ or { || ] or }"), x, y);
 void writeMsg() {
-  int wH = lf * 5 + lf * es_trialSize + gutter;  //: window height
-  if (DUAL) wH = lf * 14; 
+
+
   int x = gutter;
 
   //: readouts (ro_*) trial settings (ts_*)
@@ -161,12 +161,17 @@ void writeMsg() {
 
   //String ts_fW = "Button Width (in) = "+fittsW; //: Fitts Width
   float ts_x_w = textWidth(ts_x);
+  
+  //: set function constants
   int boxWidth = int(textWidth(ts_bWp)+gutter*3); // length of longest string
-
+  int wH = lf * 5 + lf * es_trialSize + gutter;  //: window height
+  if (DUAL) 
+    wH = lf * 14; 
 
   if (Calibrate) wH = lf*4;
 
   //---BOXES-----------------------------------------------------------------
+
   pushMatrix();
   int xc = boxWidth/2; 
   int kSpace = 0;
@@ -233,9 +238,10 @@ void writeMsg() {
   textAlign(RIGHT);
   fill(ROSE);
 
-  if (Calibrate) {
-    text(ro_ppi, 0, 0);
-  } 
+  //!! Turn this back on for DUAL
+  //if (Calibrate) {
+  //  text(ro_ppi, 0, 0);
+  //} 
 
   //: available commands
   popMatrix();

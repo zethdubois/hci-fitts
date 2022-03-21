@@ -1,5 +1,7 @@
 /*
-How to run this experiment with two specified MS Surface computers
+--> see diagram: https://app.diagrams.net/#G1FjWgeyixluDQaQ90Y4J5zmepL__d7UpV
+ 
+ How to run this experiment with two specified MS Surface computers
  surface 1, client: 2736 x 1824 (267 ppi), 12.3 in display, 11.5 x 7.9
  surface go, server: 1800 x 1200, 46.18 sq inches
  https://www.alphachooser.com/tablet_computers--microsoft_surface_go--tablet_computer-specs-and-profile
@@ -112,12 +114,10 @@ void setArgs() {
 
   for (int i = 0; i < es_trialSize; i++) {
     esAdjust(true, i);
-
   }
   //println(Arrays.toString(ts_off_arr));
   //println("ts_bWp_arr:", Arrays.toString(ts_bWp_arr));
   for (int i = 0; i < es_trialSize; i++) {
-
   }  
   println("--->bamp:", Arrays.toString(ts_bAp_arr));
   println("--->ID:", Arrays.toString(ts_ID_arr));  
