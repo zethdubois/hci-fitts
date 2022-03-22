@@ -54,8 +54,9 @@ void adjustPPI(int val) {
 }
 
 void drawGrid() {
-  if (setTrial == 0) return;
-  int xT = findLong(DUAL, 1, setTrial-1);
+  if (setTrial == -1) return;
+  //println("settrial",setTrial);
+  int xT = findLong(DUAL, 1, setTrial); //! this can break with the spacebar >> fix it
   int xT2 = xT;
   int xB; // long of butt B
   int xA = xC - xT; // long butt A
@@ -100,7 +101,7 @@ void drawGrid() {
   rectMode(CENTER);
   noFill();
   strokeWeight(4);
-  if (!Calibrate) rect(xC, yC, ts_bWp_arr[setTrial-1], ts_bWp_arr[setTrial-1]); //: [ where button will be
+  if (!Calibrate) rect(xC, yC, ts_bWp_arr[setTrial], ts_bWp_arr[setTrial]); //: [ where button will be
   strokeWeight(1);
   stroke(255);
   //---------- measure lines
@@ -127,7 +128,7 @@ void drawGrid() {
     stroke(color(255, 0, 0)); // draw final line thru butt B
     line(xC, 0, xC, yS);
     strokeWeight(4);
-    rect(xC, yC, ts_bWp_arr[setTrial-1], ts_bWp_arr[setTrial-1]);
+    rect(xC, yC, ts_bWp_arr[setTrial], ts_bWp_arr[setTrial]);
   }
 
   //--- reset stuff

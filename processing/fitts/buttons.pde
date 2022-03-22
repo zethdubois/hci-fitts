@@ -1,4 +1,4 @@
-AudioPlayer startClick, stopClick; //<>// //<>//
+AudioPlayer startClick, stopClick; //<>//
 String fileName;
 int fittsMT = 0;
 
@@ -12,7 +12,7 @@ void esButton(int i) {
   rectMode(CENTER);
   strokeWeight(0);
   rect(gutter*2, -lf*.3, B, B);
-  if (i+1 == setTrial) fill(TERMINAL);
+  if (i == setTrial) fill(TERMINAL);
   else fill(ROSE);
   textFont(iFont);
   textAlign(CENTER);

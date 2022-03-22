@@ -28,7 +28,7 @@ int screen;
 String tText;
 boolean Calibrate = false;
 boolean Calibrated = false;
-int setTrial = 0;
+int setTrial = -1;
 
 int lf; 
 //--CONSTANTS
@@ -175,7 +175,7 @@ void writeMsg() {
   translate(gutter, gutter);
   drawBox(ROSE, 0, 0, boxWidth, wH, "CONFIG APPARATUS"); //: cnfig app box
   translate(gutter*2+boxWidth+kSpace, 0);
-  if (setTrial > 0) drawBox(TERMINAL, 0, 0, boxWidth, wH, ("TRIAL # "+ setTrial));
+  if (setTrial > -1) drawBox(TERMINAL, 0, 0, boxWidth, wH, ("TRIAL # "+ (setTrial+1)));
   popMatrix();
   pushMatrix();
   translate(xS-gutter-boxWidth, gutter);
@@ -211,15 +211,15 @@ void writeMsg() {
   pushMatrix();
   for (int i = 0; i < es_trialSize; i++) {
     String buffmode = NONE;
-    if ((i+1) == setTrial) buffmode = BOLD;
+    if (i == setTrial) buffmode = BOLD;
     textLF(ROSE, 0, RIGHT, ts_IDS_arr[i], 0, 0, 0, lf, buffmode);
-    if (setTrial > 0) esButton(i);
+    if (setTrial > -1) esButton(i);
   }
   textLF(ROSE, 0, CENTER, "< MacKenzie Scores >", -boxWidth/2+gutter, 0, 0, lf*2, BOLD);
   popMatrix();
-  if (setTrial > 0) textLF(TERMINAL, 0, LEFT, ts_bWS_arr.get(setTrial-1), 0, 0, gutter*4+kSpace, 0, NONE);  
-  if (setTrial > 0) textLF(TERMINAL, 0, LEFT, ts_offS_arr.get(setTrial-1), 0, 0, 0, lf, NONE);
-  if (setTrial > 0) textLF(TERMINAL, 0, LEFT, ts_bAS_arr.get(setTrial-1), 0, 0, 0, lf, NONE); 
+  if (setTrial > -1) textLF(TERMINAL, 0, LEFT, ts_bWS_arr.get(setTrial), 0, 0, gutter*4+kSpace, 0, NONE);  
+  if (setTrial > -1) textLF(TERMINAL, 0, LEFT, ts_offS_arr.get(setTrial), 0, 0, 0, lf, NONE);
+  if (setTrial > -1) textLF(TERMINAL, 0, LEFT, ts_bAS_arr.get(setTrial), 0, 0, 0, lf, NONE); 
 
   //text(ts_select, 0, 0); //: width select options
 
@@ -246,7 +246,7 @@ void writeMsg() {
   textLF(GHOST, 0, RIGHT, "edit trial settings [S]", 0, 0, boxWidth*2, int(yS-lf*3-gutter), NONE);
   if (DUAL) 
     textLF(GHOST, 0, RIGHT, "Calibrate screen [C]", 0, 0, 0, lf, NONE);
-  if (setTrial > 0) {
+  if (setTrial > -1) {
     buff = "load trial [1 thru "+es_trialSize+"] ";
     textLF(GHOST, 0, RIGHT, buff, 0, 0, 0, lf, NONE);
   } else translate(0, lf);

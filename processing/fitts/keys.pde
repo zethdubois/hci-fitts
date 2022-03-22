@@ -30,12 +30,12 @@ void keyPressed() {
   int es = int(key)-48;
   if (es > 0 && es <= es_trialSize) {
     println("change trial settings");
-    setTrial = es;
-    if (setTrial == 4) {
+    setTrial = es-1;
+    if (setTrial == 3) {
       reviewStr="Exit Configuration [SPACEBAR]";
     }
     println("setTrial", setTrial);
-    reviewStr="Review Trial "+(setTrial+1)+" [SPACEBAR]";
+    reviewStr="Review Trial "+(es)+" [SPACEBAR]";
   }
   switch(key) {
   case 'n': 
@@ -205,7 +205,7 @@ void updateButtons() {
     catch(Exception e) {
     }
   } else {
-    int xT = findLong(DUAL, 1, (setTrial));
+    int xT = findLong(DUAL, 1, setTrial); //<>//
     b1x = xC-bW/2-xT;
     b1y = yC-bW/2;
     b2x = xC-bW/2+xT;
@@ -230,6 +230,7 @@ void updateButtons() {
 
 void getParticipant() {
 }
+
 void setups() {
   if (Started) {
     Started = false;
@@ -243,16 +244,18 @@ void setups() {
 
     reviewStr="Review Trial "+(setTrial+1)+" [SPACEBAR]";
     println("\n\n", setTrial, es_trialSize);
-    if (setTrial == es_trialSize) {
+    if (setTrial+1 == es_trialSize) {
 
       reviewStr="Exit Configuration [SPACEBAR]";
     }
   }
   println("Setup:", Setup);
-  if (!Trial && setTrial == (es_trialSize+1) ) {
-    setTrial = 0; 
+  println("**********************************"); //<>//
+  println(setTrial);
+  if (!Trial && setTrial == es_trialSize) {
+    setTrial = -1; 
     updateButtons();
- //<>//
+
     Setup = !Setup;
   }
 }
