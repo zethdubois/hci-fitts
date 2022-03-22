@@ -13,16 +13,18 @@ void adjustWin(int val) {
   println("broken, what did it do, anyway?");
 }
 
-void adjustBW(int val) {
+void adjustBW(int val) {  
   if (!Setup) return;
-  bW = bW + val;
-  bSelect = "X";
+  println(ts_bWp_arr[setTrial]);
+  ts_bWp_arr[setTrial] += val;
+  println(ts_bWp_arr[setTrial]);
+  
 }
 
-void setBW(int val) {
-  if (!Setup) return;
-  bW = val;
-}
+//void setBW(int val) {
+//  if (!Setup) return;
+//  bW = val;
+//}
 
 void adjustAmp(float val) {
   if (!Setup) return;
@@ -98,7 +100,7 @@ void drawGrid() {
   rectMode(CENTER);
   noFill();
   strokeWeight(4);
-  if (!Calibrate) rect(xC, yC, bW, bW); //: draw box where button will be
+  if (!Calibrate) rect(xC, yC, ts_bWp_arr[setTrial-1], ts_bWp_arr[setTrial-1]); //: [ where button will be
   strokeWeight(1);
   stroke(255);
   //---------- measure lines
@@ -125,8 +127,7 @@ void drawGrid() {
     stroke(color(255, 0, 0)); // draw final line thru butt B
     line(xC, 0, xC, yS);
     strokeWeight(4);
-
-    rect(xC, yC, bW, bW);
+    rect(xC, yC, ts_bWp_arr[setTrial-1], ts_bWp_arr[setTrial-1]);
   }
 
   //--- reset stuff

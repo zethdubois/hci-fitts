@@ -32,7 +32,6 @@ void keyPressed() {
     println("change trial settings");
     setTrial = es;
     if (setTrial == 4) {
-      setTrial = 0;
       reviewStr="Exit Configuration [SPACEBAR]";
     }
     println("setTrial", setTrial);
@@ -252,8 +251,8 @@ void setups() {
   println("Setup:", Setup);
   if (!Trial && setTrial == (es_trialSize+1) ) {
     setTrial = 0; 
-    updateButtons(); //<>//
-
+    updateButtons();
+ //<>//
     Setup = !Setup;
   }
 }

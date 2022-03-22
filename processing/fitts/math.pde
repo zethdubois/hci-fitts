@@ -18,10 +18,10 @@ float fittsTP() {
 }
 
 float fittsA(int trial, String mode) {
-  println("\n-->fittsA(",trial,mode);
+  println("\n-->fittsA(", trial, mode);
   float out;
   int xT = findLong(DUAL, 1, trial); //: get the first longitude
-  println("-----------------------------xT:",xT);
+  println("-----------------------------xT:", xT);
   int xB = xT + xC;
   int xA = xC - xT; // long butt A
 
@@ -44,9 +44,9 @@ float fittsID(int trial) {
 }
 void calcID(String mode) {
   println("\n-->calcID("+mode+")");
-  println("****EXIT HERE WHILE DEBUGGING****");
-  boolean debug = true;
-  if (debug) return;
+  //println("****EXIT HERE WHILE DEBUGGING****");
+  //boolean debug = true;
+  //if (debug) return;
   int j = ts_adj; 
   int k = ts_adj;
 
@@ -56,10 +56,10 @@ void calcID(String mode) {
   }
   for (int i=j; i<=k; i++) {
     println("i:", i);
-    print("ts__arr:", ts_A_arr[i]);
-    if (DUAL) ts_ID_arr[i] = log2(ts_A_arr[i]/ts_bWi_arr[i]+1); 
-    else ts_ID_arr[i] = log2(ts_A_arr[i]/ts_bWp_arr[i]+1);
-    println("W", ts_bWi_arr[i]);
+    println(ts_bAp_arr[i],ts_bWp_arr[i]);
+    if (DUAL) ts_ID_arr[i] = log2(ts_bAp_arr[i]/ts_bWi_arr[i]+1);
+    else ts_ID_arr[i] = log2(ts_bAp_arr[i]/ts_bWp_arr[i]+1);
+    println("W", ts_bWp_arr[i]);
     println("ID=", ts_ID_arr[i]);
   }
 
@@ -79,7 +79,7 @@ int findLong(boolean Switch, int i, int trial) {
   float buff = 0;
   if (Switch) {
   } else {
-      buff = ((xS/2 - ts_bWp_arr[trial]/2 - gutter)*offset)*i;
+    buff = ((xS/2 - ts_bWp_arr[trial]/2 - gutter)*offset)*i;
   }
 
   return int(buff);

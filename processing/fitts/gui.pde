@@ -8,7 +8,6 @@ boolean OverBeep, OverBoop;
 boolean DUAL = false;
 
 int bW; //: button width pixels
-String bSelect = "1";
 color ROSE = color(253, 206, 217);
 color ROSE_a = color(243, 196, 207, 45);
 color TERMINAL = color(127, 207, 250);
@@ -121,7 +120,6 @@ void writeMsg() {
 
   //: readouts (ro_*) trial settings (ts_*)
   String ro_ppi = "["+box.ppi+"] PPI = "+ppi; //: PPI
-  String ts_x = "[" + bSelect + "]"; 
   String buff = "Width: ";
   String buff2 = "Amplitude: ";
   String buff3 = "Screen Offset: ";
@@ -156,11 +154,10 @@ void writeMsg() {
   String ts_2 = "["+box.bW2+"]";
   String ts_3 = "["+box.bW3+"]";
   String ts_4 = "["+box.bW4+"]"; 
-  String ts_select = ts_1+ts_2+ts_3+ts_4;
   String S = "";
 
   //String ts_fW = "Button Width (in) = "+fittsW; //: Fitts Width
-  float ts_x_w = textWidth(ts_x);
+
 
   //: set function constants
   int boxWidth = int(textWidth(ts_bWp)+gutter*3); // length of longest string
