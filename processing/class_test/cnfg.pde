@@ -1,6 +1,12 @@
 //--initialize class dictionaries, Exp and Trial
 //? questions exist
 
+String eFile = "exp.ini";
+String tFile = "trials.ini";
+
+
+
+//: create Experiment class from file
 void loadExp() {
   eCnfg = new StringDict();
   cnfg_buff = loadStrings(eFile);
@@ -14,13 +20,16 @@ void loadExp() {
     }
   }
   println("experimental configs loaded from file: ", eCnfg);
+
   //? how to type cast dictionary pairs for solitary printout
   //String foo;
   //for (foo in eCnfg){}
+
   E = new Exp(eCnfg);
+  E.goScreen();
 }
 
-
+//: create Trial class from file
 void loadTrials(int i) {
   tCnfg = new StringDict();
   cnfg_buff = loadStrings(tFile);
@@ -33,7 +42,6 @@ void loadTrials(int i) {
     catch(Exception e) {
     }
   }
-  
   println("experimental configs loaded from file: ", tCnfg);
   t = new Trial(tCnfg,i);
   T[i] = (t);
