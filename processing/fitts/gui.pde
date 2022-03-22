@@ -161,7 +161,7 @@ void writeMsg() {
 
   //String ts_fW = "Button Width (in) = "+fittsW; //: Fitts Width
   float ts_x_w = textWidth(ts_x);
-  
+
   //: set function constants
   int boxWidth = int(textWidth(ts_bWp)+gutter*3); // length of longest string
   int wH = lf * 5 + lf * es_trialSize + gutter;  //: window height
@@ -252,7 +252,8 @@ void writeMsg() {
   if (setTrial > 0) {
     buff = "load trial [1 thru "+es_trialSize+"] ";
     textLF(GHOST, 0, RIGHT, buff, 0, 0, 0, lf, NONE);
-  }
+  } else translate(0, lf);
+
   textLF(GHOST, 0, RIGHT, reviewStr, 0, 0, 0, lf, NONE);
   //text(ro_x, 0, y);
 

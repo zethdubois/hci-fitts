@@ -1,4 +1,4 @@
-
+ //<>// //<>//
 Boolean Trial = false;
 Boolean Setup = true;
 float d_fittsA, d_fittsW; //: amplitude / width
@@ -31,7 +31,12 @@ void keyPressed() {
   if (es > 0 && es <= es_trialSize) {
     println("change trial settings");
     setTrial = es;
-    
+    if (setTrial == 4) {
+      setTrial = 0;
+      reviewStr="Exit Configuration [SPACEBAR]";
+    }
+    println("setTrial", setTrial);
+    reviewStr="Review Trial "+(setTrial+1)+" [SPACEBAR]";
   }
   switch(key) {
   case 'n': 
@@ -201,7 +206,7 @@ void updateButtons() {
     catch(Exception e) {
     }
   } else {
-    int xT = findLong(DUAL, 1, (setTrial-1));
+    int xT = findLong(DUAL, 1, (setTrial));
     b1x = xC-bW/2-xT;
     b1y = yC-bW/2;
     b2x = xC-bW/2+xT;
@@ -236,17 +241,19 @@ void setups() {
   }
   if (!Trial) {
     setTrial ++;
+
     reviewStr="Review Trial "+(setTrial+1)+" [SPACEBAR]";
     println("\n\n", setTrial, es_trialSize);
     if (setTrial == es_trialSize) {
 
-      reviewStr="Continue to Trials [SPACEBAR]";
+      reviewStr="Exit Configuration [SPACEBAR]";
     }
   }
   println("Setup:", Setup);
   if (!Trial && setTrial == (es_trialSize+1) ) {
-    updateButtons();
-    setTrial = 0;
+    setTrial = 0; 
+    updateButtons(); //<>//
+
     Setup = !Setup;
   }
 }

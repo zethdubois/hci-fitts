@@ -18,7 +18,7 @@ float fittsTP() {
 }
 
 float fittsA(int trial, String mode) {
-  println("\n-->fittsA(",trial,mode); //<>//
+  println("\n-->fittsA(",trial,mode);
   float out;
   int xT = findLong(DUAL, 1, trial); //: get the first longitude
   println("-----------------------------xT:",xT);
@@ -74,7 +74,7 @@ public static float round(float d, int decimalPlace) {
 
 //: find longitude (meridians)
 int findLong(boolean Switch, int i, int trial) {
-  println("\n-->findLong("+Switch, i, trial);
+  //println("\n-->findLong("+Switch, i, trial);
   //int iLong;
   float buff = 0;
   if (Switch) {
