@@ -4,7 +4,7 @@ class Exp {
   //private String name; //? what is that for?
   int SPT, TPC, CPE;
   String cond1, cond2, cond3;
-  int screen, xS, yS, xC, yC;
+  int screen, xS, yS, xC, yC, TS;
   Boolean resizable;
 
   Exp(StringDict cnfg) {
@@ -17,12 +17,13 @@ class Exp {
     cond3 = cnfg.get("condition3");
 
     screen = int(cnfg.get("screen"));
+    TS = int(cnfg.get("text_size"));
 
     resizable = Boolean.parseBoolean(cnfg.get("resizable"));
   }
 
   public void goScreen() {
-    println("***********",screen);
+    println("***********", screen);
     if (screen == 0) {
       xS = displayWidth;
       yS = displayHeight;
@@ -43,10 +44,22 @@ class Trial {
 
   int SBWP, BWP, BS;
   float BWI;
+  float A, ID;
 
   Trial(StringDict cnfg, int i) {
     SBWP = int(cnfg.get("start_button_width"));
     BWP = int(cnfg.get("button_width_"+(i+1)));
     BS = int(cnfg.get("spacing_"+(i+1)));
+  }
+
+  public void goSpace(int val) {
+    BS += val;
+  }
+
+  public void goWidth(int val) {
+    BWP += val;
+  }
+
+  public void goAmp() {
   }
 }

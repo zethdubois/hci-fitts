@@ -1,9 +1,28 @@
 //--initialize class dictionaries, Exp and Trial
 //? questions exist
+StringDict eCnfg;
+StringDict tCnfg;
+StringDict vCnfg;
+String[] cnfg_buff;
 
 String eFile = "exp.ini";
 String tFile = "trials.ini";
+String vFile = "valid.ini";
 
+void loadValid() {
+  vCnfg = new StringDict();
+  cnfg_buff = loadStrings(vFile);
+  for (String buff : cnfg_buff) {
+    String[] args = buff.split(":");
+    try {
+      vCnfg.set(args[1], args[2]);
+      println("look ",vCnfg.get("10"));
+    }  
+    catch(Exception e) {
+    }
+  }
+  println("valid key states loaded from file: ", vCnfg);
+}
 
 
 //: create Experiment class from file
@@ -43,6 +62,6 @@ void loadTrials(int i) {
     }
   }
   println("experimental configs loaded from file: ", tCnfg);
-  t = new Trial(tCnfg,i);
+  t = new Trial(tCnfg, i);
   T[i] = (t);
 }
