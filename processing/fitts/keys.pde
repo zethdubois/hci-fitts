@@ -28,7 +28,7 @@ void keyPressed() {
   println("key", key);
 
   int es = int(key)-48;
-  if (es > 0 && es <= es_trialSize) {
+  if (es > 0 && es <= es_trialCnt) {
     println("change trial settings");
     setTrial = es-1;
     if (setTrial == 3) {
@@ -57,7 +57,7 @@ void keyPressed() {
     startTrial();
     break;
   case ' ':                       // SPACEBAR
-    println("Setups");  
+    //println("Setups");  
     setups();
     break;
   case '-': 
@@ -232,6 +232,7 @@ void getParticipant() {
 }
 
 void setups() {
+  println("-->setups()");
   if (Started) {
     Started = false;
     OverBeep=false;
@@ -239,12 +240,17 @@ void setups() {
     timer(true);
     return;
   }
-  if (!Trial) {
+  if ((setTrial+1) == es_trialCnt){
+    setTrial = -1;
+    Setup = false;
+    return;
+  }
+  if (Setup) {
     setTrial ++;
 
     reviewStr="Review Trial "+(setTrial+1)+" [SPACEBAR]";
-    println("\n\n", setTrial, es_trialSize);
-    if (setTrial+1 == es_trialSize) {
+    println("\n\n", setTrial, es_trialCnt);
+    if (setTrial+1 == es_trialCnt) {
 
       reviewStr="Exit Configuration [SPACEBAR]";
     }
@@ -252,7 +258,7 @@ void setups() {
   println("Setup:", Setup);
   println("**********************************"); //<>//
   println(setTrial);
-  if (!Trial && setTrial == es_trialSize) {
+  if (!Trial && setTrial == es_trialCnt) {
     setTrial = -1; 
     updateButtons();
 

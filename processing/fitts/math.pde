@@ -56,7 +56,7 @@ void calcID(String mode) {
   }
   for (int i=j; i<=k; i++) {
     println("i:", i);
-    println(ts_bAp_arr[i],ts_bWp_arr[i]);
+    println(ts_bAp_arr[i], ts_bWp_arr[i]);
     if (DUAL) ts_ID_arr[i] = log2(ts_bAp_arr[i]/ts_bWi_arr[i]+1);
     else ts_ID_arr[i] = log2(ts_bAp_arr[i]/ts_bWp_arr[i]+1);
     println("W", ts_bWp_arr[i]);
@@ -77,6 +77,9 @@ int findLong(boolean Switch, int i, int trial) {
   //println("\n-->findLong("+Switch, i, trial);
   //int iLong;
   float buff = 0;
+  if (trial+1 == es_trialCnt)
+    return int(buff);
+
   if (Switch) {
   } else {
     buff = ((xS/2 - ts_bWp_arr[trial]/2 - gutter)*offset)*i;

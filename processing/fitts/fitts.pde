@@ -27,13 +27,15 @@ String[] cnfg;
 String cFile = "cnfg.ini";
 StringDict cnfgs;
 String server;
+StringDict trials;
+
 
 // objects
 Sandbox box;
 GUIController g;
 IFButton startButton, stopButton;
 IFProgressBar progress;
-IFCheckBox global, nothing;
+//+ global, nothing;
 
 //boolean running = false;
 
@@ -85,9 +87,11 @@ void setup() {
 
 int [] ts_xB_arr, ts_xA_arr;
 float [] ts_off_arr;
-int es_trialSize;
+int es_trialCnt;
+
 
 void setArgs() {
+  trials = new StringDict();
   ppi = box.ppi;
   bW = box.bW1;
   xC = box.xC;
@@ -103,21 +107,21 @@ void setArgs() {
   es_condition1 = cnfgs.get("condition1");
   es_condition2 = cnfgs.get("condition2");
   es_condition3 = cnfgs.get("condition3");
-  es_trialSize =  int(cnfgs.get("number_of_trials_per_condition"));
+  es_trialCnt =  int(cnfgs.get("number_of_trials_per_condition"));
 
   /*--->>iterate through the ini to get buttonwidth and offset values */
 
-  ts_bWp_arr = new int[es_trialSize];
-  ts_off_arr = new float[es_trialSize];
-  ts_bAp_arr = new float[es_trialSize];
-  ts_ID_arr = new float[es_trialSize];
+  ts_bWp_arr = new int[es_trialCnt];
+  ts_off_arr = new float[es_trialCnt];
+  ts_bAp_arr = new float[es_trialCnt];
+  ts_ID_arr = new float[es_trialCnt];
 
-  for (int i = 0; i < es_trialSize; i++) {
+  for (int i = 0; i < es_trialCnt; i++) {
     esAdjust(true, i);
   }
   //println(Arrays.toString(ts_off_arr));
   //println("ts_bWp_arr:", Arrays.toString(ts_bWp_arr));
-  for (int i = 0; i < es_trialSize; i++) {
+  for (int i = 0; i < es_trialCnt; i++) {
   }  
   println("--->bamp:", Arrays.toString(ts_bAp_arr));
   println("--->ID:", Arrays.toString(ts_ID_arr));  

@@ -37,7 +37,7 @@ void esAdjust(boolean Init, int i) {
   //: at this time, is only called from -->loadArgs()
   //: INIT <-- is not needed unless called from another proc later
   
-  // >> i is 0-index for arrays (0 to es_trialSize
+  // >> i is 0-index for arrays (0 to es_trialCnt
   // >> init loads values from file
 
   if (Init) {

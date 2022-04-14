@@ -142,8 +142,8 @@ void writeMsg() {
 
 
   buff = "ID: ";
-  String [] ts_IDS_arr = new String [es_trialSize];
-  for (int i = 0; i < es_trialSize; i++) {
+  String [] ts_IDS_arr = new String [es_trialCnt];
+  for (int i = 0; i < es_trialCnt; i++) {
     ts_IDS_arr[i] = buff+df.format(ts_ID_arr[i]);
   }
   //String [] ts_IDS_arr = new String [] {(buff+df.format(ts_ID_arr[0])), (buff++df.format(ts_ID_arr[1]), 
@@ -161,7 +161,7 @@ void writeMsg() {
 
   //: set function constants
   int boxWidth = int(textWidth(ts_bWp)+gutter*3); // length of longest string
-  int wH = lf * 5 + lf * es_trialSize + gutter;  //: window height
+  int wH = lf * 5 + lf * es_trialCnt + gutter;  //: window height
   if (DUAL) 
     wH = lf * 14; 
 
@@ -209,7 +209,7 @@ void writeMsg() {
   //: column list the trial Fitts ID's
   translate(boxWidth-gutter, lf);
   pushMatrix();
-  for (int i = 0; i < es_trialSize; i++) {
+  for (int i = 0; i < es_trialCnt; i++) {
     String buffmode = NONE;
     if (i == setTrial) buffmode = BOLD;
     textLF(ROSE, 0, RIGHT, ts_IDS_arr[i], 0, 0, 0, lf, buffmode);
@@ -247,7 +247,7 @@ void writeMsg() {
   if (DUAL) 
     textLF(GHOST, 0, RIGHT, "Calibrate screen [C]", 0, 0, 0, lf, NONE);
   if (setTrial > -1) {
-    buff = "load trial [1 thru "+es_trialSize+"] ";
+    buff = "load trial [1 thru "+es_trialCnt+"] ";
     textLF(GHOST, 0, RIGHT, buff, 0, 0, 0, lf, NONE);
   } else translate(0, lf);
 
