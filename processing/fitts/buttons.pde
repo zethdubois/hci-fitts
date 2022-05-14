@@ -1,6 +1,7 @@
 AudioPlayer startClick, stopClick;
 String fileName;
 int fittsMT = 0;
+int sampleSize = 15;
 
 boolean GotData = false;
 
@@ -20,6 +21,41 @@ public void boop() {                    // STOP
   stopClick.play();
   stopClick.rewind();
   println("timer stoped");
+  if (samples >= sampleSize) {
+    //Grid = true;
+    samples = 0;
+    setups();
+
+  }
+  /*
+  {      
+   samples = 0;
+   println ("here it is!------------");
+   int b = Integer.parseInt(bSelect);
+   b ++;
+   bSelect = String.valueOf(b); 
+   Grid = true;
+   switch (bSelect) { 
+   case "2": 
+   println("select button width");  
+   setBW(box.bW2);
+   bSelect = "2";
+   break;
+   case "3": 
+   println("select button width");  
+   setBW(box.bW3);
+   bSelect = "3";
+   break;
+   case "4": 
+   println("select button width");  
+   setBW(box.bW4);
+   bSelect = "4";
+   break;
+   }
+   println(bSelect);
+   Grid = false;
+   }
+   */
 }
 
 

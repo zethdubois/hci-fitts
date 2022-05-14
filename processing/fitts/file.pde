@@ -1,7 +1,7 @@
 PrintWriter output;
 boolean NewFile = true;
-String participant = "anon";
-String condition = "mouse";
+String participant = "ugarit";
+String condition = "finger";
 
 
 import java.time.Instant;

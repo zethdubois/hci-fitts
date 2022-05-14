@@ -24,10 +24,13 @@ void switchNet() {
   testNet(SERVER_IP);
   setNet();
 }
-
-void keyPressed() {
+char hacked = 0;
+void keyPressed() { //char hacked) {
   println("key", key);
-
+  //if (hacked == '0'){
+  //}else{ 
+  //  key = hacked;
+  //}
   switch(key) {
   case 'n': 
     if (Dual) switchNet();
