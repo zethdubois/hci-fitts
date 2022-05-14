@@ -442,7 +442,7 @@ class Sandbox {
 
     println("button sizes: ", Arrays.toString(bW_arr));
     offset = float(dict.get("offset"));
-    tSize = int(dict.get("text_size"));
+    tSize = xS / int(dict.get("text_size_factor"));
     ppi = int(dict.get("ppi"));
     network = dict.get("network");
     screen = int(dict.get("screen"));
